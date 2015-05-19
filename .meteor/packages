@@ -9,3 +9,5 @@ iron:router
 accounts-ui
 accounts-oauth
 oauth2
+service-configuration
+kljensen:accounts-coursera
