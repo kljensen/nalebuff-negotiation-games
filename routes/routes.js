@@ -23,11 +23,9 @@ Router.map(function() {
     template: 'index',
     name: 'index',
     waitOn: function() {
-      console.log('woot');
       return [
       ];
     },
-    fastRender: true,
     data: function(){
       return {
           foo: 'bar'
@@ -35,9 +33,22 @@ Router.map(function() {
     },
   });
 
-  this.route(pathPrefix + '/login', {
-    name: 'login'
+  this.route(pathPrefix, {
+    path: pathPrefix + 'games/' + 'ultimatum',
+    template: 'ultimatum-game',
+    name: 'ultimatum-game',
+    waitOn: function() {
+      return [
+        Meteor.subscribe('game-status', 'ultimatum')
+      ];
+    },
+    data: function(){
+      return {
+        gameStatus: GameStatus.findOne()
+      }
+    },
   });
+
 
 
 });

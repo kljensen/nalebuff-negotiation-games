@@ -1,0 +1,45 @@
+<template name="ultimatum-game">
+    <div class="row">
+      <section class="col-md-4 col-md-offset-4">
+        {{> UI.dynamic template=currTemplate}}
+      </section>
+    </div>
+    <div class="row">
+      <section class="col-md-4 col-md-offset-4">
+        <button type="button" class="btn btn-default prevStep step-{{stepNumber}}">Previous</button>
+        <button type="button" class="btn btn-default nextStep step-{{stepNumber}}">Next</button>
+      </section>
+    </div>
+</template>
+
+<template name="ultimatum-game-0">
+  <p>
+    In this game,
+    as Player #1
+    you are given $100 dollars and you have the option
+    to give some to Player #2. We'd like to know how
+    much you'd share as Player #1 and how much you'd
+    demand as Player #2.
+  </p>
+</template>
+<template name="ultimatum-game-1">
+  <form id="ultimatum-form-1">
+    <div class="form-group">
+      <label for="player1">As Player #1, how much would you share?</label>
+      <input class="form-control" type="number" id="player1-amount" min="0" max="100" value="{{playerAmount 1}}">
+    </div>
+    <div class="form-group">
+      <label for="player2">As Player #2, how much would you demand?</label>
+      <input class="form-control" type="number" id="player2-amount" min="0" max="100" value="{{playerAmount 2}}">
+    </div>
+  </form>
+</template>
+<template name="ultimatum-game-2">
+  foo
+</template>
+<template name="ultimatum-game-3">
+</template>
+<template name="ultimatum-game-4">
+</template>
+<template name="ultimatum-game-5">
+</template>
