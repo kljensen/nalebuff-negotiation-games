@@ -23,7 +23,16 @@
   </p>
 </template>
 <template name="ultimatum-game-1">
-  <form id="ultimatum-form-1">
+  <p>
+    <strong>Great!</strong> Let's play.
+  </p>
+  {{#with round=0}}
+    {{> ultimatum_price_choice_form }}
+  {{/with}}
+</template>
+
+<template name="ultimatum_price_choice_form">
+  <form id="ultimatum-price-choice-form">
     <div class="form-group">
       <label for="player1">As Player #1, how much would you share?</label>
       <input class="form-control" type="number" id="player1-amount" min="0" max="100" value="{{playerAmount 1}}">
@@ -34,6 +43,7 @@
     </div>
   </form>
 </template>
+
 <template name="ultimatum-game-2">
   <p>
     You have been paired with another player and you
@@ -46,7 +56,7 @@
     Please confirm below.)
   </p>
   
-  <form id="ultimatum-form-1">
+  <form id="ultimatum-accept-reject-form">
     <div class="form-group">
       <div>
         <label>
@@ -65,13 +75,27 @@
 
 </template>
 <template name="ultimatum-game-3">
+  {{> return_to_video }}
+</template>
+<template name="ultimatum-game-4">
+  <p>
+    <strong>Ok!</strong> Let's play again, for real this
+    time. 
+  </p>
+  <p>
+    Please input your two numbers again. You can pick the same numbers as before or change them based on what you've learned.
+  </p>
+  {{#with round=1}}
+    {{> ultimatum_price_choice_form }}
+  {{/with}}
+</template>
+<template name="ultimatum-game-5">
+  {{> return_to_video }}
+</template>
+<template name="return_to_video">
   <p>
     <strong>Thanks</strong>! Please return to the Coursera
     video. When you are ready for the next step, please 
     click "Next", below.
   </p>
-</template>
-<template name="ultimatum-game-4">
-</template>
-<template name="ultimatum-game-5">
 </template>

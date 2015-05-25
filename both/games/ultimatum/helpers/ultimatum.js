@@ -34,6 +34,14 @@ if (Meteor.isClient) {
       return tmpl(getStep() + 1);
     },
   });
+
+  var callSetUltimatumAmounts = function(e, round){
+    e.preventDefault();
+    var player1Amount = parseInt($('input#player1-amount').val());
+    var player2Amount = parseInt($('input#player2-amount').val());
+    Meteor.call('setUltimatumAmounts', player1Amount, player2Amount, round);
+  };
+
   Template['ultimatum-game'].events({
     'click button.nextStep': function(e){
       e.preventDefault();
@@ -45,32 +53,32 @@ if (Meteor.isClient) {
       console.log('clicked previous');
     },
     'click button.nextStep.step-1': function(e){
-      e.preventDefault();
-      var player1Amount = parseInt($('input#player1-amount').val());
-      var player2Amount = parseInt($('input#player2-amount').val());
-      Meteor.call('setUltimatumAmounts', player1Amount, player2Amount, 0);
+      callSetUltimatumAmounts(e, 0);
+    },
+    'click button.nextStep.step-4': function(e){
+      callSetUltimatumAmounts(e, 1);
     },
     'click button.nextStep.step-2': function(e){
       e.preventDefault();
       var decision = $('input[name=confirmReject]:checked').val();
-      Meteor.call('setRoundDecision', decision, 1);
+      Meteor.call('setRoundDecision', decision, 0);
     }
 
   });
-  Template['ultimatum-game-1'].helpers({
+  Template['ultimatum_price_choice_form'].helpers({
     availableDollars: function(){
       return _.range(1, 101);
     },
     playerAmount: function(number){
       var gs = GameStatus.findOne({key: 'ultimatum'});
-      console.log(gs);
       try{
-        return gs.rounds[0].amounts['player' + number] || 0;
+        return gs.rounds[this.round].amounts['player' + number] || 0;
       }catch(e){
         return 0;
       }
     }
   });
+
   Template['ultimatum-game-2'].helpers({
     offer: function(){
       var gs = GameStatus.findOne({key: 'ultimatum'});

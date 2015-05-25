@@ -11,9 +11,9 @@ var checkRound = function (round) {
     };
 }
 
-var setRoundData = function (round, data) {
+var setRoundData = function (key, data) {
   var set = {};
-  set['rounds.' + round] = data;
+  set[key] = data;
   var results = GameStatus.update(
       {key: 'ultimatum', userId: Meteor.userId() },
       {$set: set}
@@ -70,7 +70,7 @@ Meteor.methods({
       throw new Meteor.Error(500, 'Bad data!');
     };
     checkRound(round);
-    setRoundData(round, {amounts: {player1: a1, player2: a2}});
+    setRoundData('rounds.' + round, {amounts: {player1: a1, player2: a2}});
   },
   setRoundDecision: function (decision, round) {
     checkRound(round);
@@ -78,7 +78,7 @@ Meteor.methods({
     if (decision !== 'accept' && decision !== 'reject') {
       throw new Meteor.Error(400, 'Bad request!');
     };
-    setRoundData(round, {accepted: decision === 'accept'});
+    setRoundData('rounds.' + round + '.accepted', decision === 'accept');
   }
 
 });
