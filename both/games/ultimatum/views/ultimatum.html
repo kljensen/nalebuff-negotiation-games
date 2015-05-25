@@ -6,7 +6,7 @@
     </div>
     <div class="row">
       <section class="col-md-4 col-md-offset-4">
-        <button type="button" class="btn btn-default prevStep step-{{stepNumber}}">Previous</button>
+        <!-- <button type="button" class="btn btn-default prevStep step-{{stepNumber}}">Previous</button> -->
         <button type="button" class="btn btn-default nextStep step-{{stepNumber}}">Next</button>
       </section>
     </div>
@@ -38,10 +38,10 @@
   <p>
     You have been paired with another player and you
     are in the role of the recipient. The other
-    player has offered you $<strong>{{offer}}</strong>.
+    player has offered you <strong>${{offer}}</strong>.
   </p>
   <p>
-    (It looks like you decided to demand ${{demand}},
+    (It looks like you decided to demand <strong>${{demand}}</strong>,
     so you would reject this offer. Is that accurate?
     Please confirm below.)
   </p>
@@ -65,6 +65,11 @@
 
 </template>
 <template name="ultimatum-game-3">
+  <p>
+    <strong>Thanks</strong>! Please return to the Coursera
+    video. When you are ready for the next step, please 
+    click "Next", below.
+  </p>
 </template>
 <template name="ultimatum-game-4">
 </template>

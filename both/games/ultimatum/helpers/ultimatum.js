@@ -48,13 +48,12 @@ if (Meteor.isClient) {
       e.preventDefault();
       var player1Amount = parseInt($('input#player1-amount').val());
       var player2Amount = parseInt($('input#player2-amount').val());
-      Meteor.call('setUltimatumAmounts', player1Amount, player2Amount);
+      Meteor.call('setUltimatumAmounts', player1Amount, player2Amount, 0);
     },
-    'click button.nextStep.step-1': function(e){
+    'click button.nextStep.step-2': function(e){
       e.preventDefault();
-      var action = $('input[name=confirmReject]:checked').val();
-      console.log(action);
-      // Meteor.call('setUltimatumAmounts', player1Amount, player2Amount);
+      var decision = $('input[name=confirmReject]:checked').val();
+      Meteor.call('setRoundDecision', decision, 1);
     }
 
   });
@@ -66,7 +65,7 @@ if (Meteor.isClient) {
       var gs = GameStatus.findOne({key: 'ultimatum'});
       console.log(gs);
       try{
-        return gs.amounts['player' + number] || 0;
+        return gs.rounds[0].amounts['player' + number] || 0;
       }catch(e){
         return 0;
       }
@@ -75,7 +74,11 @@ if (Meteor.isClient) {
   Template['ultimatum-game-2'].helpers({
     offer: function(){
       var gs = GameStatus.findOne({key: 'ultimatum'});
-      return Math.max(gs.amounts['player2'] - 1, 0);
-    }
+      return Math.max(gs.rounds[0].amounts['player2'] - 1, 0);
+    },
+    demand: function(){
+      var gs = GameStatus.findOne({key: 'ultimatum'});
+      return gs.rounds[0].amounts['player2'];
+    }    
   });
 };
