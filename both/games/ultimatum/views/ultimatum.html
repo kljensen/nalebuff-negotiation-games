@@ -35,7 +35,34 @@
   </form>
 </template>
 <template name="ultimatum-game-2">
-  foo
+  <p>
+    You have been paired with another player and you
+    are in the role of the recipient. The other
+    player has offered you $<strong>{{offer}}</strong>.
+  </p>
+  <p>
+    (It looks like you decided to demand ${{demand}},
+    so you would reject this offer. Is that accurate?
+    Please confirm below.)
+  </p>
+  
+  <form id="ultimatum-form-1">
+    <div class="form-group">
+      <div>
+        <label>
+        <input type="radio" name="confirmReject" value="reject" checked>
+        Reject their offer
+        </label>
+      </div>
+      <div>
+        <label>
+        <input type="radio" name="confirmReject" value="accept">
+        Accept their offer
+        </label>
+      </div>
+    </div>
+  </form>
+
 </template>
 <template name="ultimatum-game-3">
 </template>
