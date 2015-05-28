@@ -92,6 +92,24 @@
 <template name="ultimatum-game-5">
   {{> return_to_video }}
 </template>
+<template name="ultimatum-game-6">
+  <p>
+    {{#if acceptedOwn}}
+      <strong>Congrats!</strong> you had the good sense to
+      accept your own offer. Another {{acceptedOwnCount}}
+      students did the same. Alas, {{rejectedOwnCount}} rejected
+      their own offers!
+    {{else}}
+      <strong>Whoops!</strong> Looks like you will turn down your own offer and get <strong>zero</strong>.
+      Like you, {{rejectedOwnCount}} other students rejected their
+      own offers. The remaining {{acceptedOwnCount}} students
+      accepted their own offers.
+    {{/if}}
+  </p>
+</template>
+<template name="ultimatum-game-7">
+  {{> return_to_video }}
+</template>
 <template name="return_to_video">
   <p>
     <strong>Thanks</strong>! Please return to the Coursera

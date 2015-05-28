@@ -70,7 +70,10 @@ Meteor.methods({
       throw new Meteor.Error(500, 'Bad data!');
     };
     checkRound(round);
-    setRoundData('rounds.' + round, {amounts: {player1: a1, player2: a2}});
+    setRoundData('rounds.' + round, {
+      amounts: {player1: a1, player2: a2},
+      acceptsOwn: a1 > a2
+    });
   },
   setRoundDecision: function (decision, round) {
     checkRound(round);
@@ -79,6 +82,20 @@ Meteor.methods({
       throw new Meteor.Error(400, 'Bad request!');
     };
     setRoundData('rounds.' + round + '.accepted', decision === 'accept');
+  },
+  // Retreive the number of game plays that are internally consistent
+  // and inconsistent: that is, those that accept or reject their own offers.
+  getNumAcceptingOwn: function(round){
+    checkRound(round);
+    var qtrue = {},
+        qfalse = {};
+    qtrue['rounds.' + round + '.acceptsOwn']= true;
+    qfalse['rounds.' + round + '.acceptsOwn']= false;
+    return {
+      acceptedOwn: GameStatus.find(qtrue).count(),
+      rejectedOwn: GameStatus.find(qfalse).count()
+    }
   }
+
 
 });

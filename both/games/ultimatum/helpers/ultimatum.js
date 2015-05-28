@@ -10,7 +10,6 @@ if (Meteor.isClient) {
       Meteor.call('initiateNewGame', 'ultimatum');    
       gameStatus = GameStatus.findOne({key: 'ultimatum'});
     };
-    console.log(gameStatus);
     return gameStatus ? gameStatus.step: 0;
   }
 
@@ -89,4 +88,29 @@ if (Meteor.isClient) {
       return gs.rounds[0].amounts['player2'];
     }    
   });
+
+  Template['ultimatum-game-6'].created = function(){
+    var dis = this;
+    dis.data.acceptedOwnCount = new ReactiveVar(null);
+    dis.data.rejectedOwnCount = new ReactiveVar(null);
+    Meteor.call('getNumAcceptingOwn', 1, function(err, result){
+      if (!err) {
+        dis.data.acceptedOwnCount.set(result.acceptedOwn);
+        dis.data.rejectedOwnCount.set(result.rejectedOwn);
+      };
+    });
+  };
+  Template['ultimatum-game-6'].helpers({
+    acceptedOwn: function(){
+      var gs = GameStatus.findOne({key: 'ultimatum'});
+      return gs.rounds[1].acceptedOwn;      
+    },
+    acceptedOwnCount: function(){
+      return Template.instance().data.acceptedOwnCount.get();
+    },
+    rejectedOwnCount: function(){
+      return Template.instance().data.rejectedOwnCount.get();
+    },
+  });
+
 };
