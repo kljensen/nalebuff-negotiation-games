@@ -1,5 +1,11 @@
 <template name="ultimatum-game">
     <div class="row">
+      <section class="greeting col-md-4 col-md-offset-4">
+        Hi {{currentUser.profile.name}}. You are on
+        step #{{stepNumber}} of the ultimatum game.
+      </section>
+    </div>
+    <div class="row">
       <section class="col-md-4 col-md-offset-4">
         {{> UI.dynamic template=currTemplate}}
       </section>
@@ -97,12 +103,15 @@
     {{#if acceptedOwn}}
       <strong>Congrats!</strong> you had the good sense to
       accept your own offer. Another {{acceptedOwnCount}}
-      students did the same. Alas, {{rejectedOwnCount}} rejected
-      their own offers!
+      students did the same.
+            Like you,  {{acceptedOwnCount}} ({{acceptedOwnPercent}}%) other students accepted their
+      own offers. The remaining {{rejectedOwnCount}} ({{rejectedOwnPercent}}%) students
+      rejected their own offers.
+
     {{else}}
       <strong>Whoops!</strong> Looks like you will turn down your own offer and get <strong>zero</strong>.
-      Like you, {{rejectedOwnCount}} other students rejected their
-      own offers. The remaining {{acceptedOwnCount}} students
+      Like you, {{rejectedOwnCount}} ({{rejectedOwnPercent}}%) other students rejected their
+      own offers. The remaining {{acceptedOwnCount}} ({{acceptedOwnPercent}}%) students
       accepted their own offers.
     {{/if}}
   </p>
@@ -116,4 +125,18 @@
     video. When you are ready for the next step, please 
     click "Next", below.
   </p>
+</template>
+
+<template name="ultimatum-game-8">
+<p>Your offer was <strong>${{offer}}</strong>. The average payoff for <strong>${{offer}}</strong> was <strong>${{offerPayoff}}</strong>.</p>
+
+<p>The way to calculate those payoffs is as follows. We formulate a CDF of thevalues of Ys that have been inputted. Then the average payoff for X is X * G(Y), where G(Y) is the fraction of people who would accept Y or less.</p>
+
+<p>The lowest offer you’d accept was <strong>${{demand}}</strong>. The average payoff for <strong>${{demand}}</strong> was <strong>${{demandPayoff}}</strong>.</p>
+
+<p>The way to calculate those payoffs is as follows. We formulate a CDF of thevalues of Xs that have been inputted. Then the average payoff for Y is 
+Sum of all the values of X ≥ Y times the frequency of those values.</p>
+
+<p>Here is a list of the average payoffs for each possible offer …</p>
+
 </template>

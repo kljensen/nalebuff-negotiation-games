@@ -72,7 +72,7 @@ Meteor.methods({
     checkRound(round);
     setRoundData('rounds.' + round, {
       amounts: {player1: a1, player2: a2},
-      acceptsOwn: a1 > a2
+      acceptsOwn: a1 >= a2
     });
   },
   setRoundDecision: function (decision, round) {
@@ -95,7 +95,38 @@ Meteor.methods({
       acceptedOwn: GameStatus.find(qtrue).count(),
       rejectedOwn: GameStatus.find(qfalse).count()
     }
-  }
+  },
+  getPayoffCDF: function(round){
+    checkRound(round);
+    var playedGames = GameStatus.find({
+      key: 'ultimatum',
+      step: {$gte: 7}
+    }).fetch();
 
+    var acceptProbability = Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);;
+    var demandProbability = Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);;
+
+
+    _.each(playedGames, function(gs){
+      var amounts = gs.rounds[round].amounts;
+      for (var i = amounts.player1; i >= 0; i--) {
+        demandProbability[i] += 1;
+      };
+      for (var i = amounts.player2; i <= 100; i++) {
+        acceptProbability[i] += 1;
+      };
+    });
+    var numPlayedGames = demandProbability[0];
+    for (var i = demandProbability.length - 1; i >= 0; i--) {
+      demandProbability[i] /= numPlayedGames;
+    };
+    for (var i = acceptProbability.length - 1; i >= 0; i--) {
+      acceptProbability[i] /= numPlayedGames;
+    };
+    return {
+      acceptProbability: acceptProbability,
+      demandProbability: demandProbability
+    }
+  }
 
 });
