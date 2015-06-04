@@ -15,6 +15,8 @@ Template.registerHelper('log', function(){
 });
 
 Template.registerHelper('getSessionVariable', function(x){
+  console.log('in getSessionVariable');
+  console.log(Session.get(x));
     return Session.get(x);
 });  
 

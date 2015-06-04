@@ -4,8 +4,26 @@ if (Meteor.isClient) {
     Meteor.call('initiateNewGame', 'ultimatum');
   };
 
+  Template._body.events({
+    'input input.validate-number': function(e, data, tpl){
+      var el = e.target;
+      var parent = el.parentNode;
+      if (el.type === 'number') {
+        var min = parseInt(el.min);
+        var max = parseInt(el.max);
+        var val = parseInt(el.value);
+        if (val < min || val > max || isNaN(val)) {
+          console.log('out of range');
+          parent.classList.add('has-error');
+        }else{
+          parent.classList.remove('has-error');
+        };
+      };
+    }
+  })
+
   var getStep = function(){
-    var gameStatus = GameStatus.findOne('ultimatum');
+    var gameStatus = GameStatus.findOne({key: 'ultimatum'});
     if (!gameStatus) {
       Meteor.call('initiateNewGame', 'ultimatum');    
       gameStatus = GameStatus.findOne({key: 'ultimatum'});
@@ -32,20 +50,31 @@ if (Meteor.isClient) {
     nextTemplate: function(){
       return tmpl(getStep() + 1);
     },
+    isDone: function(){
+      if (getStep() >= 8) {
+        return true;
+      };
+      return false;
+    }
   });
 
   var callSetUltimatumAmounts = function(e, round){
     e.preventDefault();
     var player1Amount = parseInt($('input#player1-amount').val());
     var player2Amount = parseInt($('input#player2-amount').val());
-    Meteor.call('setUltimatumAmounts', player1Amount, player2Amount, round);
+    Meteor.call('setUltimatumAmounts', player1Amount, player2Amount, round, function(err){
+        Meteor.call('incrementGameStep', 'ultimatum');
+    });
   };
 
   Template['ultimatum-game'].events({
     'click button.nextStep': function(e){
       e.preventDefault();
-      console.log('clicked next');
-      Meteor.call('incrementGameStep', 'ultimatum');
+      // Move forward if there is no user input,
+      // otherwise have to write custom logic.
+      if ($('input').length === 0) {
+        Meteor.call('incrementGameStep', 'ultimatum');
+      };
     },
     'click button.prevStep': function(e){
       e.preventDefault();
@@ -60,7 +89,9 @@ if (Meteor.isClient) {
     'click button.nextStep.step-2': function(e){
       e.preventDefault();
       var decision = $('input[name=confirmReject]:checked').val();
-      Meteor.call('setRoundDecision', decision, 0);
+      Meteor.call('setRoundDecision', decision, 0, function(err){
+        Meteor.call('incrementGameStep', 'ultimatum');
+      });
     }
 
   });

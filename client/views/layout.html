@@ -24,6 +24,10 @@
   </head>
 
   <div class="container">
-      {{> yield}}
+    {{> _body}}
   </div>
+</template>
+
+<template name="_body">
+    {{> yield}}
 </template>

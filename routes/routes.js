@@ -49,6 +49,22 @@ Router.map(function() {
     },
   });
 
+  this.route(pathPrefix, {
+    path: pathPrefix + 'games/' + 'anchoring',
+    template: 'anchoring-game',
+    name: 'anchoring-game',
+    waitOn: function() {
+      return [
+        Meteor.subscribe('game-status', 'anchoring')
+      ];
+    },
+    data: function(){
+      return {
+        gameStatus: GameStatus.findOne()
+      }
+    },
+  });
+
 
 
 });

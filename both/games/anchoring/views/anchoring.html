@@ -1,0 +1,97 @@
+<template name="anchoring-game">
+    <div class="row">
+      <section class="greeting col-md-4 col-md-offset-4">
+        Hi {{currentUser.profile.name}}. You are on
+        step #{{stepNumber}} of the anchoring game.
+        currTemplate == {{currTemplate}};
+      </section>
+    </div>
+    <div class="row">
+      <section class="col-md-4 col-md-offset-4">
+        {{> UI.dynamic template=currTemplate}}
+      </section>
+    </div>
+    <div class="row">
+      <section class="col-md-4 col-md-offset-4">
+        <!-- <button type="button" class="btn btn-default prevStep step-{{stepNumber}}">Previous</button> -->
+        {{#unless isDone}}
+
+          <button type="button" class="btn btn-default nextStep step-{{stepNumber}}" disabled="{{getSessionVariable 'disableNext'}}">Next</button>
+        {{/unless}}
+      </section>
+    </div>
+</template>
+
+
+<template name="anchoring-game-0">
+  <p>
+    Welcome to the anchoring game. We're going to 
+    ask you to list your house for sale.
+    Before I ask you to input your asking price, I’d first like to establish if it is above or below a certain number. Take the last three digits of your phone number (or if you like, find a dollar bill, or your other favorite currency note, and take the last three digits of its serial number) and input it below.
+  </p>
+
+  <form >
+    <div class="form-group">
+      <label for="randomNumber" class="control-label">What is your "random" number?</label>
+      <input class="form-control validate-number" type="number" id="random-number" min="0" max="999" value="10" required>
+    </div>
+  </form>
+</template>
+
+<template name="anchoring-game-1">
+  <p>
+    <strong>Great</strong>&ndash;now we're ready to sell your
+    house. Do you want to sell your house for more or less than
+    ${{randomNumber}}k?
+  </p>
+
+  <form id="ultimatum-accept-reject-form">
+    <div class="form-group">
+      <div>
+        <label>
+        <input type="radio" name="moreOrLess" value="more">
+         More
+        </label>
+      </div>
+      <div>
+        <label>
+        <input type="radio" name="moreOrLess" value="same">
+         Exactly ${{randomNumber}}k
+        </label>
+      </div>
+      <div>
+        <label>
+        <input type="radio" name="moreOrLess" value="less">
+         Less
+        </label>
+      </div>
+    </div>
+  </form>
+
+
+</template>
+
+<template name="anchoring-game-2">
+  <p>
+    <strong>Great</strong>&ndash;what is your asking price
+    for the house? Please enter a number in the range
+    <strong>${{priceRange.min}}k</strong> to
+    <strong>${{priceRange.max}}k</strong>.
+  </p>
+
+  <form >
+    <div class="form-group">
+      <label for="price" class="control-label">What is your price ($k)?</label>
+      <input class="form-control validate-number" type="number" name="price" id="price" min="{{priceRange.min}}" max="{{priceRange.max}}" required>
+    </div>
+  </form>
+
+</template>
+
+<template name="anchoring-game-3">
+  <p>
+    <strong>Thanks</strong>. You chose to sell your house for
+    <strong>${{price}}k</strong>.
+  </p>
+</template>
+

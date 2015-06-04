@@ -1,7 +1,9 @@
 GameStatus = new Mongo.Collection('game-status');
+Games = {}
 
 var allowedGames = {
-  'ultimatum': 1
+  'ultimatum': true,
+  'anchoring': true
 };
 
 var checkRound = function (round) {
@@ -22,6 +24,10 @@ var setRoundData = function (key, data) {
     throw new Meteor.Error(400, 'Bad request!');      
   };
 }
+Games.allowedGames = allowedGames;
+Games.checkRound = checkRound;
+Games.setRoundData = setRoundData;
+
 
 Meteor.methods({
   // Create a new game. There are only two games
@@ -127,6 +133,6 @@ Meteor.methods({
       acceptProbability: acceptProbability,
       demandProbability: demandProbability
     }
-  }
+  },  
 
 });
