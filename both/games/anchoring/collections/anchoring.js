@@ -6,7 +6,7 @@ Meteor.methods({
         key: 'anchoring', userId: Meteor.userId()
     });
 
-    if (!game || num < 0 || num > 100) {
+    if (!game || num < 0 || num > 999) {
       throw new Meteor.Error(500, 'Bad data!');
     };
     GameStatus.update({_id: game._id}, {$set: {randomNumber: num}});
