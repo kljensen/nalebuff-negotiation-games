@@ -28,7 +28,7 @@ Router.map(function() {
     },
     data: function(){
       return {
-          foo: 'bar'
+          splash: true
       }
     },
   });
