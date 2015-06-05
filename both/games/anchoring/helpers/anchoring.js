@@ -119,7 +119,7 @@ if (Meteor.isClient) {
   });
   Template['anchoring-game-2'].created = function(){
     Session.set('disableNext', true);
-  }
+  };
 
   Template['anchoring-game-2'].events({
     'change input': function(){
@@ -129,7 +129,25 @@ if (Meteor.isClient) {
   Template['anchoring-game-3'].helpers({
     price: function(){
       return GameStatus.findOne({key: 'anchoring'}).price;
+    },
+    ranges: function(){
+      if (_.has(Template.instance().data, 'ranges')) {
+        return Template.instance().data.ranges.get();
+      };
+      return [];
     }
   });
+
+  Template['anchoring-game-3'].created = function(){
+    var dis = this;
+    dis.data.ranges = new ReactiveVar(null);
+    console.log('wooooo');
+    Meteor.call('getAnchorPriceDistribution', function(err, result){
+      if (!err) {
+        dis.data.ranges.set(result);
+      };
+    });
+
+  };
 
 };

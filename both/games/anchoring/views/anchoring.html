@@ -92,5 +92,19 @@
     <strong>Thanks</strong>. You chose to sell your house for
     <strong>${{price}}k</strong>.
   </p>
+  <ul>
+  {{#each ranges}}
+    <li>
+      <strong>{{min}}-{{max}}</strong>: {{#if stats.empty}}No data{{else}}mean: {{stats.mean}}; median: {{stats.median}}{{/if}}
+    </li>
+  {{/each}}
+  </ul>
+  {{> done}}
+
 </template>
 
+<template name="done">
+  <p class="done">
+    DONE!
+  </p>
+</template>
