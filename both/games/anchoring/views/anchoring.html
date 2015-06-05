@@ -3,7 +3,6 @@
       <section class="greeting col-md-4 col-md-offset-4">
         Hi {{currentUser.profile.name}}. You are on
         step #{{stepNumber}} of the anchoring game.
-        currTemplate == {{currTemplate}};
       </section>
     </div>
     <div class="row">
@@ -32,8 +31,8 @@
 
   <form >
     <div class="form-group">
-      <label for="randomNumber" class="control-label">What is your "random" number?</label>
-      <input class="form-control validate-number" type="number" id="random-number" min="0" max="999" value="10" required>
+      <label for="randomNumber" class="control-label">What is your "random" number? (0-999)</label>
+      <input class="form-control validate-number" type="number" id="random-number" min="0" max="999" required>
     </div>
   </form>
 </template>
