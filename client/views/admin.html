@@ -1,0 +1,70 @@
+<template name="admin">
+
+  <h2>Results available for the following games:</h2>
+  <ul>
+    {{#each games}}
+      <li><a href="#{{key}}">{{key}}</a></li>
+    {{/each}}
+  </ul>
+  <hr>
+
+  {{#each games}}
+    {{> _admin_game_table}}
+  {{/each}}
+</template>
+
+<template name="_admin_game_table">
+  <h4>Game: &ldquo;<a href="#{{key}}">{{key}}</a>&rdquo;</h4>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          User
+        </th>
+        <th>
+          Game
+        </th>
+        <th>
+          Step
+        </th>
+        <th>
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each games}}
+        {{> _admin_game_table_row}}
+      {{/each}}
+    </tbody>
+  </table> 
+</template>
+
+<template name="_admin_game_table_row">
+  <tr>
+    <td  class="user-game-status">
+      {{> _admin_game_table_user}}
+    </td>
+    <td  class="user-game-status">
+      {{key}}
+    </td>
+    <td  class="user-game-status">
+      {{step}}
+    </td>
+    <td  class="user-game-status">
+      <button class="btn btn-default reset-game" type="submit">
+        Reset
+        <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+      </button>
+      <button class="btn btn-default delete-game" type="submit">
+        Delete
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      </button>
+
+    </td>
+  </tr>
+</template>
+
+<template name="_admin_game_table_user">
+  {{user.profile.name}}
+</template>

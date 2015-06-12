@@ -65,6 +65,25 @@ Router.map(function() {
     },
   });
 
+  this.route(pathPrefix, {
+    path: pathPrefix + 'admin',
+    template: 'admin',
+    name: 'admin',
+    waitOn: function() {
+      return [
+        Meteor.subscribe('admin-data')
+      ];
+    },
+    onBeforeAction: function() {
+      console.log('wooooot in onBeforeAction');
+      user = Meteor.user();
+      if(!Roles.userIsInRole(user, ['admin'])) {
+        this.redirect('index');
+        this.stop();
+      }
+      this.next();
+    }
+  });
 
 
 });
