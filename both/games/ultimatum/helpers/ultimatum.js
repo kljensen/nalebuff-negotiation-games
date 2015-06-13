@@ -111,7 +111,7 @@ if (Meteor.isClient) {
 
   var getOffer = function(round){
     var gs = GameStatus.findOne({key: 'ultimatum'});
-    return Math.max(gs.rounds[round].amounts['player1'] - 1, 0);
+    return Math.max(gs.rounds[round].amounts['player1'], 0);
   }
   var getDemand = function(round){
     var gs = GameStatus.findOne({key: 'ultimatum'});
@@ -123,11 +123,14 @@ if (Meteor.isClient) {
     },
     demand: function(){
       return getDemand(0);
+    },
+    demandMinusOne: function(){
+      return getDemand(0)-1;
     }    
   });
 
 
-  Template['ultimatum-game-6'].created = function(){
+  Template['ultimatum-game-5'].created = function(){
     var dis = this;
     dis.data.acceptedOwnCount = new ReactiveVar(null);
     dis.data.rejectedOwnCount = new ReactiveVar(null);
@@ -138,7 +141,7 @@ if (Meteor.isClient) {
       };
     });
   };
-  Template['ultimatum-game-6'].helpers({
+  Template['ultimatum-game-5'].helpers({
     acceptedOwn: function(){
       var gs = GameStatus.findOne({key: 'ultimatum'});
       return gs.rounds[1].acceptsOwn;      
@@ -160,7 +163,7 @@ if (Meteor.isClient) {
       return Math.round((y/ (x+y)) * 100, 1);
     },
   });
-  Template['ultimatum-game-8'].created = function(){
+  Template['ultimatum-game-7'].created = function(){
     var dis = this;
     dis.data.acceptProbability = new ReactiveVar(null);
     dis.data.demandProbability = new ReactiveVar(null);
@@ -207,7 +210,7 @@ if (Meteor.isClient) {
 
   };
 
-  Template['ultimatum-game-8'].helpers({
+  Template['ultimatum-game-7'].helpers({
     offer: function(){
       return getOffer(1);
     },

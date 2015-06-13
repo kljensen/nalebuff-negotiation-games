@@ -22,18 +22,13 @@
 
 <template name="ultimatum-game-0">
   <p>
-    In this game,
-    as Player #1
-    you are given $100 dollars and you have the option
-    to give some to Player #2. We'd like to know how
-    much you'd share as Player #1 and how much you'd
-    demand as Player #2.
+    In this game, there is {{> dollars amount=100}} to divide between two players if they can agree on the division. Player #1 will make an offer to Player #2 who will either accept or reject. If Player #2 rejects, they both get {{> dollars amount=0}}.
+  </p>
+  <p>
+    We want you to consider what you would do in the role of Player #1 and Player #2. Specifically, how much would you offer as Player #1 and what is the smallest amount you’d be willing to accept as Player #2?
   </p>
 </template>
 <template name="ultimatum-game-1">
-  <p>
-    <strong>Great!</strong> Let's play.
-  </p>
   {{#with round=0}}
     {{> ultimatum_price_choice_form }}
   {{/with}}
@@ -42,26 +37,28 @@
 <template name="ultimatum_price_choice_form">
   <form id="ultimatum-price-choice-form">
     <div class="form-group">
-      <label for="player1" class="control-label">As Player #1, how much would you share?</label>
+      <label for="player1" class="control-label">As Player #1,  how much would you&nbsp;offer?</label>
       <input class="form-control validate-number" type="number" id="player1-amount" min="0" max="100" value="{{playerAmount 1}}">
+      <p class="help-block">(Please enter a number between 0-100.)</p>
+
     </div>
     <div class="form-group">
-      <label for="player2" class="control-label">As Player #2, how much would you demand?</label>
+      <label for="player2" class="control-label">As Player #2, what is the smallest amount you’d&nbsp;accept?</label>
       <input class="form-control validate-number" type="number" id="player2-amount" min="0" max="100" value="{{playerAmount 2}}">
+      <p class="help-block">(Please enter a number between 0-100.)</p>
+
     </div>
   </form>
 </template>
 
 <template name="ultimatum-game-2">
   <p>
-    You have been paired with another player and you
-    are in the role of the recipient. The other
-    player has offered you <strong>${{offer}}</strong>.
+    You were chosen to receive the proposal. The other side has offered you
+    {{> dollars amount=demandMinusOne}}.
   </p>
+
   <p>
-    (It looks like you decided to demand <strong>${{demand}}</strong>,
-    so you would reject this offer. Is that accurate?
-    Please confirm below.)
+    Since {{> dollars amount=demand}} is the least you are willing to accept, it looks like you will reject this offer? Is that right? Do you really want to reject that offer and end up with {{> dollars amount=0}}?
   </p>
   
   <form id="ultimatum-accept-reject-form">
@@ -69,13 +66,13 @@
       <div>
         <label>
         <input type="radio" name="confirmReject" value="reject" checked>
-        Reject their offer
+        Reject their {{> dollars amount=demandMinusOne}} offer to receive {{> dollars amount=0}}.
         </label>
       </div>
       <div>
         <label>
         <input type="radio" name="confirmReject" value="accept">
-        Accept their offer
+        Accept their {{> dollars amount=demandMinusOne}} offer to receive {{> dollars amount=demandMinusOne}}.
         </label>
       </div>
     </div>
@@ -87,10 +84,6 @@
 </template>
 <template name="ultimatum-game-4">
   <p>
-    <strong>Ok!</strong> Let's play again, for real this
-    time. 
-  </p>
-  <p>
     Please input your two numbers again. You can pick the same numbers as before or change them based on what you've learned.
   </p>
   {{#with round=1}}
@@ -98,43 +91,33 @@
   {{/with}}
 </template>
 <template name="ultimatum-game-5">
-  {{> return_to_video }}
-</template>
-<template name="ultimatum-game-6">
   <p>
     {{#if acceptedOwn}}
-      <strong>Congrats!</strong> you had the good sense to
-      accept your own offer. Another {{acceptedOwnCount}}
-      students did the same.
-            Like you,  {{acceptedOwnCount}} ({{acceptedOwnPercent}}%) other students accepted their
-      own offers. The remaining {{rejectedOwnCount}} ({{rejectedOwnPercent}}%) students
-      rejected their own offers.
+
+      The first person we matched you up with was… you! Looks like you had the good sense to accept your own offer. {{englishNumber acceptedOwnCount true}} ({{acceptedOwnPercent}}%) other students did the same. The remaining {{englishNumber rejectedOwnCount}} ({{rejectedOwnPercent}}%) rejected their own offers.
 
     {{else}}
-      <strong>Whoops!</strong> Looks like you will turn down your own offer and get <strong>zero</strong>.
-      Like you, {{rejectedOwnCount}} ({{rejectedOwnPercent}}%) other students rejected their
-      own offers. The remaining {{acceptedOwnCount}} ({{acceptedOwnPercent}}%) students
-      accepted their own offers.
+      The first person we matched you up with was&hellip;you! Looks like you turned down your own offer and got zero. Like you, {{englishNumber rejectedOwnCount}} ({{rejectedOwnPercent}}%)  other students rejected their own offers. The remaining {{englishNumber acceptedOwnCount}} ({{acceptedOwnPercent}}%) accepted their own offers.
+
     {{/if}}
   </p>
 </template>
-<template name="ultimatum-game-7">
+<template name="ultimatum-game-6">
   {{> return_to_video }}
 </template>
 <template name="return_to_video">
   <p>
-    <strong>Thanks</strong>! Please return to the Coursera
-    video. When you are ready for the next step, please 
-    click "Next", below.
+    <strong>Thanks!</strong> Please return to the Coursera video. When you are ready for the next step, click &ldquo;Next&rdquo; below.
   </p>
 </template>
 
-<template name="ultimatum-game-8">
-  <p>Your offer was {{> dollars amount=offer}}. The average payoff for {{> dollars amount=offer}} was {{> dollars amount=offerPayoff}}.</p>
+<template name="ultimatum-game-7">
+  <p>
+    Your offer was {{> dollars amount=offer}}.  The other Player #2s would have accepted this offer XX% of the time. Thus the average payoff for an offer of {{> dollars amount=offer}} is {{> dollars amount=offerPayoff}}.
+  </p>
 
   <p>The lowest offer you’d accept was {{> dollars amount=demand}}. The average payoff for {{> dollars amount=demand}} was {{> dollars amount=demandPayoff}}.</p>
-
-  <p>Here is a list of the average payoffs for each possible offer …</p>
+  <p>Here is a chart showing the average payoffs for each possible offer:</p>
 
   <div class="ultimatum-payoff-chart">
   </div>

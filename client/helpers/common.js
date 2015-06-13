@@ -27,8 +27,19 @@ Template.registerHelper('pluralize', function(x, w1, w2){
   return w1;
 });
 
-Template.registerHelper('englishNumber', function(x){
+var toTitleCase = function(string)
+{
+    // \u00C0-\u00ff for a happy Latin-1
+    return string.toLowerCase().replace(/_/g, ' ').replace(/\b([a-z\u00C0-\u00ff])/g, function (_, initial) {
+        return initial.toUpperCase();
+    }).replace(/(\s(?:de|a|o|e|da|do|em|ou|[\u00C0-\u00ff]))\b/ig, function (_, match) {
+        return match.toLowerCase();
+    });
+}
+
+Template.registerHelper('englishNumber', function(x, capitalize){
     var numbers = {
+      0: 'zero',
       1: 'one',
       2: 'two',
       3: 'three',
@@ -41,6 +52,9 @@ Template.registerHelper('englishNumber', function(x){
       10: 'ten'
     };
     if (_.has(numbers, x)) {
+      if (capitalize === true) {
+        return toTitleCase(numbers[x]);
+      };
       return numbers[x];
     };
     return x;
