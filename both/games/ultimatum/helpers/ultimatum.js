@@ -166,9 +166,42 @@ if (Meteor.isClient) {
     dis.data.demandProbability = new ReactiveVar(null);
     Meteor.call('getPayoffCDF', 1, function(err, result){
       if (!err) {
-        console.log('Done!');
         dis.data.acceptProbability.set(result.acceptProbability);
         dis.data.demandProbability.set(result.demandProbability);
+        console.log(result.acceptProbability);
+
+        var offerPayoffs = _.map(result.acceptProbability, function(v, i){
+          return Math.round((100 - i) * v, 1);
+        });
+        console.log(offerPayoffs);
+
+        new Chartist.Bar('.ultimatum-payoff-chart', {
+          labels: _.map(_.range(101), function(x){return '$' + x}),
+          series: [
+            offerPayoffs
+          ]
+          }, {
+            height: '1500px',
+            // seriesBarDistance: 10,
+            reverseData: true,
+            horizontalBars: true,
+            onlyInteger: true,
+            divisor: 4,
+            high: 100,
+            low: 0,
+            axisY: {
+                // position: 'start',
+                showGrid: false,
+                labelInterpolationFnc: function(value, index) {
+                  return index % 5 === 0 ? value : null;
+                }
+            },
+            axisX: {
+                showGrid: true,
+                position: 'start'
+            }
+        });
+
       };
     });
 

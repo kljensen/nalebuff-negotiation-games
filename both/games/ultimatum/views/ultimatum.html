@@ -130,11 +130,14 @@
 </template>
 
 <template name="ultimatum-game-8">
-<p>Your offer was {{> dollars amount=offer}}. The average payoff for {{> dollars amount=offer}} was {{> dollars amount=offerPayoff}}.</p>
+  <p>Your offer was {{> dollars amount=offer}}. The average payoff for {{> dollars amount=offer}} was {{> dollars amount=offerPayoff}}.</p>
 
-<p>The lowest offer you’d accept was {{> dollars amount=demand}}. The average payoff for {{> dollars amount=demand}} was {{> dollars amount=demandPayoff}}.</p>
+  <p>The lowest offer you’d accept was {{> dollars amount=demand}}. The average payoff for {{> dollars amount=demand}} was {{> dollars amount=demandPayoff}}.</p>
 
-<p>Here is a list of the average payoffs for each possible offer …</p>
+  <p>Here is a list of the average payoffs for each possible offer …</p>
+
+  <div class="ultimatum-payoff-chart">
+  </div>
 
   {{> done}}
 
