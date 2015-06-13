@@ -1,10 +1,10 @@
 <template name="index">
 
   {{#if splash }}
-    <head>
       <style type="text/css">
         body{
-          background: url(splash-lg.jpg);
+          background: url(splash-xs.jpg);
+
           /* Background image is centered vertically and horizontally at all times */
           background-position: center center;
           
@@ -22,8 +22,26 @@
           background-color: #8F8F85;
 
         }
+        @media only screen and (min-width: 600px) {
+          /* styles for wide screens */
+          background: url(splash-sm.jpg);
+        }
+        @media only screen and (min-width: 1200px) {
+          /* styles for wide screens */
+          background: url(splash-md.jpg);
+        }
+        @media only screen and (-webkit-min-device-pixel-ratio: 2),
+          only screen and (min--moz-device-pixel-ratio: 2),
+          only screen and (-moz-min-device-pixel-ratio: 2),
+          only screen and (-o-min-device-pixel-ratio: 2/1),
+          only screen and (min-device-pixel-ratio: 2),
+          only screen and (min-resolution: 192dpi),
+          only screen and (min-resolution: 2dppx) { 
+          /* styles for Retina-type displays */
+          background: url(splash-lg.jpg);
+
+        }
       </style>
-    </head>
   {{/if}}
 
   <div class="row">
