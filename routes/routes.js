@@ -31,6 +31,13 @@ Router.map(function() {
           splash: true
       }
     },
+    onBeforeAction: function() {
+      $('body').addClass('cover-bg');
+      this.next();
+    },
+    onStop: function() {
+      $('body').removeClass('cover-bg');
+    },
   });
 
   this.route(pathPrefix, {

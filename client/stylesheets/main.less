@@ -3,6 +3,60 @@ body {
 	font-family: 'PT Sans', sans-serif;
 }
 
+.cover(@img){
+  background: url(@img);
+
+  /* Background image is centered vertically and horizontally at all times */
+  background-position: center center;
+  
+  /* Background image doesn't tile */
+  background-repeat: no-repeat;
+  
+  /* Background image is fixed in the viewport so that it doesn't move when 
+     the content's height is greater than the image's height */
+  background-attachment: fixed;
+  
+  /* This is what makes the background image rescale based
+     on the container's size */
+  -webkit-background-size: 100%; 
+  -moz-background-size: 100%; 
+  -o-background-size: 100%; 
+  background-size: 100%; 
+  -webkit-background-size: cover; 
+  -moz-background-size: cover; 
+  -o-background-size: cover; 
+  background-size: cover;	
+  background-color: #282828;
+}
+
+body.cover-bg{
+	.cover('splash-xs.jpg');
+}
+@media only screen and (min-width: 600px) {
+  /* styles for wide screens */
+	body.cover-bg{
+	  .cover('splash-sm.jpg');
+	}
+}
+@media only screen and (min-width: 1200px) {
+  /* styles for wide screens */
+	body.cover-bg{
+	  .cover('splash-md.jpg');
+	}
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+	  only screen and (min--moz-device-pixel-ratio: 2),
+	  only screen and (-moz-min-device-pixel-ratio: 2),
+	  only screen and (-o-min-device-pixel-ratio: 2/1),
+	  only screen and (min-device-pixel-ratio: 2),
+	  only screen and (min-resolution: 192dpi),
+	  only screen and (min-resolution: 2dppx) { 
+	  /* styles for Retina-type displays */
+	body.cover-bg{
+	  .cover('splash-lg.jpg');
+	}
+}
+
 .greeting{
 	background-color: #ddd;
 	margin-bottom: 1em;

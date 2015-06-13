@@ -1,5 +1,11 @@
 if (Meteor.isClient) {
 
+  Template.done.events({
+    'click': function(){
+      Router.go('index');
+    }
+  });
+
   Template['anchoring-game'].created = function(){
     Meteor.call('initiateNewGame', 'anchoring');
   };
