@@ -130,17 +130,16 @@
 </template>
 
 <template name="ultimatum-game-8">
-<p>Your offer was <strong>${{offer}}</strong>. The average payoff for <strong>${{offer}}</strong> was <strong>${{offerPayoff}}</strong>.</p>
+<p>Your offer was {{> dollars amount=offer}}. The average payoff for {{> dollars amount=offer}} was {{> dollars amount=offerPayoff}}.</p>
 
-<p>The way to calculate those payoffs is as follows. We formulate a CDF of thevalues of Ys that have been inputted. Then the average payoff for X is X * G(Y), where G(Y) is the fraction of people who would accept Y or less.</p>
-
-<p>The lowest offer you’d accept was <strong>${{demand}}</strong>. The average payoff for <strong>${{demand}}</strong> was <strong>${{demandPayoff}}</strong>.</p>
-
-<p>The way to calculate those payoffs is as follows. We formulate a CDF of thevalues of Xs that have been inputted. Then the average payoff for Y is 
-Sum of all the values of X ≥ Y times the frequency of those values.</p>
+<p>The lowest offer you’d accept was {{> dollars amount=demand}}. The average payoff for {{> dollars amount=demand}} was {{> dollars amount=demandPayoff}}.</p>
 
 <p>Here is a list of the average payoffs for each possible offer …</p>
 
   {{> done}}
 
+</template>
+
+<template name="dollars">
+  <strong>${{amount}}</strong>
 </template>
