@@ -51,7 +51,7 @@ if (Meteor.isClient) {
       return tmpl(getStep() + 1);
     },
     isDone: function(){
-      if (getStep() >= 8) {
+      if (getStep() >= 7) {
         return true;
       };
       return false;
@@ -167,6 +167,8 @@ if (Meteor.isClient) {
     var dis = this;
     dis.data.acceptProbability = new ReactiveVar(null);
     dis.data.demandProbability = new ReactiveVar(null);
+    dis.data.offerPayoffs = new ReactiveVar(null);
+    dis.data.demandPayoffs = new ReactiveVar(null);
     Meteor.call('getPayoffCDF', 1, function(err, result){
       if (!err) {
         dis.data.acceptProbability.set(result.acceptProbability);
@@ -176,7 +178,13 @@ if (Meteor.isClient) {
         var offerPayoffs = _.map(result.acceptProbability, function(v, i){
           return Math.round((100 - i) * v, 1);
         });
-        console.log(offerPayoffs);
+        dis.data.offerPayoffs.set(offerPayoffs);
+
+        var demandPayoffs = _.map(result.demandProbability, function(v, i){
+          return Math.round(v * i, 1);
+        });
+        dis.data.demandPayoffs.set(demandPayoffs);
+        console.log(demandPayoffs);
 
         new Chartist.Bar('.ultimatum-payoff-chart', {
           labels: _.map(_.range(101), function(x){return '$' + x}),
@@ -217,19 +225,34 @@ if (Meteor.isClient) {
     demand: function(){
       return getDemand(1);
     },
-    offerPayoff: function(){
+    offerAcceptanceProbability: function(){
       var acceptProbability = Template.instance().data.acceptProbability.get();
-      if (!_.isNull(acceptProbability)) {        
-        var offer = getOffer(1);
-        return Math.round((100 - offer) * acceptProbability[offer], 1);
+      if (acceptProbability) {
+        return 100 * acceptProbability[getOffer(1)];
+      };
+    },
+    demandAcceptanceProbability: function(){
+      var demandProbability = Template.instance().data.demandProbability.get();
+      if (demandProbability) {
+        return 100 * demandProbability[getDemand(1)];
+      };
+    },
+    offerPayoff: function(){
+      var offerPayoffs = Template.instance().data.offerPayoffs.get();
+      if (offerPayoffs) {
+        return offerPayoffs[getOffer(1)];
       };
     },
     demandPayoff: function(){
-      var demandProbability = Template.instance().data.demandProbability.get();
-      console.log(demandProbability);
-      if (!_.isNull(demandProbability)) {
-        var demand = getDemand(1);
-        return Math.round(demand * demandProbability[demand], 1);
+      var demandPayoffs = Template.instance().data.demandPayoffs.get();
+      if (demandPayoffs) {
+        return demandPayoffs[getDemand(1)];
+      };
+    },
+    demandEfficiency: function(){
+      var demandPayoffs = Template.instance().data.demandPayoffs.get();
+      if (demandPayoffs) {
+        return 100 * (demandPayoffs[getDemand(1)] / demandPayoffs[1]);
       };
     }
   });

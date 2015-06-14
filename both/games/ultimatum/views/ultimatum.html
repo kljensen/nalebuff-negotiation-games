@@ -113,7 +113,11 @@
 
 <template name="ultimatum-game-7">
   <p>
-    Your offer was {{> dollars amount=offer}}.  The other Player #2s would have accepted this offer XX% of the time. Thus the average payoff for an offer of {{> dollars amount=offer}} is {{> dollars amount=offerPayoff}}.
+    Your offer was {{> dollars amount=offer}}.  The other Player #2s would have accepted this offer {{offerAcceptanceProbability}}% of the time. Thus the average payoff for an offer of {{> dollars amount=offer}} is {{> dollars amount=offerPayoff}}.
+  </p>
+
+  <p>
+    The lowest offer you'd accept was {{> dollars amount=demand}}. Given how often the other Player #1s offered that amount or more (and thus you accepted), your average payoff as Player #2 is {{> dollars amount=demandPayoff}}. This is {{demandEfficiency}}% of the payoff from the profit-maximizing choice that comes from accepting all positive offers.
   </p>
 
   <p>The lowest offer you’d accept was {{> dollars amount=demand}}. The average payoff for {{> dollars amount=demand}} was {{> dollars amount=demandPayoff}}.</p>
