@@ -221,16 +221,13 @@ if (Meteor.isClient) {
     offerAcceptanceProbability: function(){
       var acceptProbability = Template.instance().data.acceptProbability.get();
       if (acceptProbability) {
-        console.log('acceptProbability =', acceptProbability);
-        console.log('getOffer(1) =', getOffer(1));
-        console.log('acceptProbability[getOffer(1)] =', acceptProbability[getOffer(1)]);
-        return 100 * acceptProbability[getOffer(1)];
+        return (100 * acceptProbability[getOffer(1)]).toFixed(2);
       };
     },
     demandAcceptanceProbability: function(){
       var demandProbability = Template.instance().data.demandProbability.get();
       if (demandProbability) {
-        return 100 * demandProbability[getDemand(1)];
+        return (100 * demandProbability[getDemand(1)]).toFixed(2);
       };
     },
     offerPayoff: function(){
@@ -248,7 +245,7 @@ if (Meteor.isClient) {
     demandEfficiency: function(){
       var demandPayoffs = Template.instance().data.demandPayoffs.get();
       if (demandPayoffs) {
-        return 100 * (demandPayoffs[getDemand(1)] / demandPayoffs[1]);
+        return (100 * (demandPayoffs[getDemand(1)] / demandPayoffs[1])).toFixed(2);
       };
     }
   });
