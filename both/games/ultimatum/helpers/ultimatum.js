@@ -13,7 +13,6 @@ if (Meteor.isClient) {
         var max = parseInt(el.max);
         var val = parseInt(el.value);
         if (val < min || val > max || isNaN(val)) {
-          console.log('out of range');
           parent.classList.add('has-error');
         }else{
           parent.classList.remove('has-error');
@@ -78,7 +77,6 @@ if (Meteor.isClient) {
     },
     'click button.prevStep': function(e){
       e.preventDefault();
-      console.log('clicked previous');
     },
     'click button.nextStep.step-1': function(e){
       callSetUltimatumAmounts(e, 0);
@@ -172,12 +170,10 @@ if (Meteor.isClient) {
 
     Meteor.call('getPayoffCDF', 1, function(err, result){
       if (!err) {
-        console.log(result);
         dis.data.acceptProbability.set(result.acceptProbability);
         dis.data.demandProbability.set(result.demandProbability);
         dis.data.offerPayoffs.set(result.acceptPayoffs);
         dis.data.demandPayoffs.set(result.demandPayoffs);
-        console.log('result.demandPayoffs =', result.demandPayoffs);
 
         new Chartist.Bar('.ultimatum-payoff-chart', {
           labels: _.map(_.range(101), function(x){return '$' + x}),
