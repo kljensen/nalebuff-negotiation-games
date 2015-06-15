@@ -129,15 +129,11 @@ Meteor.methods({
       };
     });
     var numPlayedGames = demandProbability[0];
-    console.log('numPlayedGames =', numPlayedGames);
-    console.log('demandPayoffs = ', demandPayoffs);
     for (var i = demandProbability.length - 1; i >= 0; i--) {
       demandProbability[i] /= numPlayedGames;
       acceptProbability[i] /= numPlayedGames;
       demandPayoffs[i] /= numPlayedGames;
     };
-    console.log('NOW');
-    console.log('demandPayoffs = ', demandPayoffs);
 
 
     var acceptPayoffs = _.map(acceptProbability, function(v, i){
