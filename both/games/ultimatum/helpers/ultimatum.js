@@ -169,27 +169,20 @@ if (Meteor.isClient) {
     dis.data.demandProbability = new ReactiveVar(null);
     dis.data.offerPayoffs = new ReactiveVar(null);
     dis.data.demandPayoffs = new ReactiveVar(null);
+
     Meteor.call('getPayoffCDF', 1, function(err, result){
       if (!err) {
+        console.log(result);
         dis.data.acceptProbability.set(result.acceptProbability);
         dis.data.demandProbability.set(result.demandProbability);
-        console.log(result.acceptProbability);
-
-        var offerPayoffs = _.map(result.acceptProbability, function(v, i){
-          return Math.round((100 - i) * v, 1);
-        });
-        dis.data.offerPayoffs.set(offerPayoffs);
-
-        var demandPayoffs = _.map(result.demandProbability, function(v, i){
-          return Math.round(v * i, 1);
-        });
-        dis.data.demandPayoffs.set(demandPayoffs);
-        console.log(demandPayoffs);
+        dis.data.offerPayoffs.set(result.acceptPayoffs);
+        dis.data.demandPayoffs.set(result.demandPayoffs);
+        console.log('result.demandPayoffs =', result.demandPayoffs);
 
         new Chartist.Bar('.ultimatum-payoff-chart', {
           labels: _.map(_.range(101), function(x){return '$' + x}),
           series: [
-            offerPayoffs
+            result.acceptPayoffs
           ]
           }, {
             height: '1500px',
@@ -228,6 +221,9 @@ if (Meteor.isClient) {
     offerAcceptanceProbability: function(){
       var acceptProbability = Template.instance().data.acceptProbability.get();
       if (acceptProbability) {
+        console.log('acceptProbability =', acceptProbability);
+        console.log('getOffer(1) =', getOffer(1));
+        console.log('acceptProbability[getOffer(1)] =', acceptProbability[getOffer(1)]);
         return 100 * acceptProbability[getOffer(1)];
       };
     },

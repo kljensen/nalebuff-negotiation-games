@@ -109,14 +109,20 @@ Meteor.methods({
       step: {$gte: 7}
     }).fetch();
 
-    var acceptProbability = Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);;
-    var demandProbability = Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);;
+    function newArray () {
+      return Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);
+    }
 
+    var acceptProbability = newArray();
+    var demandProbability = newArray();
+    var acceptPayoffs = newArray();
+    var demandPayoffs = newArray();
 
     _.each(playedGames, function(gs){
       var amounts = gs.rounds[round].amounts;
       for (var i = amounts.player1; i >= 0; i--) {
         demandProbability[i] += 1;
+        demandPayoffs[i] += amounts.player1;
       };
       for (var i = amounts.player2; i <= 100; i++) {
         acceptProbability[i] += 1;
@@ -125,13 +131,19 @@ Meteor.methods({
     var numPlayedGames = demandProbability[0];
     for (var i = demandProbability.length - 1; i >= 0; i--) {
       demandProbability[i] /= numPlayedGames;
-    };
-    for (var i = acceptProbability.length - 1; i >= 0; i--) {
       acceptProbability[i] /= numPlayedGames;
+      demandPayoffs[i] *= demandProbability[i];
     };
+
+    var acceptPayoffs = _.map(acceptProbability, function(v, i){
+      return Math.round((100 - i) * v, 1);
+    });
+
     return {
       acceptProbability: acceptProbability,
-      demandProbability: demandProbability
+      demandProbability: demandProbability,
+      demandPayoffs: demandPayoffs,
+      acceptPayoffs: acceptPayoffs,
     }
   },  
 
