@@ -136,7 +136,7 @@ Meteor.methods({
     };
 
     var acceptPayoffs = _.map(acceptProbability, function(v, i){
-      return Math.round((100 - i) * v, 1);
+      return Math.round(100 - (i * v), 1);
     });
 
     return {
