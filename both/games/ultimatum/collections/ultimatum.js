@@ -28,6 +28,130 @@ Games.allowedGames = allowedGames;
 Games.checkRound = checkRound;
 Games.setRoundData = setRoundData;
 
+var populateCDF = function(x, y){
+  // Overwrites the y array. Assumes the values of x are =
+  // less than the length of y!
+
+  // First count occurances of each player2 amount
+  for (var i = x.length - 1; i >= 0; i--) {
+    y[x[i]] += 1;
+  };
+
+  // Now turn into a CDF by dividing by the number
+  // of observations to get a probability and then
+  // accumulating the probabilities.
+  for (var i = 0; i < y.length; i++) {
+    y[i] /= x.length;
+    if (i > 0) {
+      y[i] += y[i-1];
+    };
+  };
+}
+
+var payoffCDF = function(player1amounts, player2amounts){
+
+  if (player1amounts.length !== player2amounts.length) {
+    throw new Meteor.Error(400, 'bad array lengths!');
+  };
+  var numPlayers = player1amounts.length;
+
+  function newArray () {
+    return Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);
+  }
+
+  // An array where player2CDF[i] is the cumulative probability
+  // of player2 numbers <= i.
+  var player2CDF = newArray();
+  populateCDF(player2amounts, player2CDF);
+
+  // The payoff for player1 at each i. Player1 is paid
+  // if player2 would have accepted their offer of i.
+  // So, their payoff is (100 - i) * probability that
+  // the other people would have accepted their offer
+  // in the role of player2. That is, the fraction of
+  // player2 numbers that are less than or equal to i,
+  // or player2CDF[i].
+  //
+  var player1payoffs = newArray();
+  for (var i = 0; i < player1payoffs.length; i++) {
+    player1payoffs[i] = (100 - i) * player2CDF[i];
+  };
+
+  var player1CDF = newArray();
+  populateCDF(player1amounts, player1CDF);
+
+  var player2CDF = newArray();
+  populateCDF(player2amounts, player2CDF);
+
+  // The payoff for player2 at each i. Player2 is 
+  // paid if player1 would have offered more than
+  // they demanded. They receive player1's offer
+  // in the case that player1's offer is more than
+  // their demand. They receive zero if player1's
+  // offer is less than their demand.
+  var player2payoffs = newArray();
+
+  // Working from the largest player1 amounts to the smallest
+  var sortedPlayer1amounts = player1amounts.concat().sort();
+  var j = numPlayers - 1;
+
+  // Keep a running sum so we can take an average
+  var runningSum = 0;
+
+  // Working backwards from 100 and backwards from the 
+  // max player1 offer.
+  for (var i = player2payoffs.length - 1; i >= 0; i--) {
+
+    // If there are no more offers or the current
+    // amount is greater than the current max offer
+    if (j < 0 || i > sortedPlayer1amounts[j]) {
+
+      // Just copy the payoff from the next highest
+      // amount because nothing has changed.
+      if (i === player2payoffs.length - 1) {
+
+        // Of course, there is no value to copy if
+        // we're at 100.
+        player2payoffs[i] = 0
+      }else{
+        player2payoffs[i] = player2payoffs[i+1];
+      };
+
+    }else if (j >= 0){
+
+      // If the current amount is equal to the max
+      // offer, add those to the running sum.
+      while(j >= 0 && i === sortedPlayer1amounts[j]){
+        runningSum += i;
+        j--;
+      }
+
+      // We've decremented i to the point that we now
+      // have new player1s that are paying out.
+      // The payoff for player2 is the average of the
+      // payoffs they would have received across all
+      // players at this particular i.
+      player2payoffs[i] = runningSum / numPlayers;
+    };
+  };
+
+  // console.log('player2amounts =', player2amounts);
+  // console.log('player2CDF =', player2CDF);
+  // console.log('player2amounts.length = ', player2amounts.length);
+  // console.log('player1payoffs = ', player1payoffs);
+  // console.log('player1amounts =', player1amounts);
+  // console.log('player1CDF = ', player1CDF);
+  // console.log('sortedPlayer1amounts = ', sortedPlayer1amounts);
+  // console.log('player2payoffs = ', player2payoffs);
+
+  return {
+    player1CDF: player1CDF,
+    player1payoffs: player1payoffs,
+    player2CDF: player2CDF,
+    player2payoffs: player2payoffs
+  }
+}
+
 
 Meteor.methods({
   // Create a new game. There are only two games
@@ -109,43 +233,14 @@ Meteor.methods({
       step: {$gte: 7}
     }).fetch();
 
-    function newArray () {
-      return Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);
-    }
-
-    var acceptProbability = newArray();
-    var demandProbability = newArray();
-    var acceptPayoffs = newArray();
-    var demandPayoffs = newArray();
-
-    _.each(playedGames, function(gs){
-      var amounts = gs.rounds[round].amounts;
-      for (var i = amounts.player1; i >= 0; i--) {
-        demandProbability[i] += 1;
-        demandPayoffs[i] += amounts.player1;
-      };
-      for (var i = amounts.player2; i <= 100; i++) {
-        acceptProbability[i] += 1;
-      };
-    });
-    var numPlayedGames = demandProbability[0];
-    for (var i = demandProbability.length - 1; i >= 0; i--) {
-      demandProbability[i] /= numPlayedGames;
-      acceptProbability[i] /= numPlayedGames;
-      demandPayoffs[i] /= numPlayedGames;
+    var player1amounts = [];
+    var player2amounts = [];
+    for (var i = playedGames.length - 1; i >= 0; i--) {
+      player1amounts.push(playedGames[i].rounds[round].amounts.player1);
+      player2amounts.push(playedGames[i].rounds[round].amounts.player2);
     };
 
-
-    var acceptPayoffs = _.map(acceptProbability, function(v, i){
-      return Math.round(100 - (i * v), 1);
-    });
-
-    return {
-      acceptProbability: acceptProbability,
-      demandProbability: demandProbability,
-      demandPayoffs: demandPayoffs,
-      acceptPayoffs: acceptPayoffs,
-    }
+    return payoffCDF(player1amounts, player2amounts);
   },  
 
 });

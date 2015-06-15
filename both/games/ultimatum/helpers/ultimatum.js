@@ -163,22 +163,24 @@ if (Meteor.isClient) {
   });
   Template['ultimatum-game-7'].created = function(){
     var dis = this;
-    dis.data.acceptProbability = new ReactiveVar(null);
-    dis.data.demandProbability = new ReactiveVar(null);
-    dis.data.offerPayoffs = new ReactiveVar(null);
-    dis.data.demandPayoffs = new ReactiveVar(null);
+
+    dis.data.player1CDF = new ReactiveVar(null);
+    dis.data.player1payoffs = new ReactiveVar(null);
+    dis.data.player2CDF = new ReactiveVar(null);
+    dis.data.player2payoffs = new ReactiveVar(null);
+
 
     Meteor.call('getPayoffCDF', 1, function(err, result){
       if (!err) {
-        dis.data.acceptProbability.set(result.acceptProbability);
-        dis.data.demandProbability.set(result.demandProbability);
-        dis.data.offerPayoffs.set(result.acceptPayoffs);
-        dis.data.demandPayoffs.set(result.demandPayoffs);
+        dis.data.player1CDF.set(result.player1CDF);
+        dis.data.player1payoffs.set(result.player1payoffs);
+        dis.data.player2CDF.set(result.player2CDF);
+        dis.data.player2payoffs.set(result.player2payoffs);
 
         new Chartist.Bar('.ultimatum-payoff-chart', {
           labels: _.map(_.range(101), function(x){return '$' + x}),
           series: [
-            result.acceptPayoffs
+            result.player1payoffs
           ]
           }, {
             height: '1500px',
@@ -208,40 +210,49 @@ if (Meteor.isClient) {
   };
 
   Template['ultimatum-game-7'].helpers({
-    offer: function(){
+    player1amount: function(){
       return getOffer(1);
     },
-    demand: function(){
+    player2amount: function(){
       return getDemand(1);
     },
-    offerAcceptanceProbability: function(){
-      var acceptProbability = Template.instance().data.acceptProbability.get();
-      if (acceptProbability) {
-        return (100 * acceptProbability[getOffer(1)]).toFixed(2);
+    player1CDF: function(x){
+      var player1CDF = Template.instance().data.player1CDF.get();
+      if (player1CDF) {
+        return (100 * player1CDF[x]).toFixed(2);
       };
     },
-    demandAcceptanceProbability: function(){
-      var demandProbability = Template.instance().data.demandProbability.get();
-      if (demandProbability) {
-        return (100 * demandProbability[getDemand(1)]).toFixed(2);
+    player2CDF: function(x){
+      var player2CDF = Template.instance().data.player2CDF.get();
+      if (player2CDF) {
+        return (100 * player2CDF[x]).toFixed(2);
       };
     },
-    offerPayoff: function(){
-      var offerPayoffs = Template.instance().data.offerPayoffs.get();
-      if (offerPayoffs) {
-        return offerPayoffs[getOffer(1)];
+    player1payoff: function(x){
+      if (typeof(x) === 'undefined') {
+        x = getOffer(1);
+      };
+      var player1payoffs = Template.instance().data.player1payoffs.get();
+      if (player1payoffs) {
+        return player1payoffs[x];
       };
     },
-    demandPayoff: function(){
-      var demandPayoffs = Template.instance().data.demandPayoffs.get();
-      if (demandPayoffs) {
-        return demandPayoffs[getDemand(1)];
+    player2payoff: function(x){
+      if (typeof(x) === 'undefined') {
+        x = getDemand(1);
+      };
+      var player2payoffs = Template.instance().data.player2payoffs.get();
+      if (player2payoffs) {
+        return player2payoffs[x];
       };
     },
-    demandEfficiency: function(){
-      var demandPayoffs = Template.instance().data.demandPayoffs.get();
-      if (demandPayoffs) {
-        return (100 * (demandPayoffs[getDemand(1)] / demandPayoffs[1])).toFixed(2);
+    player2efficiency: function(x){
+      if (typeof(x) === 'undefined') {
+        x = getDemand(1);
+      };
+      var player2payoffs = Template.instance().data.player2payoffs.get();
+      if (player2payoffs) {
+        return (100 * (player2payoffs[x] / player2payoffs[0])).toFixed(2);
       };
     }
   });
