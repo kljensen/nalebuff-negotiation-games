@@ -122,6 +122,7 @@ var payoffCDF = function(player1amounts, player2amounts){
       // If the current amount is equal to the max
       // offer, add those to the running sum.
       while(j >= 0 && i === sortedPlayer1amounts[j]){
+        console.log('adding ', i, 'to running sum');
         runningSum += i;
         j--;
       }
