@@ -24,9 +24,7 @@
 
 <template name="anchoring-game-0">
   <p>
-    Welcome to the anchoring game. We're going to 
-    ask you to list your house for sale.
-    Before I ask you to input your asking price, I’d first like to establish if it is above or below a certain number. Take the last three digits of your phone number (or if you like, find a dollar bill, or your other favorite currency note, and take the last three digits of its serial number) and input it below.
+    Welcome to the anchoring game. Before you input your asking price for the house, I’d first like to establish if it is above or below a certain number. Take the last three digits of your phone number (or if you like, find a dollar bill, or your other favorite currency note, and take the last three digits of its serial number) and input it below.
   </p>
 
   <form >
@@ -39,8 +37,7 @@
 
 <template name="anchoring-game-1">
   <p>
-    <strong>Great</strong>&ndash;now we're ready to sell your
-    house. Do you want to sell your house for more or less than
+    Do you want to list your house for more or less than
     <strong>${{randomNumber}},000</strong>?
   </p>
 
@@ -66,15 +63,15 @@
 
 <template name="anchoring-game-2">
   <p>
-    <strong>Great</strong>&ndash;what is your asking price
-    for the house? Please enter a number in the range
+    What is your asking price for the house?
+    Please enter a number in the range
     <strong>${{priceRange.min}}k</strong> to
     <strong>${{priceRange.max}}k</strong>.
   </p>
 
   <form >
     <div class="form-group">
-      <label for="price" class="control-label">What is your price ($k)?</label>
+      <label for="price" class="control-label">What is your price (in $1,000s)?</label>
       <input class="form-control validate-number" type="number" name="price" id="price" min="{{priceRange.min}}" max="{{priceRange.max}}" required>
     </div>
   </form>
@@ -83,13 +80,13 @@
 
 <template name="anchoring-game-3">
   <p>
-    <strong>Thanks</strong>. You chose to sell your house for
+    <strong>Thanks</strong>. You chose to list your house for
     <strong>${{price}}k</strong>.
   </p>
   <ul>
   {{#each ranges}}
     <li>
-      <strong>{{min}}-{{max}}</strong>: {{#if stats.empty}}No data{{else}}mean: {{stats.mean}}; median: {{stats.median}}{{/if}}
+      <strong>${{min}}k&ndash;${{max}}k</strong>: {{#if stats.empty}}No data{{else}}mean: {{stats.mean}}; median: {{stats.median}}{{/if}}
     </li>
   {{/each}}
   </ul>
