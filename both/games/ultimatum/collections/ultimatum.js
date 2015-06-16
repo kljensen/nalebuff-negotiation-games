@@ -135,15 +135,6 @@ var payoffCDF = function(player1amounts, player2amounts){
     };
   };
 
-  // console.log('player2amounts =', player2amounts);
-  // console.log('player2CDF =', player2CDF);
-  // console.log('player2amounts.length = ', player2amounts.length);
-  // console.log('player1payoffs = ', player1payoffs);
-  // console.log('player1amounts =', player1amounts);
-  // console.log('player1CDF = ', player1CDF);
-  // console.log('sortedPlayer1amounts = ', sortedPlayer1amounts);
-  // console.log('player2payoffs = ', player2payoffs);
-
   return {
     player1CDF: player1CDF,
     player1payoffs: player1payoffs,
