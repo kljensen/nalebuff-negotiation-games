@@ -6,6 +6,11 @@ Template.registerHelper('equals', function (a, b) {
       return a === b;
 });
 
+Template.registerHelper('toFixed', function (a, b) {
+      return a.toFixed(b);
+});
+
+
 Template.registerHelper('sessionVariableEquals', function (key, value) {
       return Session.get(key) === value;
 });

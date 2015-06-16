@@ -86,7 +86,7 @@
   <ul>
   {{#each ranges}}
     <li>
-      <strong>${{min}}k&ndash;${{max}}k</strong>: {{#if stats.empty}}No data{{else}}mean: {{stats.mean}}; median: {{stats.median}}{{/if}}
+      <strong>${{min}}k&ndash;${{max}}k</strong>: {{#if stats.empty}}No data{{else}}mean: {{toFixed stats.mean}}; median: {{toFixed stats.median}}{{/if}}
     </li>
   {{/each}}
   </ul>
