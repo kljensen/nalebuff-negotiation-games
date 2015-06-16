@@ -240,7 +240,7 @@ if (Meteor.isClient) {
       };
       var player1payoffs = Template.instance().data.player1payoffs.get();
       if (player1payoffs) {
-        return player1payoffs[x];
+        return player1payoffs[x].toFixed(2);
       };
     },
     player2payoff: function(x){
@@ -249,7 +249,7 @@ if (Meteor.isClient) {
       };
       var player2payoffs = Template.instance().data.player2payoffs.get();
       if (player2payoffs) {
-        return player2payoffs[x];
+        return player2payoffs[x].toFixed(2);
       };
     },
     player2efficiency: function(x){
