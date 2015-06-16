@@ -222,6 +222,12 @@ if (Meteor.isClient) {
         return (100 * player1CDF[x]).toFixed(2);
       };
     },
+    player1CDFinv: function(x){
+      var player1CDF = Template.instance().data.player1CDF.get();
+      if (player1CDF) {
+        return (100 * (1-player1CDF[x])).toFixed(2);
+      };
+    },
     player2CDF: function(x){
       var player2CDF = Template.instance().data.player2CDF.get();
       if (player2CDF) {
