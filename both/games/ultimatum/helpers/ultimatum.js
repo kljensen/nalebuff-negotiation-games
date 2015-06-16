@@ -210,6 +210,9 @@ if (Meteor.isClient) {
   };
 
   Template['ultimatum-game-7'].helpers({
+    possibleAmounts: function(){
+      return _.map(_.range(101), function(x){return {amount: x}});
+    },
     player1amount: function(){
       return getOffer(1);
     },

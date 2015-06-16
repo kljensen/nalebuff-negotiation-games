@@ -127,6 +127,63 @@
   <div class="ultimatum-payoff-chart">
   </div>
 
+  {{#if isInRole 'admin'}}
+    <hr>
+    <p>
+      Because you are an admin, we're showing you some payoff
+      statistics here. In the table below the "player1 CDF"
+      column shows the percent of users that choose
+      a "player1" amount  that is
+      less than or equal to the amount in a particular row.
+      The player1 payoff shows the payoff for choosing that
+      amount as player1. The equivalent applies to the "player2"
+      columns.
+    </p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Amount
+          </th>
+          <th>
+            player1 CDF
+          </th>
+          <th>
+            player1 payoff
+          </th>
+          <th>
+            player2 CDF
+          </th>
+          <th>
+            player2 payoff
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each possibleAmounts}}
+          <tr>
+            <td>
+              ${{amount}}
+            </td>
+            <td>
+              {{player1CDF amount}}
+            </td>
+            <td>
+              {{player1payoff amount}}
+            </td>
+            <td>
+              {{player2CDF amount}}
+            </td>
+            <td>
+              {{player2payoff amount}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table> 
+
+  {{/if}}
+
   {{> done}}
 
 </template>
