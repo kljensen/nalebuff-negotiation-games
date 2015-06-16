@@ -48,6 +48,7 @@ var populateCDF = function(x, y){
   };
 }
 
+
 var payoffCDF = function(player1amounts, player2amounts){
 
   if (player1amounts.length !== player2amounts.length) {
@@ -92,7 +93,10 @@ var payoffCDF = function(player1amounts, player2amounts){
   var player2payoffs = newArray();
 
   // Working from the largest player1 amounts to the smallest
-  var sortedPlayer1amounts = player1amounts.concat().sort();
+  var sortedPlayer1amounts = player1amounts.concat().sort(function(a,b){
+    return a - b;
+  });
+
   var j = numPlayers - 1;
 
   // Keep a running sum so we can take an average
@@ -144,7 +148,13 @@ var payoffCDF = function(player1amounts, player2amounts){
     player2payoffs: player2payoffs,
     player2amounts: player2amounts
   }
-}
+};
+
+var results = payoffCDF([5, 30, 50], [51, 20, 30]);
+if (results.player2payoffs[0] !== (85/3)) {
+  console.log(results.player2amounts);
+  throw "Bad results from payoffCDF!!!";
+};
 
 
 Meteor.methods({
