@@ -164,18 +164,24 @@ if (Meteor.isClient) {
   Template['ultimatum-game-7'].created = function(){
     var dis = this;
 
-    dis.data.player1CDF = new ReactiveVar(null);
-    dis.data.player1payoffs = new ReactiveVar(null);
-    dis.data.player2CDF = new ReactiveVar(null);
-    dis.data.player2payoffs = new ReactiveVar(null);
-
+    // Initialize a set of reactive variables
+    var variableNames = [
+      'player1CDF',
+      'player1payoffs',
+      'player1amounts',
+      'player2CDF',
+      'player2payoffs',
+      'player2amounts'
+    ];
+    _.each(variableNames, function(v){
+      dis.data[v] = new ReactiveVar(null);      
+    });
 
     Meteor.call('getPayoffCDF', 1, function(err, result){
       if (!err) {
-        dis.data.player1CDF.set(result.player1CDF);
-        dis.data.player1payoffs.set(result.player1payoffs);
-        dis.data.player2CDF.set(result.player2CDF);
-        dis.data.player2payoffs.set(result.player2payoffs);
+        _.each(variableNames, function(v){
+          dis.data[v].set(result[v]);
+        });
 
         new Chartist.Bar('.ultimatum-payoff-chart', {
           labels: _.map(_.range(101), function(x){return '$' + x}),
@@ -218,6 +224,23 @@ if (Meteor.isClient) {
     },
     player2amount: function(){
       return getDemand(1);
+    },
+    player1amounts: function(){
+      console.log(Template.instance().data);
+      return Template.instance().data.player1amounts.get();
+    },
+    player2amounts: function(){
+      return Template.instance().data.player2amounts.get();
+    },
+    playerAmounts: function(){
+      var player1amounts = Template.instance().data.player1amounts.get();
+      var player2amounts = Template.instance().data.player2amounts.get();
+      if (player1amounts && player2amounts) {
+        var zippedAmounts = _.zip(player1amounts, player2amounts);
+        return _.map(zippedAmounts, function(x){
+          return {p1: x[0], p2: x[1]};
+        });
+      };
     },
     player1CDF: function(x){
       var player1CDF = Template.instance().data.player1CDF.get();

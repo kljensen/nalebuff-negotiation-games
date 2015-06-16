@@ -181,7 +181,34 @@
         {{/each}}
       </tbody>
     </table> 
-
+    <p>
+      The following table shows all the 
+      amounts chosen by all the players.
+    </p>
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            Player 1 amount
+          </th>
+          <th>
+            Player 2 amount
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each playerAmounts}}
+          <tr>
+            <td>
+              ${{p1}}
+            </td>
+            <td>
+              ${{p2}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table> 
   {{/if}}
 
   {{> done}}

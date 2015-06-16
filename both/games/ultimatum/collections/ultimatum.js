@@ -147,8 +147,10 @@ var payoffCDF = function(player1amounts, player2amounts){
   return {
     player1CDF: player1CDF,
     player1payoffs: player1payoffs,
+    player1amounts: player1amounts,
     player2CDF: player2CDF,
-    player2payoffs: player2payoffs
+    player2payoffs: player2payoffs,
+    player2amounts: player2amounts
   }
 }
 
