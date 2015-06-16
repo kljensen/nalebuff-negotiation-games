@@ -6,6 +6,10 @@ if (Meteor.isClient) {
     }
   });
 
+  var setDisableNextFalse = _.throttle(function(e) {
+    Session.set('disableNext', false);
+  }, 200);
+
   Template['anchoring-game'].created = function(){
     Meteor.call('initiateNewGame', 'anchoring');
   };
@@ -48,6 +52,7 @@ if (Meteor.isClient) {
 
   Template['anchoring-game'].events({
     'click button.nextStep': function(e){
+      console.log('clicked next!');
       e.preventDefault();
       // Move forward if there is no user input,
       // otherwise have to write custom logic.
@@ -96,9 +101,7 @@ if (Meteor.isClient) {
     Session.set('disableNext', true);
   }
   Template['anchoring-game-1'].events({
-    'change input': function(){
-      return Session.set('disableNext', false);
-    }
+    'change input': setDisableNextFalse
   });
 
   Template['anchoring-game-2'].helpers({
@@ -128,9 +131,7 @@ if (Meteor.isClient) {
   };
 
   Template['anchoring-game-2'].events({
-    'change input': function(){
-      return Session.set('disableNext', false);
-    }
+    'keyup input': setDisableNextFalse
   });
   Template['anchoring-game-3'].helpers({
     price: function(){
