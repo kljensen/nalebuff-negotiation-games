@@ -50,6 +50,10 @@ if (Meteor.isClient) {
     }
   });
 
+  var noErrorDiv = function(){
+    return $('div.has-error.form-group').length === 0
+  }
+
   Template['anchoring-game'].events({
     'click button.nextStep': function(e){
       console.log('clicked next!');
@@ -66,9 +70,7 @@ if (Meteor.isClient) {
     },
     'click button.nextStep.step-0': function(e){
       var val = parseInt($('input#random-number').val());
-      console.log(val);
-      if ($('.has-error').length === 0) {
-        console.log('no error detected');
+      if (noErrorDiv()) {
         Meteor.call('setAnchoringRandomNumber', val, function(){
           Meteor.call('incrementGameStep', 'anchoring');        
         });
@@ -77,16 +79,20 @@ if (Meteor.isClient) {
     'click button.nextStep.step-1': function(e){
       e.preventDefault();
       var decision = $('input[name=moreOrLess]:checked').val();
-      Meteor.call('setAnchoringDirection', decision, function(){
-        Meteor.call('incrementGameStep', 'anchoring');        
-      });
+      if (noErrorDiv()) {
+        Meteor.call('setAnchoringDirection', decision, function(){
+          Meteor.call('incrementGameStep', 'anchoring');        
+        });
+      }
     },
     'click button.nextStep.step-2': function(e){
       e.preventDefault();
       var price = $('input#price').val();
-      Meteor.call('setAnchoringPrice', parseInt(price), function(){
-        Meteor.call('incrementGameStep', 'anchoring');        
-      });
+      if (noErrorDiv()) {
+        Meteor.call('setAnchoringPrice', parseInt(price), function(){
+          Meteor.call('incrementGameStep', 'anchoring');        
+        });
+      }
     }
 
 
@@ -148,7 +154,6 @@ if (Meteor.isClient) {
   Template['anchoring-game-3'].created = function(){
     var dis = this;
     dis.data.ranges = new ReactiveVar(null);
-    console.log('wooooo');
     Meteor.call('getAnchorPriceDistribution', function(err, result){
       if (!err) {
         dis.data.ranges.set(result);
