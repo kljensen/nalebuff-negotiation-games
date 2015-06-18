@@ -124,7 +124,8 @@ if (Meteor.isClient) {
       return {
         min: min,
         max: max,
-        direction: game.direction
+        direction: game.direction,
+        randomNumber: game.randomNumber
       };
     },
     randomNumber: function(){

@@ -63,10 +63,8 @@
 
 <template name="anchoring-game-2">
   <p>
-    What is your asking price for the house?
-    Please enter a number in the range
-    <strong>${{priceRange.min}}k</strong> to
-    <strong>${{priceRange.max}}k</strong>.
+    What is your asking price for the house? To be consistent,
+    please enter a number {{priceRange.direction}} than {{> dollars amount=priceRange.randomNumber}}.
   </p>
 
   <form >
