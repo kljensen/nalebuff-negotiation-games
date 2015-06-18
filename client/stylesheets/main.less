@@ -5,7 +5,8 @@ body {
 }
 
 .cover(@img){
-  margin-top: (@line-height-computed * 3);
+  margin-top: (@line-height-computed);
+
   background: url(@img);
 
   /* Background image is centered vertically and horizontally at all times */
@@ -32,16 +33,22 @@ body {
 }
 
 body.cover-bg{
+    margin-top: @line-height-computed;
+	margin-bottom: (@line-height-computed * 3);
+
 	.cover('splash-xs.jpg');
 }
 @media only screen and (min-width: 600px) {
   /* styles for wide screens */
+    margin-top: (@line-height-computed * 3);
+
 	body.cover-bg{
 	  .cover('splash-sm.jpg');
 	}
 }
 @media only screen and (min-width: 1200px) {
   /* styles for wide screens */
+
 	body.cover-bg{
 	  .cover('splash-md.jpg');
 	}
