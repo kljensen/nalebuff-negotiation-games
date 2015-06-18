@@ -2,84 +2,27 @@ if (Meteor.isClient) {
 
   var gameKey = 'anchoring';
 
+  var setDisableNextFalse = _.throttle(function(e) {
+    Session.set('disableNext', false);
+  }, 200);
+
   Template.done.events({
     'click': function(){
       Router.go('index');
     }
   });
 
-  var setDisableNextFalse = _.throttle(function(e) {
-    Session.set('disableNext', false);
-  }, 200);
-
-  Template['anchoring-game'].created = function(){
+  Template['anchoring-0'].created = function(){
     Meteor.call('initiateNewGame', gameKey);
   };
 
-  var getStep = function(){
-    var gameStatus = GameStatus.findOne({key: gameKey});
-    if (!gameStatus) {
-      Meteor.call('initiateNewGame', gameKey);    
-      gameStatus = GameStatus.findOne({key: gameKey});
-    };
-    return gameStatus ? gameStatus.step: 0;
-  }
-
-  var tmpl = function(x){
-    if (x < 0) {
-      return null;
-    };
-    return 'anchoring-game-' + x
-  }
-  Template['anchoring-game'].helpers({
-    stepNumber: function(){
-      return getStep();
-    },
-    stepNumber1: function(){
-      return getStep()+1;
-    },
-    currTemplate: function(){
-      return tmpl(getStep());
-    },
-    prevTemplate: function(){
-      return tmpl(getStep() - 1);
-    },
-    nextTemplate: function(){
-      return tmpl(getStep() + 1);
-    },
-    totalSteps: function(){
-      return Games.settings[gameKey].steps;
-    },
-    totalSteps1: function(){
-      return Games.settings[gameKey].steps + 1;
-    },
-    isDone: function(){
-      if (getStep() >= Games.settings[gameKey].steps) {
-        return true;
-      };
-      return false;
-    }
-  });
 
   var noErrorDiv = function(){
     return $('div.has-error.form-group').length === 0
   }
 
-  Template['anchoring-game'].events({
-    'click button.nextStep': function(e){
-      console.log('clicked next!');
-      e.preventDefault();
-      // Move forward if there is no user input,
-      // otherwise have to write custom logic.
-      if ($('input').length === 0) {
-        Meteor.call('incrementGameStep', gameKey);
-      };
-    },
-    'click button.prevStep': function(e){
-      e.preventDefault();
-      console.log('clicked previous');
-    },
-    'click button.nextStep.step-0': function(e){
+  Template.genericGameLayout.events({
+    'click button.nextStep.anchoring-0': function(e){
       var val = parseInt($('input#random-number').val());
       if (noErrorDiv()) {
         Meteor.call('setAnchoringRandomNumber', val, function(){
@@ -87,7 +30,7 @@ if (Meteor.isClient) {
         });
       };
     },
-    'click button.nextStep.step-1': function(e){
+    'click button.nextStep.anchoring-1': function(e){
       e.preventDefault();
       var decision = $('input[name=moreOrLess]:checked').val();
       if (noErrorDiv()) {
@@ -96,7 +39,7 @@ if (Meteor.isClient) {
         });
       }
     },
-    'click button.nextStep.step-2': function(e){
+    'click button.nextStep.anchoring-2': function(e){
       e.preventDefault();
       var price = $('input#price').val();
       if (noErrorDiv()) {
@@ -109,19 +52,20 @@ if (Meteor.isClient) {
 
   });
 
-  Template['anchoring-game-1'].helpers({
+
+  Template['anchoring-1'].helpers({
     randomNumber: function(){
       return GameStatus.findOne({key: gameKey}).randomNumber;
     }
   });
-  Template['anchoring-game-1'].created = function(){
+  Template['anchoring-1'].created = function(){
     Session.set('disableNext', true);
   }
-  Template['anchoring-game-1'].events({
+  Template['anchoring-1'].events({
     'change input': setDisableNextFalse
   });
 
-  Template['anchoring-game-2'].helpers({
+  Template['anchoring-2'].helpers({
     priceRange: function(){
       var game = GameStatus.findOne({key: gameKey});
       var min = 0;
@@ -144,14 +88,14 @@ if (Meteor.isClient) {
     }
 
   });
-  Template['anchoring-game-2'].created = function(){
+  Template['anchoring-2'].created = function(){
     Session.set('disableNext', true);
   };
 
-  Template['anchoring-game-2'].events({
+  Template['anchoring-2'].events({
     'keyup input': setDisableNextFalse
   });
-  Template['anchoring-game-3'].helpers({
+  Template['anchoring-3'].helpers({
     price: function(){
       return GameStatus.findOne({key: gameKey}).price;
     },
@@ -163,7 +107,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template['anchoring-game-3'].created = function(){
+  Template['anchoring-3'].created = function(){
     var dis = this;
     dis.data.ranges = new ReactiveVar(null);
     Meteor.call('getAnchorPriceDistribution', function(err, result){

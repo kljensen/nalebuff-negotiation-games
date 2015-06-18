@@ -1,38 +1,6 @@
-<template name="ultimatum-game">
-  <div class="row">
-    <section class="breadcrumb-holder col-md-6 col-md-offset-3">
-      <ol class="breadcrumb">
-        <li>
-          <a href="/">
-          <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-          Home
-          </a>
-        </li>
-        <li class="active">The ultimatum game</li>
-      </ol>      
-    </section>
-  </div>
-  <div class="row">
-    <section class="greeting col-md-6 col-md-offset-3">
-      The ultimatum game
-      <span>step #{{stepNumber1}} of {{totalSteps1}}</span>
-    </section>
-  </div>
-  <div class="row">
-    <section class="col-md-6 col-md-offset-3">
-      {{> UI.dynamic template=currTemplate}}
-    </section>
-  </div>
-  <div class="row">
-    <section class="next col-md-6 col-md-offset-3">
-      {{#unless isDone}}
-        <button type="button" class="btn btn-default nextStep step-{{stepNumber}}" disabled="{{getSessionVariable 'disableNext'}}">Next</button>
-      {{/unless}}
-    </section>
-  </div>
-</template>
 
-<template name="ultimatum-game-0">
+
+<template name="ultimatum-0">
   <p>
     In this game, there is {{> dollars amount=100}} to divide between two players if they can agree on the division. Player #1 will make an offer to Player #2 who will either accept or reject. If Player #2 rejects, they both get {{> dollars amount=0}}.
   </p>
@@ -40,7 +8,7 @@
     We want you to consider what you would do in the role of Player #1 and Player #2. Specifically, how much would you offer as Player #1 and what is the smallest amount you’d be willing to accept as Player #2?
   </p>
 </template>
-<template name="ultimatum-game-1">
+<template name="ultimatum-1">
   {{#with round=0}}
     {{> ultimatum_price_choice_form }}
   {{/with}}
@@ -63,7 +31,7 @@
   </form>
 </template>
 
-<template name="ultimatum-game-2">
+<template name="ultimatum-2">
   <p>
     You were chosen to receive the proposal. The other side has offered you
     {{> dollars amount=demandMinusOne}}.
@@ -91,10 +59,10 @@
   </form>
 
 </template>
-<template name="ultimatum-game-3">
+<template name="ultimatum-3">
   {{> return_to_video }}
 </template>
-<template name="ultimatum-game-4">
+<template name="ultimatum-4">
   <p>
     Please input your two numbers again. You can pick the same numbers as before or change them based on what you've learned.
   </p>
@@ -102,11 +70,11 @@
     {{> ultimatum_price_choice_form }}
   {{/with}}
 </template>
-<template name="ultimatum-game-5">
+<template name="ultimatum-5">
   <p>
     {{#if acceptedOwn}}
 
-      The first person we matched you up with was… you! Looks like you had the good sense to accept your own offer. {{englishNumber acceptedOwnCount true}} ({{acceptedOwnPercent}}%) other students did the same. The remaining {{englishNumber rejectedOwnCount}} ({{rejectedOwnPercent}}%) rejected their own offers.
+      The first person we matched you up with was...you! Looks like you had the good sense to accept your own offer. {{englishNumber acceptedOwnCount true}} ({{acceptedOwnPercent}}%) other students did the same. The remaining {{englishNumber rejectedOwnCount}} ({{rejectedOwnPercent}}%) rejected their own offers.
 
     {{else}}
       The first person we matched you up with was&hellip;you! Looks like you turned down your own offer and got zero. Like you, {{englishNumber rejectedOwnCount}} ({{rejectedOwnPercent}}%)  other students rejected their own offers. The remaining {{englishNumber acceptedOwnCount}} ({{acceptedOwnPercent}}%) accepted their own offers.
@@ -114,7 +82,7 @@
     {{/if}}
   </p>
 </template>
-<template name="ultimatum-game-6">
+<template name="ultimatum-6">
   {{> return_to_video }}
 </template>
 <template name="return_to_video">
@@ -123,7 +91,7 @@
   </p>
 </template>
 
-<template name="ultimatum-game-7">
+<template name="ultimatum-7">
   <p>
     Your offer was {{> dollars amount=player1amount}}.  The other Player #2s would have accepted this offer {{player2CDF player1amount}}% of the time. Thus the average payoff for an offer of {{> dollars amount=player1amount}} is {{> dollars amount=player1payoff}}.
   </p>
@@ -225,8 +193,4 @@
 
   {{> done}}
 
-</template>
-
-<template name="dollars">
-  <strong>${{amount}}</strong>
 </template>

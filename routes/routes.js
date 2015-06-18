@@ -42,7 +42,7 @@ Router.map(function() {
 
   this.route(pathPrefix, {
     path: pathPrefix + 'games/' + 'ultimatum',
-    template: 'ultimatum-game',
+    template: 'genericGameLayout',
     name: 'ultimatum-game',
     waitOn: function() {
       return [
@@ -51,6 +51,7 @@ Router.map(function() {
     },
     data: function(){
       return {
+        gameKey: 'ultimatum',
         gameStatus: GameStatus.findOne()
       }
     },
@@ -58,7 +59,7 @@ Router.map(function() {
 
   this.route(pathPrefix, {
     path: pathPrefix + 'games/' + 'anchoring',
-    template: 'anchoring-game',
+    template: 'genericGameLayout',
     name: 'anchoring-game',
     waitOn: function() {
       return [
@@ -67,6 +68,7 @@ Router.map(function() {
     },
     data: function(){
       return {
+        gameKey: 'anchoring',
         gameStatus: GameStatus.findOne()
       }
     },

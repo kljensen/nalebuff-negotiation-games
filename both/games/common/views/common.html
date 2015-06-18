@@ -1,0 +1,38 @@
+<template name="genericGameLayout">
+  <div class="row">
+    <section class="breadcrumb-holder col-md-6 col-md-offset-3">
+      <ol class="breadcrumb">
+        <li>
+          <a href="/">
+          <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+          Home
+          </a>
+        </li>
+        <li class="active">{{gameName}}</li>
+      </ol>      
+    </section>
+  </div>
+  <div class="row">
+    <section class="greeting col-md-6 col-md-offset-3">
+      {{gameName}}
+      <span>step #{{stepNumber1}} of {{totalSteps1}}</span>
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-md-6 col-md-offset-3">
+      {{> UI.dynamic template=currTemplate}}
+    </section>
+  </div>
+  <div class="row">
+    <section class="next col-md-6 col-md-offset-3">
+      {{#unless isDone}}
+        <button type="button" class="btn btn-default nextStep {{gameKey}}-{{stepNumber}}" disabled="{{getSessionVariable 'disableNext'}}">Next</button>
+      {{/unless}}
+    </section>
+  </div>
+</template>
+
+
+<template name="dollars">
+  <strong>${{amount}}</strong>
+</template>

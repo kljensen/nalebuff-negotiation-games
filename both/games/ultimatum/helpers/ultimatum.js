@@ -2,26 +2,9 @@ if (Meteor.isClient) {
 
   var gameKey = 'ultimatum';
 
-  Template['ultimatum-game'].created = function(){
+  Template['ultimatum-0'].created = function(){
     Meteor.call('initiateNewGame', gameKey);
   };
-
-  Template._body.events({
-    'input input.validate-number': function(e, data, tpl){
-      var el = e.target;
-      var parent = el.parentNode;
-      if (el.type === 'number') {
-        var min = parseInt(el.min);
-        var max = parseInt(el.max);
-        var val = parseInt(el.value);
-        if (val < min || val > max || isNaN(val)) {
-          parent.classList.add('has-error');
-        }else{
-          parent.classList.remove('has-error');
-        };
-      };
-    }
-  })
 
   var getStep = function(){
     var gameStatus = GameStatus.findOne({key: gameKey});
@@ -32,42 +15,6 @@ if (Meteor.isClient) {
     return gameStatus ? gameStatus.step: 0;
   }
 
-  var tmpl = function(x){
-    if (x < 0) {
-      return null;
-    };
-    return 'ultimatum-game-' + x
-  }
-  Template['ultimatum-game'].helpers({
-    stepNumber: function(){
-      return getStep();
-    },
-    stepNumber1: function(){
-      return getStep()+1;
-    },
-    currTemplate: function(){
-      return tmpl(getStep());
-    },
-    prevTemplate: function(){
-      return tmpl(getStep() - 1);
-    },
-    nextTemplate: function(){
-      return tmpl(getStep() + 1);
-    },
-    totalSteps: function(){
-      return Games.settings[gameKey].steps;
-    },
-    totalSteps1: function(){
-      return Games.settings[gameKey].steps + 1;
-    },
-    isDone: function(){
-      if (getStep() >= Games.settings[gameKey].steps) {
-        return true;
-      };
-      return false;
-    }
-  });
-
   var callSetUltimatumAmounts = function(e, round){
     e.preventDefault();
     var player1Amount = parseInt($('input#player1-amount').val());
@@ -77,26 +24,21 @@ if (Meteor.isClient) {
     });
   };
 
-  Template['ultimatum-game'].events({
+  Template.genericGameLayout.events({
     'click button.nextStep': function(e){
-      e.preventDefault();
       // Move forward if there is no user input,
       // otherwise have to write custom logic.
       if ($('input').length === 0) {
         Meteor.call('incrementGameStep', gameKey);
       };
     },
-    'click button.prevStep': function(e){
-      e.preventDefault();
-    },
-    'click button.nextStep.step-1': function(e){
+    'click button.nextStep.ultimatum-1': function(e){
       callSetUltimatumAmounts(e, 0);
     },
-    'click button.nextStep.step-4': function(e){
+    'click button.nextStep.ultimatum-4': function(e){
       callSetUltimatumAmounts(e, 1);
     },
-    'click button.nextStep.step-2': function(e){
-      e.preventDefault();
+    'click button.nextStep.ultimatum-2': function(e){
       var decision = $('input[name=confirmReject]:checked').val();
       Meteor.call('setRoundDecision', decision, 0, function(err){
         Meteor.call('incrementGameStep', gameKey);
@@ -126,7 +68,7 @@ if (Meteor.isClient) {
     var gs = GameStatus.findOne({key: gameKey});
     return gs.rounds[round].amounts['player2'];    
   }
-  Template['ultimatum-game-2'].helpers({
+  Template['ultimatum-2'].helpers({
     offer: function(){
       return getOffer(0);
     },
@@ -139,7 +81,7 @@ if (Meteor.isClient) {
   });
 
 
-  Template['ultimatum-game-5'].created = function(){
+  Template['ultimatum-5'].created = function(){
     var dis = this;
     dis.data.acceptedOwnCount = new ReactiveVar(null);
     dis.data.rejectedOwnCount = new ReactiveVar(null);
@@ -150,7 +92,7 @@ if (Meteor.isClient) {
       };
     });
   };
-  Template['ultimatum-game-5'].helpers({
+  Template['ultimatum-5'].helpers({
     acceptedOwn: function(){
       var gs = GameStatus.findOne({key: gameKey});
       return gs.rounds[1].acceptsOwn;      
@@ -172,7 +114,7 @@ if (Meteor.isClient) {
       return Math.round((y/ (x+y)) * 100, 1);
     },
   });
-  Template['ultimatum-game-7'].created = function(){
+  Template['ultimatum-7'].created = function(){
     var dis = this;
 
     // Initialize a set of reactive variables
@@ -226,7 +168,7 @@ if (Meteor.isClient) {
 
   };
 
-  Template['ultimatum-game-7'].helpers({
+  Template['ultimatum-7'].helpers({
     possibleAmounts: function(){
       return _.map(_.range(101), function(x){return {amount: x}});
     },

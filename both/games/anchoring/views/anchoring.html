@@ -1,41 +1,5 @@
-<template name="anchoring-game">
-  <div class="row">
-    <section class="breadcrumb-holder col-md-6 col-md-offset-3">
-      <ol class="breadcrumb">
-        <li>
-          <a href="/">
-          <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-          Home
-          </a>
-        </li>
-        <li class="active">The anchoring game</li>
-      </ol>      
-    </section>
-  </div>
-  <div class="row">
-    <section class="greeting col-md-6 col-md-offset-3">
-      The anchoring game
-      <span>step #{{stepNumber1}} of {{totalSteps1}}</span>
-    </section>
-  </div>
-    <div class="row">
-      <section class="col-md-6 col-md-offset-3">
-        {{> UI.dynamic template=currTemplate}}
-      </section>
-    </div>
-    <div class="row">
-      <section class="col-md-6 col-md-offset-3">
-        <!-- <button type="button" class="btn btn-default prevStep step-{{stepNumber}}">Previous</button> -->
-        {{#unless isDone}}
 
-          <button type="button" class="btn btn-default nextStep step-{{stepNumber}}" disabled="{{getSessionVariable 'disableNext'}}">Next</button>
-        {{/unless}}
-      </section>
-    </div>
-</template>
-
-
-<template name="anchoring-game-0">
+<template name="anchoring-0">
   <p>
     Welcome to the anchoring game. Before you input your asking price for the house, I’d first like to establish if it is above or below a certain number. Take the last three digits of your phone number (or if you like, find a dollar bill, or your other favorite currency note, and take the last three digits of its serial number) and input it below.
   </p>
@@ -48,7 +12,7 @@
   </form>
 </template>
 
-<template name="anchoring-game-1">
+<template name="anchoring-1">
   <p>
     Do you want to list your house for more or less than
     <strong>${{randomNumber}},000</strong>?
@@ -74,7 +38,7 @@
 
 </template>
 
-<template name="anchoring-game-2">
+<template name="anchoring-2">
   <p>
     What is your asking price for the house? To be consistent,
     please enter a number {{priceRange.direction}} than {{> dollars amount=priceRange.randomNumber}}.
@@ -89,7 +53,7 @@
 
 </template>
 
-<template name="anchoring-game-3">
+<template name="anchoring-3">
   <p>
     <strong>Thanks</strong>. You chose to list your house for
     <strong>${{price}}k</strong>.
