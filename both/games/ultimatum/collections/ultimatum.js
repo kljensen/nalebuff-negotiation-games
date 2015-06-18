@@ -1,10 +1,21 @@
 GameStatus = new Mongo.Collection('game-status');
-Games = {}
+Games = {
+  settings: {
+    'ultimatum': {
+      steps: 7
+    },
+    'anchoring': {
+      steps: 3
+    }    
+  }
+}
 
-var allowedGames = {
-  'ultimatum': true,
-  'anchoring': true
-};
+var allowedGames = {};
+_.each(_.keys(Games.settings), function(k){
+  allowedGames[k] = true;
+});
+
+console.log(allowedGames);
 
 var checkRound = function (round) {
     check(round, Match.Integer);

@@ -1,23 +1,35 @@
 <template name="ultimatum-game">
-    <div class="row">
-      <section class="greeting col-md-6 col-md-offset-3">
-        Hi {{currentUser.profile.name}}. You are on
-        step #{{stepNumber}} of the ultimatum game.
-      </section>
-    </div>
-    <div class="row">
-      <section class="col-md-6 col-md-offset-3">
-        {{> UI.dynamic template=currTemplate}}
-      </section>
-    </div>
-    <div class="row">
-      <section class="col-md-6 col-md-offset-3">
-        <!-- <button type="button" class="btn btn-default prevStep step-{{stepNumber}}">Previous</button> -->
-        {{#unless isDone}}
-          <button type="button" class="btn btn-default nextStep step-{{stepNumber}}" disabled="{{getSessionVariable 'disableNext'}}">Next</button>
-        {{/unless}}
-      </section>
-    </div>
+  <div class="row">
+    <section class="breadcrumb-holder col-md-6 col-md-offset-3">
+      <ol class="breadcrumb">
+        <li>
+          <a href="/">
+          <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+          Home
+          </a>
+        </li>
+        <li class="active">The ultimatum game</li>
+      </ol>      
+    </section>
+  </div>
+  <div class="row">
+    <section class="greeting col-md-6 col-md-offset-3">
+      The ultimatum game
+      <span>step #{{stepNumber1}} of {{totalSteps1}}</span>
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-md-6 col-md-offset-3">
+      {{> UI.dynamic template=currTemplate}}
+    </section>
+  </div>
+  <div class="row">
+    <section class="next col-md-6 col-md-offset-3">
+      {{#unless isDone}}
+        <button type="button" class="btn btn-default nextStep step-{{stepNumber}}" disabled="{{getSessionVariable 'disableNext'}}">Next</button>
+      {{/unless}}
+    </section>
+  </div>
 </template>
 
 <template name="ultimatum-game-0">

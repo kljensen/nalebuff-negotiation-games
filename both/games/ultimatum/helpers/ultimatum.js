@@ -1,7 +1,9 @@
 if (Meteor.isClient) {
 
+  var gameKey = 'ultimatum';
+
   Template['ultimatum-game'].created = function(){
-    Meteor.call('initiateNewGame', 'ultimatum');
+    Meteor.call('initiateNewGame', gameKey);
   };
 
   Template._body.events({
@@ -22,10 +24,10 @@ if (Meteor.isClient) {
   })
 
   var getStep = function(){
-    var gameStatus = GameStatus.findOne({key: 'ultimatum'});
+    var gameStatus = GameStatus.findOne({key: gameKey});
     if (!gameStatus) {
-      Meteor.call('initiateNewGame', 'ultimatum');    
-      gameStatus = GameStatus.findOne({key: 'ultimatum'});
+      Meteor.call('initiateNewGame', gameKey);    
+      gameStatus = GameStatus.findOne({key: gameKey});
     };
     return gameStatus ? gameStatus.step: 0;
   }
@@ -40,6 +42,9 @@ if (Meteor.isClient) {
     stepNumber: function(){
       return getStep();
     },
+    stepNumber1: function(){
+      return getStep()+1;
+    },
     currTemplate: function(){
       return tmpl(getStep());
     },
@@ -49,8 +54,14 @@ if (Meteor.isClient) {
     nextTemplate: function(){
       return tmpl(getStep() + 1);
     },
+    totalSteps: function(){
+      return Games.settings[gameKey].steps;
+    },
+    totalSteps1: function(){
+      return Games.settings[gameKey].steps + 1;
+    },
     isDone: function(){
-      if (getStep() >= 7) {
+      if (getStep() >= Games.settings[gameKey].steps) {
         return true;
       };
       return false;
@@ -62,7 +73,7 @@ if (Meteor.isClient) {
     var player1Amount = parseInt($('input#player1-amount').val());
     var player2Amount = parseInt($('input#player2-amount').val());
     Meteor.call('setUltimatumAmounts', player1Amount, player2Amount, round, function(err){
-        Meteor.call('incrementGameStep', 'ultimatum');
+        Meteor.call('incrementGameStep', gameKey);
     });
   };
 
@@ -72,7 +83,7 @@ if (Meteor.isClient) {
       // Move forward if there is no user input,
       // otherwise have to write custom logic.
       if ($('input').length === 0) {
-        Meteor.call('incrementGameStep', 'ultimatum');
+        Meteor.call('incrementGameStep', gameKey);
       };
     },
     'click button.prevStep': function(e){
@@ -88,7 +99,7 @@ if (Meteor.isClient) {
       e.preventDefault();
       var decision = $('input[name=confirmReject]:checked').val();
       Meteor.call('setRoundDecision', decision, 0, function(err){
-        Meteor.call('incrementGameStep', 'ultimatum');
+        Meteor.call('incrementGameStep', gameKey);
       });
     }
 
@@ -98,7 +109,7 @@ if (Meteor.isClient) {
       return _.range(1, 101);
     },
     playerAmount: function(number){
-      var gs = GameStatus.findOne({key: 'ultimatum'});
+      var gs = GameStatus.findOne({key: gameKey});
       try{
         return gs.rounds[this.round].amounts['player' + number] || 0;
       }catch(e){
@@ -108,11 +119,11 @@ if (Meteor.isClient) {
   });
 
   var getOffer = function(round){
-    var gs = GameStatus.findOne({key: 'ultimatum'});
+    var gs = GameStatus.findOne({key: gameKey});
     return Math.max(gs.rounds[round].amounts['player1'], 0);
   }
   var getDemand = function(round){
-    var gs = GameStatus.findOne({key: 'ultimatum'});
+    var gs = GameStatus.findOne({key: gameKey});
     return gs.rounds[round].amounts['player2'];    
   }
   Template['ultimatum-game-2'].helpers({
@@ -141,7 +152,7 @@ if (Meteor.isClient) {
   };
   Template['ultimatum-game-5'].helpers({
     acceptedOwn: function(){
-      var gs = GameStatus.findOne({key: 'ultimatum'});
+      var gs = GameStatus.findOne({key: gameKey});
       return gs.rounds[1].acceptsOwn;      
     },
     acceptedOwnCount: function(){

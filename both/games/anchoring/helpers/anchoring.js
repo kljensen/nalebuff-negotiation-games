@@ -1,5 +1,7 @@
 if (Meteor.isClient) {
 
+  var gameKey = 'anchoring';
+
   Template.done.events({
     'click': function(){
       Router.go('index');
@@ -11,14 +13,14 @@ if (Meteor.isClient) {
   }, 200);
 
   Template['anchoring-game'].created = function(){
-    Meteor.call('initiateNewGame', 'anchoring');
+    Meteor.call('initiateNewGame', gameKey);
   };
 
   var getStep = function(){
-    var gameStatus = GameStatus.findOne({key: 'anchoring'});
+    var gameStatus = GameStatus.findOne({key: gameKey});
     if (!gameStatus) {
-      Meteor.call('initiateNewGame', 'anchoring');    
-      gameStatus = GameStatus.findOne({key: 'anchoring'});
+      Meteor.call('initiateNewGame', gameKey);    
+      gameStatus = GameStatus.findOne({key: gameKey});
     };
     return gameStatus ? gameStatus.step: 0;
   }
@@ -33,6 +35,9 @@ if (Meteor.isClient) {
     stepNumber: function(){
       return getStep();
     },
+    stepNumber1: function(){
+      return getStep()+1;
+    },
     currTemplate: function(){
       return tmpl(getStep());
     },
@@ -42,8 +47,14 @@ if (Meteor.isClient) {
     nextTemplate: function(){
       return tmpl(getStep() + 1);
     },
+    totalSteps: function(){
+      return Games.settings[gameKey].steps;
+    },
+    totalSteps1: function(){
+      return Games.settings[gameKey].steps + 1;
+    },
     isDone: function(){
-      if (getStep() >= 3) {
+      if (getStep() >= Games.settings[gameKey].steps) {
         return true;
       };
       return false;
@@ -61,7 +72,7 @@ if (Meteor.isClient) {
       // Move forward if there is no user input,
       // otherwise have to write custom logic.
       if ($('input').length === 0) {
-        Meteor.call('incrementGameStep', 'anchoring');
+        Meteor.call('incrementGameStep', gameKey);
       };
     },
     'click button.prevStep': function(e){
@@ -72,7 +83,7 @@ if (Meteor.isClient) {
       var val = parseInt($('input#random-number').val());
       if (noErrorDiv()) {
         Meteor.call('setAnchoringRandomNumber', val, function(){
-          Meteor.call('incrementGameStep', 'anchoring');        
+          Meteor.call('incrementGameStep', gameKey);        
         });
       };
     },
@@ -81,7 +92,7 @@ if (Meteor.isClient) {
       var decision = $('input[name=moreOrLess]:checked').val();
       if (noErrorDiv()) {
         Meteor.call('setAnchoringDirection', decision, function(){
-          Meteor.call('incrementGameStep', 'anchoring');        
+          Meteor.call('incrementGameStep', gameKey);        
         });
       }
     },
@@ -90,7 +101,7 @@ if (Meteor.isClient) {
       var price = $('input#price').val();
       if (noErrorDiv()) {
         Meteor.call('setAnchoringPrice', parseInt(price), function(){
-          Meteor.call('incrementGameStep', 'anchoring');        
+          Meteor.call('incrementGameStep', gameKey);        
         });
       }
     }
@@ -100,7 +111,7 @@ if (Meteor.isClient) {
 
   Template['anchoring-game-1'].helpers({
     randomNumber: function(){
-      return GameStatus.findOne({key: 'anchoring'}).randomNumber;
+      return GameStatus.findOne({key: gameKey}).randomNumber;
     }
   });
   Template['anchoring-game-1'].created = function(){
@@ -112,7 +123,7 @@ if (Meteor.isClient) {
 
   Template['anchoring-game-2'].helpers({
     priceRange: function(){
-      var game = GameStatus.findOne({key: 'anchoring'});
+      var game = GameStatus.findOne({key: gameKey});
       var min = 0;
       var max = 999;
       if (game.direction === 'more') {
@@ -129,7 +140,7 @@ if (Meteor.isClient) {
       };
     },
     randomNumber: function(){
-      return GameStatus.findOne({key: 'anchoring'}).randomNumber;
+      return GameStatus.findOne({key: gameKey}).randomNumber;
     }
 
   });
@@ -142,7 +153,7 @@ if (Meteor.isClient) {
   });
   Template['anchoring-game-3'].helpers({
     price: function(){
-      return GameStatus.findOne({key: 'anchoring'}).price;
+      return GameStatus.findOne({key: gameKey}).price;
     },
     ranges: function(){
       if (_.has(Template.instance().data, 'ranges')) {
