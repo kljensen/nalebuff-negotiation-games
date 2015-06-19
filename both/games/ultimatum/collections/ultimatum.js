@@ -1,12 +1,21 @@
 GameStatus = new Mongo.Collection('game-status');
 Games = {
   settings: {
-    'ultimatum': {
+    ultimatum: {
       steps: 7
     },
-    'anchoring': {
+    anchoring: {
       steps: 3
-    }    
+    },
+    zincit: {
+      steps: 8,
+      name: 'The Zincit case',
+      roles: {
+        hasan: 'Dr. Hasan',
+        sam: 'Sam Massey',
+        zincit: 'Zincit Rep.'
+      },
+    } 
   }
 }
 

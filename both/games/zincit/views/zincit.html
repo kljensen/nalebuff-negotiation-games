@@ -1,0 +1,41 @@
+<template name="zincit-0">
+  <p>
+    What was your role in the case?
+  </p>
+
+  <form>
+    <div class="form-group">
+      {{#each roles}}
+        <div>
+          <label>
+          <input type="radio" name="role" value="{{key}}">
+           {{name}}
+          </label>
+        </div>
+      {{/each}}
+    </div>
+  </form>
+</template>
+
+<template name="zincit-1">
+  <p>
+    Did you reach an agreement?
+  </p>
+
+  <form>
+    <div class="form-group">
+      <div>
+        <label>
+        <input type="radio" name="agreement" value="yes">
+         Yes
+        </label>
+      </div>
+      <div>
+        <label>
+        <input type="radio" name="agreement" value="no">
+         No
+        </label>
+      </div>
+    </div>
+  </form>
+</template>

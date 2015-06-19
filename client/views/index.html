@@ -10,13 +10,18 @@
       {{#if currentUser}}
         <ul>
           <li>
-            <a href="{{pathFor route='ultimatum-game'}}">
+            <a href="{{pathFor route='game' gameKey='ultimatum'}}">
               Ultimatum game
             </a>
           </li>
           <li>
-            <a href="{{pathFor route='anchoring-game'}}">
+            <a href="{{pathFor route='game' gameKey='anchoring'}}">
               Anchoring game
+            </a>
+          </li>
+          <li>
+            <a href="{{pathFor route='game' gameKey='zincit'}}">
+              Zincit case
             </a>
           </li>
         </ul>

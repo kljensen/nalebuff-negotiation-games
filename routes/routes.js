@@ -40,36 +40,21 @@ Router.map(function() {
     },
   });
 
-  this.route(pathPrefix, {
-    path: pathPrefix + 'games/' + 'ultimatum',
-    template: 'genericGameLayout',
-    name: 'ultimatum-game',
-    waitOn: function() {
-      return [
-        Meteor.subscribe('game-status', 'ultimatum')
-      ];
-    },
-    data: function(){
-      return {
-        gameKey: 'ultimatum',
-        gameStatus: GameStatus.findOne()
-      }
-    },
-  });
 
   this.route(pathPrefix, {
-    path: pathPrefix + 'games/' + 'anchoring',
+    path: pathPrefix + 'games/' + ':gameKey',
     template: 'genericGameLayout',
-    name: 'anchoring-game',
+    name: 'game',
     waitOn: function() {
       return [
-        Meteor.subscribe('game-status', 'anchoring')
+        Meteor.subscribe('game-status', this.params.gameKey)
       ];
     },
     data: function(){
       return {
-        gameKey: 'anchoring',
-        gameStatus: GameStatus.findOne()
+        gameKey: this.params.gameKey,
+        gameStatus: GameStatus.findOne(),
+        settings: Games.settings[this.params.gameKey]
       }
     },
   });
@@ -84,7 +69,6 @@ Router.map(function() {
       ];
     },
     onBeforeAction: function() {
-      console.log('wooooot in onBeforeAction');
       user = Meteor.user();
       if(!Roles.userIsInRole(user, ['admin'])) {
         this.redirect('index');
@@ -93,6 +77,5 @@ Router.map(function() {
       this.next();
     }
   });
-
 
 });
