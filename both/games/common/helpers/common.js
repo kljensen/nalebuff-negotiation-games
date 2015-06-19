@@ -72,4 +72,16 @@ if (Meteor.isClient) {
       return false;
     }
   });
+
+  // Meteor.startup(function(){
+
+  //   // Attach common helpers to all our game templates
+  //   var templateNamePattern = '^(' + _.keys(Games.settings).join('|') + ')-\\d+$';
+  //   var templateNameRegex = new RegExp(templateNamePattern);
+  //   for (var t in Template){
+  //     if (t.match(templateNameRegex)) {
+  //       // Add a common helper here!
+  //     };
+  //   }
+  // });
 }
