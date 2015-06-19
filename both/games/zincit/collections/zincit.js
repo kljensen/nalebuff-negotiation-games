@@ -21,12 +21,28 @@ Meteor.methods({
   },
   'setZincitAgreementStatus': function(agreementStatus){
     check(agreementStatus, String);
-
-    if (agreementStatus !== 'no' && agreementStatus !== 'yes') {
+    validStatuses = {no: false, yes: true};
+    if (!_.has(validStatuses, agreementStatus)) {
       throw new Meteor.Error(400, 'Bad agreement status!');
     };
+    agreementStatus = validStatuses[agreementStatus];
     var game = getGame();
     GameStatus.update({_id: game._id}, {$set: {agreementStatus: agreementStatus}});
+  },
+  'setZincitAmounts': function(upfront, bonus){
+    check(upfront, Match.Integer);
+    check(bonus, Match.Integer);
+    if (upfront < 0 || upfront > 1000 || bonus < 0 || bonus > 1000) {
+      throw new Meteor.Error(400, 'Bad agreement amounts!');      
+    };
+    var game = getGame();
+    GameStatus.update({_id: game._id}, {$set: {
+      amounts: {
+        upfront: upfront,
+        bonus: bonus        
+      }
+    }});
   }
+
 
 });

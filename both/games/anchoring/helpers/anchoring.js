@@ -16,11 +16,6 @@ if (Meteor.isClient) {
     Meteor.call('initiateNewGame', gameKey);
   };
 
-
-  var noErrorDiv = function(){
-    return $('div.has-error.form-group').length === 0
-  }
-
   Template.genericGameLayout.events({
     'click button.nextStep.anchoring-0': function(e){
       var val = parseInt($('input#random-number').val());

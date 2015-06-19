@@ -39,3 +39,32 @@
     </div>
   </form>
 </template>
+
+<template name="zincit-2">
+  {{#if agreementStatus}}
+    <p>
+      Please input both the &ldquo;upfront&rdquo; compensation and the &ldquo;bonus&rdquo; for FDA approval. Enter both amounts in millions. For example, if you agreed on option A you would input 25 and 0, while if you agreed on option D you would input 17 and 15 (as 7.5% of $200m is 15m).
+    </p>
+
+    <form >
+      <div class="form-group">
+        <label id="upfront" for="upfront" class="control-label">What is your &ldquo;upfront&rdquo; payment?</label>
+        <input class="form-control validate-number" type="number" id="upfront" min="0" max="1000" required>
+        <div class="help-block">
+          (Enter a number in millions: 0-1,000)
+        </div>
+      </div>
+      <div class="form-group">
+        <label id="bonus" for="bonus" class="control-label">What is your &ldquo;bonus&rdquo; payment for FDA approval?</label>
+        <input class="form-control validate-number" type="number" id="bonus" min="0" max="1000" required>
+        <div class="help-block">
+          (Enter a number in millions: 0-1,000)
+        </div>
+      </div>
+    </form>
+  {{else}}
+    <p>Because you did not reach an agreement, you can skip
+      to the next step.
+    </p>
+  {{/if}}
+</template>

@@ -1,5 +1,20 @@
 if (Meteor.isClient) {
 
+  getGame = function(gameKey){
+    var game = GameStatus.findOne({
+      key: gameKey, userId: Meteor.userId()
+    });
+    if (!game) {
+      throw new Meteor.Error(500, 'Bad data!');
+    };
+    return game;
+  };
+
+  noErrorDiv = function(){
+    return $('div.has-error.form-group').length === 0
+  };
+
+
   Template._body.events({
     'input input.validate-number': function(e, data, tpl){
       var el = e.target;

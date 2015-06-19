@@ -1,11 +1,18 @@
 if (Meteor.isClient) {
 
   var gameKey = 'zincit';
+
   Template['zincit-0'].helpers({
     roles: function(){
       return _.map(Games.settings[gameKey].roles, function(v, k){
         return {name: v, key: k}
       });
+    }
+  });
+  Template['zincit-2'].helpers({
+    agreementStatus: function(){
+      var game = getGame(gameKey);
+      return game.agreementStatus;
     }
   });
 
@@ -26,6 +33,18 @@ if (Meteor.isClient) {
       var agreementStatus = $('input[name=agreement]:checked').val();
       if (agreementStatus) {
         Meteor.call('setZincitAgreementStatus', agreementStatus, goToNextStep);
+      }
+    },
+    'click button.nextStep.zincit-2': function(e){
+      var upfront = parseInt($('input#upfront').val());
+      var bonus = parseInt($('input#bonus').val());
+      if (upfront > 0 && bonus > 0 && noErrorDiv()) {
+        console.log('no error on page!');
+        Meteor.call('setZincitAmounts', upfront, bonus, function(){
+          Meteor.call('incrementGameStep', gameKey);        
+        });
+      }else{
+        console.log('error on page!')
       }
     }
   });
