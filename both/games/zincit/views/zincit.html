@@ -23,20 +23,7 @@
   </p>
 
   <form>
-    <div class="form-group">
-      <div>
-        <label>
-        <input type="radio" name="agreement" value="yes">
-         Yes
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="radio" name="agreement" value="no">
-         No
-        </label>
-      </div>
-    </div>
+    {{> yesNoFormGroup name="agreement"}}
   </form>
 </template>
 
@@ -67,4 +54,76 @@
       to the next step.
     </p>
   {{/if}}
+</template>
+
+<template name="zincit-3">
+  <form >
+  <div class="form-group">
+    <label id="negotiationTime" for="negotiationTime" class="control-label">
+      How long did you take to negotiate?
+    </label>
+    <input class="form-control validate-number" type="number" id="negotiationTime" min="0" max="120" required>
+    <div class="help-block">
+      (Enter a number in minutes: 0-120)
+    </div>
+  </div>
+</form>
+</template>
+
+<template name="zincit-4">
+  <p>
+    Did any of the parties attempt to calculate the pie?
+  </p>
+
+  <form>
+    {{> yesNoFormGroup name="calculatedPie"}}
+  </form>
+</template>
+
+
+<template name="zincit-5">
+  <p>
+    Did you renegotiate the lawyer’s compensation?
+  </p>
+
+  <form>
+    {{> yesNoFormGroup name="renegotiatedLawyer"}}
+  </form>
+</template>
+
+<template name="zincit-6">
+  <form>
+    {{> numberFormGroup label="What percent did the lawyer get of the upfront" help="(Please enter a number 0-100)" name="lawyerUpfront" min=0 max=100}}
+    {{> numberFormGroup label="What percent did the lawyer get of the bonus" help="(Please enter a number 0-100)" name="lawyerBonus"  min=0 max=100}}
+  </form>
+</template>
+
+<template name="zincit-7">
+  <p>
+    In your case the expected payoffs were as follows:
+  </p>
+
+  <dl class="dl-horizontal">
+    <dt>Sam Massey:</dt>
+    <dd>
+      {{>dollars amount=outcomes.sam units="mm"}}
+      {{#if equals gameStatus.role "sam"}}
+        (your role)
+      {{/if}}
+    </dd>
+    <dt>Dr. Hasan:</dt>
+    <dd>
+      {{>dollars amount=outcomes.hasan units="mm"}}
+      {{#if equals gameStatus.role "hasan"}}
+        (your role)
+      {{/if}}
+    </dd>
+    <dt>Zincit Rep.:</dt>
+    <dd>
+      {{>dollars amount=outcomes.zincit units="mm"}}
+      {{#if equals gameStatus.role "zincit"}}
+        (your role)
+      {{/if}}
+    </dd>
+  </dl>
 </template>

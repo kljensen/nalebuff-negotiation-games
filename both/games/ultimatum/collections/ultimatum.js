@@ -8,7 +8,7 @@ Games = {
       steps: 3
     },
     zincit: {
-      steps: 8,
+      steps: 7,
       name: 'The Zincit case',
       roles: {
         hasan: 'Dr. Hasan',

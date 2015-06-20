@@ -34,5 +34,39 @@
 
 
 <template name="dollars">
-  <strong>${{amount}}</strong>
+  <strong>${{amount}}{{#if units}}{{units}}{{/if}}</strong>
+</template>
+
+<template name="yesNoFormGroup">
+  <div class="form-group">
+    <div>
+      <label>
+      <input type="radio" name="{{name}}" value="yes">
+       Yes
+      </label>
+    </div>
+    <div>
+      <label>
+      <input type="radio" name="{{name}}" value="no">
+       No
+      </label>
+    </div>
+  </div>
+</template>
+
+
+<template name="numberFormGroup">
+  <div class="form-group">
+    {{#if label}}
+      <label id="{{name}}" for="{{name}}" class="control-label">
+        {{label}}
+      </label>
+    {{/if}}
+    <input class="form-control validate-number" type="number" id="{{name}}" name="{{name}}" min="{{min}}" max="{{max}}" required>
+    {{#if help}}
+      <div class="help-block">
+        {{help}}
+      </div>
+    {{/if}}
+  </div>
 </template>

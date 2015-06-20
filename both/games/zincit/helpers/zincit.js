@@ -15,25 +15,65 @@ if (Meteor.isClient) {
       return game.agreementStatus;
     }
   });
+  Template['zincit-6'].created = function(){
+    var game = getGame(gameKey);
+    if (game.renegotiatedLawyer === false) {
+      Meteor.call('incrementGameStep', gameKey);
+    };
+  };
+  Template['zincit-2'].created = function(){
+    var game = getGame(gameKey);
+    if (game.agreementStatus === false) {
+      Meteor.call('incrementGameStep', gameKey);
+    };
+  };
+  Template['zincit-7'].helpers({
+    outcomes: function(){
+      var outcomes = {
+        sam: 0,
+        hasan: 20,
+        zincit: 0
+      };
+      var game = getGame(gameKey);
+      var lawyerUpfrontAmount = 0;
+      if (game.agreementStatus === true) {
+        if (game.renegotiatedLawyer) {
+          lawyerUpfrontAmount = game.lawyerAmounts.upfront * game.amounts.upfront / 100;
+          outcomes.sam = lawyerUpfrontAmount + game.lawyerAmounts.bonus * game.amounts.bonus / 100;
+        }else{
+          lawyerUpfrontAmount = 0.05 * game.amounts.upfront;
+          outcomes.sam = lawyerUpfrontAmount;
+        };
+        outcomes.hasan = game.amounts.upfront - lawyerUpfrontAmount + game.amounts.bonus * 0.6;
+        outcomes.zincit = 30 - game.amounts.upfront + game.amounts.bonus * 0.1;
+      };
+      return outcomes;
+    }
+  });
 
   var goToNextStep = function(err, result){
     if (!err) {
       Meteor.call('incrementGameStep', gameKey);
-    };    
+    }else{
+      console.log('Error calling method');
+    };
+  };
+
+  var callMethodWithValue = function(inputName, methodName){
+    var value = $('input[name=' + inputName + ']:checked').val();
+    if (value && value.length > 0) {
+      Meteor.call(methodName, value, goToNextStep);
+    }else{
+      console.log('no value...');
+    }
   };
 
   Template.genericGameLayout.events({
    'click button.nextStep.zincit-0': function(e){
-      var role = $('input[name=role]:checked').val();
-      if (role) {
-        Meteor.call('setZincitRole', role, goToNextStep);
-      }
+      callMethodWithValue('role', 'setZincitRole');
     },
    'click button.nextStep.zincit-1': function(e){
-      var agreementStatus = $('input[name=agreement]:checked').val();
-      if (agreementStatus) {
-        Meteor.call('setZincitAgreementStatus', agreementStatus, goToNextStep);
-      }
+      callMethodWithValue('agreement', 'setZincitAgreementStatus');
     },
     'click button.nextStep.zincit-2': function(e){
       var upfront = parseInt($('input#upfront').val());
@@ -46,7 +86,36 @@ if (Meteor.isClient) {
       }else{
         console.log('error on page!')
       }
-    }
+    },
+    'click button.nextStep.zincit-3': function(e){
+      var negotiationTime = parseInt($('input#negotiationTime').val());
+      if (negotiationTime > 0 && negotiationTime <= 120 && noErrorDiv()) {
+        console.log('no error on page!');
+        Meteor.call('setZincitNegotiationTime', negotiationTime, function(){
+          Meteor.call('incrementGameStep', gameKey);        
+        });
+      }else{
+        console.log('error on page!')
+      }
+    },
+   'click button.nextStep.zincit-4': function(e){
+      callMethodWithValue('calculatedPie', 'setZincitCalculatedPie');
+    },
+   'click button.nextStep.zincit-5': function(e){
+      callMethodWithValue('renegotiatedLawyer', 'setZincitRenegotiatedLawyer');
+    },
+   'click button.nextStep.zincit-6': function(e){
+      var lawyerUpfront = parseInt($('input#lawyerUpfront').val());
+      var lawyerBonus = parseInt($('input#lawyerBonus').val());
+      if (lawyerUpfront > 0 && lawyerBonus > 0 && noErrorDiv()) {
+        console.log('no error on page!');
+        Meteor.call('setZincitLawyerPercents', lawyerUpfront, lawyerBonus, function(){
+          Meteor.call('incrementGameStep', gameKey);        
+        });
+      }else{
+        console.log('error on page!')
+      }
+    },
   });
 
 };
