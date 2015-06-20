@@ -2,6 +2,10 @@ if (Meteor.isClient) {
 
   var gameKey = 'zincit';
 
+  var getSettings = function(){
+    return Games.settings[gameKey];
+  }
+
   Template['zincit-0'].helpers({
     roles: function(){
       return _.map(Games.settings[gameKey].roles, function(v, k){
@@ -27,29 +31,12 @@ if (Meteor.isClient) {
       Meteor.call('incrementGameStep', gameKey);
     };
   };
-  Template['zincit-7'].helpers({
-    outcomes: function(){
-      var outcomes = {
-        sam: 0,
-        hasan: 20,
-        zincit: 0
-      };
-      var game = getGame(gameKey);
-      var lawyerUpfrontAmount = 0;
-      if (game.agreementStatus === true) {
-        if (game.renegotiatedLawyer) {
-          lawyerUpfrontAmount = game.lawyerAmounts.upfront * game.amounts.upfront / 100;
-          outcomes.sam = lawyerUpfrontAmount + game.lawyerAmounts.bonus * game.amounts.bonus / 100;
-        }else{
-          lawyerUpfrontAmount = 0.05 * game.amounts.upfront;
-          outcomes.sam = lawyerUpfrontAmount;
-        };
-        outcomes.hasan = game.amounts.upfront - lawyerUpfrontAmount + game.amounts.bonus * 0.6;
-        outcomes.zincit = 30 - game.amounts.upfront + game.amounts.bonus * 0.1;
-      };
-      return outcomes;
+  Template['zincit-7'].created = function(){
+    var game = getGame(gameKey);
+    if(!_.has(game, 'outcomes')){
+      Meteor.call('calculateZincitOutcome');
     }
-  });
+  };
 
   var goToNextStep = function(err, result){
     if (!err) {

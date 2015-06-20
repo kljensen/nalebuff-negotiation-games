@@ -106,21 +106,21 @@
   <dl class="dl-horizontal">
     <dt>Sam Massey:</dt>
     <dd>
-      {{>dollars amount=outcomes.sam units="mm"}}
+      {{>dollars amount=gameStatus.outcomes.sam units="mm"}}
       {{#if equals gameStatus.role "sam"}}
         (your role)
       {{/if}}
     </dd>
     <dt>Dr. Hasan:</dt>
     <dd>
-      {{>dollars amount=outcomes.hasan units="mm"}}
+      {{>dollars amount=gameStatus.outcomes.hasan units="mm"}}
       {{#if equals gameStatus.role "hasan"}}
         (your role)
       {{/if}}
     </dd>
     <dt>Zincit Rep.:</dt>
     <dd>
-      {{>dollars amount=outcomes.zincit units="mm"}}
+      {{>dollars amount=gameStatus.outcomes.zincit units="mm"}}
       {{#if equals gameStatus.role "zincit"}}
         (your role)
       {{/if}}

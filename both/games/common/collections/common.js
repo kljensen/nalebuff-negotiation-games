@@ -1,4 +1,4 @@
-var getGameStatus = function(gameKey){
+getGameStatus = function(gameKey){
   var game = GameStatus.findOne({
     key: gameKey, userId: Meteor.userId()
   });

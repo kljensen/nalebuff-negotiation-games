@@ -14,6 +14,32 @@ var setZinctItBoolean = function(attribute, value){
   updateZincitGame(update);
 };
 
+var calculateOutcomes = function(){
+  var outcomes = {
+    sam: 0,
+    hasan: 20,
+    zincit: 0
+  };
+  var game = getGameStatus(gameKey);
+  var lawyerUpfrontAmount = 0;
+  var settings = Games.settings[gameKey];
+  if (game.agreementStatus === false) {
+    return outcomes;
+  }
+
+  if (game.renegotiatedLawyer) {
+    lawyerUpfrontAmount = game.lawyerAmounts.upfront * game.amounts.upfront / 100;
+    outcomes.sam = lawyerUpfrontAmount + settings.bonusBeliefs.hasan * game.lawyerAmounts.bonus * game.amounts.bonus / 100;
+  }else{
+    lawyerUpfrontAmount = 0.05 * game.amounts.upfront;
+    outcomes.sam = lawyerUpfrontAmount;
+  };
+  outcomes.hasan = game.amounts.upfront + settings.bonusBeliefs.hasan * game.amounts.bonus - outcomes.sam;
+  outcomes.zincit = 30 - (game.amounts.upfront + settings.bonusBeliefs.zincit * game.amounts.bonus);
+  return outcomes;
+};
+
+
 Meteor.methods({
   'setZincitRole': function(role){
     check(role, String);
@@ -52,6 +78,7 @@ Meteor.methods({
       negotiationTime: checkIntInRange(negotiationTime, 1, 120),
     });
   },
-
-
+  'calculateZincitOutcome': function(){
+    updateZincitGame({outcomes: calculateOutcomes()});
+  }
 });

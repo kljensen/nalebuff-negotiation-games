@@ -15,6 +15,10 @@ Games = {
         sam: 'Sam Massey',
         zincit: 'Zincit Rep.'
       },
+      bonusBeliefs: {
+        hasan: 0.6,
+        zincit: 0.1
+      }
     } 
   }
 }
