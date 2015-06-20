@@ -80,5 +80,20 @@ Meteor.methods({
   },
   'calculateZincitOutcome': function(){
     updateZincitGame({outcomes: calculateOutcomes()});
+  },
+  'getZincitOutcomeDistribution': function(){
+    var settings = Games.settings[gameKey];
+    var games = GameStatus.find(
+      {key: gameKey, step: {$gte: settings.steps}},
+      {fields: {outcomes: 1}}
+    ).fetch();
+    var distribution = {};
+    _.each(_.keys(settings.roles), function(role){
+      distribution[role] = getStatisticalMoments(_.map(games, function(g){
+        return g.outcomes[role];
+      }));
+    });
+    console.log('distribution =', distribution);
+    return distribution;
   }
 });

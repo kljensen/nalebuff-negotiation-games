@@ -1,30 +1,4 @@
 
-var median = function(values) {
-
-  values.sort( function(a,b) {return a - b;} );
-
-  var half = Math.floor(values.length/2);
-
-  if(values.length % 2){
-    return values[half];
-  }else{
-      return (values[half-1] + values[half]) / 2.0;
-  }
-};
-
-var getStats = function(a) {
-  var r = {mean: 0, variance: 0, deviation: 0}, t = a.length;
-  r.median = median(a);
-  if (a.length === 0) {
-    r.empty = true;
-  }else{
-    r.empty = false;
-  };
-  for(var m, s = 0, l = t; l--; s += a[l]);
-  for(m = r.mean = s / t, l = t, s = 0; l--; s += Math.pow(a[l] - m, 2));
-  return r.deviation = Math.sqrt(r.variance = s / t), r;
-}
-
 Meteor.methods({
   'setAnchoringRandomNumber': function(num){
     check(num, Match.Integer);
@@ -90,7 +64,7 @@ Meteor.methods({
       };
     };
     for (var j = ranges.length - 1; j >= 0; j--) {
-      ranges[j].stats = getStats(ranges[j].prices);
+      ranges[j].stats = getStatisticalMoments(ranges[j].prices);
     };
     console.log('Done with ranges =', ranges);
     return ranges;

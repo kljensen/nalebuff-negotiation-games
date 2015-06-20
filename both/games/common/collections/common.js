@@ -1,3 +1,30 @@
+
+var median = function(values) {
+
+  values.sort( function(a,b) {return a - b;} );
+
+  var half = Math.floor(values.length/2);
+
+  if(values.length % 2){
+    return values[half];
+  }else{
+      return (values[half-1] + values[half]) / 2.0;
+  }
+};
+
+getStatisticalMoments = function(a) {
+  var r = {mean: 0, variance: 0, deviation: 0}, t = a.length;
+  r.median = median(a);
+  if (a.length === 0) {
+    r.empty = true;
+  }else{
+    r.empty = false;
+  };
+  for(var m, s = 0, l = t; l--; s += a[l]);
+  for(m = r.mean = s / t, l = t, s = 0; l--; s += Math.pow(a[l] - m, 2));
+  return r.deviation = Math.sqrt(r.variance = s / t), r;
+}
+
 getGameStatus = function(gameKey){
   var game = GameStatus.findOne({
     key: gameKey, userId: Meteor.userId()

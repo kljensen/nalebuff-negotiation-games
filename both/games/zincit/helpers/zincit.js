@@ -32,11 +32,41 @@ if (Meteor.isClient) {
     };
   };
   Template['zincit-7'].created = function(){
+    var dis = this;
     var game = getGame(gameKey);
+    var wrapper;
+    dis.data.outcomeStats = new ReactiveVar(null);
+
     if(!_.has(game, 'outcomes')){
-      Meteor.call('calculateZincitOutcome');
+      wrapper = function(cb){
+        Meteor.call('calculateZincitOutcome', cb);
+      }
+    }else{
+      wrapper = function(cb){
+        return cb();
+      }      
     }
+    wrapper(function(){
+      Meteor.call('getZincitOutcomeDistribution', function(err, result){
+        console.log('got result from getZincitOutcomeDistribution=', result);
+        if(!err){
+          dis.data.outcomeStats.set(result);  
+        }
+      });
+    });
+
   };
+  Template['zincit-7'].helpers({
+    outcomeStats: function(){
+      console.log('in outcomeStats');
+      if (_.has(Template.instance().data, 'outcomeStats')) {
+        var outcomeStats = Template.instance().data.outcomeStats.get();
+        console.log(outcomeStats);
+        return outcomeStats;
+      };
+    }
+  })
+
 
   var goToNextStep = function(err, result){
     if (!err) {
