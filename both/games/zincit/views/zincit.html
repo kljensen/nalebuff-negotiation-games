@@ -127,5 +127,31 @@
     </dd>
   </dl>
 
-  <p>Hasan mean = {{outcomeStats.hasan.mean}}</p>
+  <p>
+    In order to give you some insight into the outcome of
+    your negotiation relative to the rest of class, we 
+    compiled statistics for the various roles, below.
+  </p>
+
+  <dl class="dl-horizontal">
+    {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam}}
+    {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan}}
+    {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit}}
+  </dl>
+</template>
+
+<template name="zincit_rolestats">
+  <dt>{{roleName}}:</dt>
+  <dd>
+    Mean
+    {{>dollars amount=mean units="mm"}};
+    Standard deviation: {{>dollars amount=deviation units="mm"}}.
+    <br>Your outcome:
+    {{#if zscore.sameAsMean}}
+      the exact same as the mean.
+    {{else}}
+      {{zscore.value}} standard
+      deviations <em>{{zscore.direction}}</em> than the mean.
+    {{/if}}
+  </dd>
 </template>

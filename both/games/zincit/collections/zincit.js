@@ -93,7 +93,6 @@ Meteor.methods({
         return g.outcomes[role];
       }));
     });
-    console.log('distribution =', distribution);
     return distribution;
   }
 });

@@ -48,7 +48,6 @@ if (Meteor.isClient) {
     }
     wrapper(function(){
       Meteor.call('getZincitOutcomeDistribution', function(err, result){
-        console.log('got result from getZincitOutcomeDistribution=', result);
         if(!err){
           dis.data.outcomeStats.set(result);  
         }
@@ -58,21 +57,44 @@ if (Meteor.isClient) {
   };
   Template['zincit-7'].helpers({
     outcomeStats: function(){
-      console.log('in outcomeStats');
       if (_.has(Template.instance().data, 'outcomeStats')) {
         var outcomeStats = Template.instance().data.outcomeStats.get();
-        console.log(outcomeStats);
         return outcomeStats;
       };
     }
-  })
+  });
 
+  Template['zincit_rolestats'].helpers({
+    zscore: function(){
+      var mean = Template.instance().data.mean;
+      var deviation = Template.instance().data.deviation;
+      var amount = Template.instance().data.amount;
+      var zscore = 0;
+      var sameAsMean = false;
+      var direction;
+      if (deviation !== 0) {
+        zscore = (amount - mean) / deviation;
+      };
+      if(zscore < 0){
+        direction = 'less';
+      }else{
+        direction = 'more';
+      };
+      if(deviation === 0 || zscore === 0){
+        sameAsMean = true;
+      }
+      return {
+        value: Math.abs(zscore),
+        sameAsMean: sameAsMean,
+        direction: direction
+      };
+    }
+  });
 
   var goToNextStep = function(err, result){
     if (!err) {
       Meteor.call('incrementGameStep', gameKey);
     }else{
-      console.log('Error calling method');
     };
   };
 
@@ -81,7 +103,6 @@ if (Meteor.isClient) {
     if (value && value.length > 0) {
       Meteor.call(methodName, value, goToNextStep);
     }else{
-      console.log('no value...');
     }
   };
 
@@ -96,23 +117,19 @@ if (Meteor.isClient) {
       var upfront = parseInt($('input#upfront').val());
       var bonus = parseInt($('input#bonus').val());
       if (upfront > 0 && bonus > 0 && noErrorDiv()) {
-        console.log('no error on page!');
         Meteor.call('setZincitAmounts', upfront, bonus, function(){
           Meteor.call('incrementGameStep', gameKey);        
         });
       }else{
-        console.log('error on page!')
       }
     },
     'click button.nextStep.zincit-3': function(e){
       var negotiationTime = parseInt($('input#negotiationTime').val());
       if (negotiationTime > 0 && negotiationTime <= 120 && noErrorDiv()) {
-        console.log('no error on page!');
         Meteor.call('setZincitNegotiationTime', negotiationTime, function(){
           Meteor.call('incrementGameStep', gameKey);        
         });
       }else{
-        console.log('error on page!')
       }
     },
    'click button.nextStep.zincit-4': function(e){
@@ -125,12 +142,10 @@ if (Meteor.isClient) {
       var lawyerUpfront = parseInt($('input#lawyerUpfront').val());
       var lawyerBonus = parseInt($('input#lawyerBonus').val());
       if (lawyerUpfront > 0 && lawyerBonus > 0 && noErrorDiv()) {
-        console.log('no error on page!');
         Meteor.call('setZincitLawyerPercents', lawyerUpfront, lawyerBonus, function(){
           Meteor.call('incrementGameStep', gameKey);        
         });
       }else{
-        console.log('error on page!')
       }
     },
   });
