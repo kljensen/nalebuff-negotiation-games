@@ -133,11 +133,17 @@
     compiled statistics for the various roles, below.
   </p>
 
-  <dl class="dl-horizontal">
-    {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam}}
-    {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan}}
-    {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit}}
-  </dl>
+  {{#if outcomeStats}}
+    <dl class="dl-horizontal">
+      {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam}}
+      {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan}}
+      {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit}}
+    </dl>
+  {{else}}
+    <p>
+      Calculating stats...
+    </p>
+  {{/if}}
 </template>
 
 <template name="zincit_rolestats">

@@ -31,15 +31,16 @@ if (Meteor.isClient) {
       Meteor.call('incrementGameStep', gameKey);
     };
   };
-  Template['zincit-7'].created = function(){
+  Template['zincit-7'].onCreated(function(){
     var dis = this;
     var game = getGame(gameKey);
     var wrapper;
-    dis.data.outcomeStats = new ReactiveVar(null);
+    dis.outcomeStats = new ReactiveVar(null);
+
 
     if(!_.has(game, 'outcomes')){
       wrapper = function(cb){
-        Meteor.call('calculateZincitOutcome', cb);
+        return Meteor.call('calculateZincitOutcome', cb);
       }
     }else{
       wrapper = function(cb){
@@ -48,19 +49,20 @@ if (Meteor.isClient) {
     }
     wrapper(function(){
       Meteor.call('getZincitOutcomeDistribution', function(err, result){
-        if(!err){
-          dis.data.outcomeStats.set(result);  
+        if(typeof(err) === 'undefined'){
+          dis.outcomeStats.set(result);
         }
       });
     });
 
-  };
+  });
   Template['zincit-7'].helpers({
     outcomeStats: function(){
-      if (_.has(Template.instance().data, 'outcomeStats')) {
-        var outcomeStats = Template.instance().data.outcomeStats.get();
+      if (_.has(Template.instance(), 'outcomeStats')) {
+        var outcomeStats = Template.instance().outcomeStats.get();
         return outcomeStats;
       };
+      return null;
     }
   });
 
