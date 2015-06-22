@@ -56,3 +56,21 @@
 </template>
 
 
+<template name="outsider-5">
+  <p>
+    In your case the expected payoffs were as follows:
+  </p>
+
+  <dl class="dl-horizontal">
+    {{#each roleOutcomes}}
+      <dt>{{name}}</dt>
+      <dd>
+        {{>dollars amount=outcome format="0,0"}}
+        {{#if ownRole}}
+          (your role)
+        {{/if}}
+      </dd>
+    {{/each}}
+  </dl>
+
+</template>

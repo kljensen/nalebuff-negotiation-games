@@ -34,7 +34,7 @@
 
 
 <template name="dollars">
-  <strong>${{amount}}{{#if units}}{{units}}{{/if}}</strong>
+  <strong>${{#if format}}{{formatNumerals amount format}}{{else}}{{amount}}{{/if}}{{#if units}}{{units}}{{/if}}</strong>
 </template>
 
 <template name="yesNoFormGroup">

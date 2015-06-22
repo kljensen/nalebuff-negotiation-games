@@ -18,12 +18,14 @@ if (Meteor.isClient) {
     }
   };
 
+  var getRoles = function(){
+    return _.map(Games.settings[gameKey].roles, function(v, k){
+      return {name: v, key: k}
+    });
+  };
+
   Template['outsider-0'].helpers({
-    roles: function(){
-      return _.map(Games.settings[gameKey].roles, function(v, k){
-        return {name: v, key: k}
-      });
-    }
+    roles: getRoles
   });
 
   var advanceIfFalse = function(attribute){
@@ -70,6 +72,66 @@ if (Meteor.isClient) {
     'hadNoncash': trueForYes('hadNoncash')
   });
 
+  Template['outsider-5'].onCreated(function(){
+    this.outcomeStats = new ReactiveVar();
+    this.outcomeStats.set({foo: 'bar'});
+  });
+
+  var calculateOutcomes = function(){
+    var outcomes = {
+      cade: 80000,
+      helen: 80000,
+      pat: 0
+    };
+    var game = getGameStatus(gameKey);
+    var settings = Games.settings[gameKey];
+    var patViolatedConstraint;
+    if (game.agreementStatus === false) {
+      return outcomes;
+    }
+    patPayment = game.patPayment;
+    if (!game.helenSharedLoss && !game.hadNoncash) {
+      outcomes.cade = patPayment - 400000;
+      outcomes.helen = 100000;
+    }else if(game.helenSharedLoss && !game.hadNoncash){
+      outcomes.cade = (patPayment - 300000)/2;
+      outcomes.helen = outcomes.cade;
+    }else if(game.helenSharedLoss && game.hadNoncash){
+      outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
+    };
+    if (patPayment > 470000) {
+      outcomes.pat = -250000;
+      patViolatedConstraint = true;
+    }else{
+      outcomes.pat = 245800*5 - patPayment;
+      patViolatedConstraint = false;
+    };
+    return outcomes;
+  };
+
+  Template['outsider-5'].helpers({
+    outcomeStats: function(){
+      if (_.has(Template.instance(), 'outcomeStats')) {
+        var outcomeStats = Template.instance().outcomeStats.get();
+        return outcomeStats;
+      };
+      return null;
+    },
+    roleOutcomes: function(){
+      var outcomes = calculateOutcomes();
+      console.log('outcomes =', outcomes);
+      var game = getGameStatus(gameKey);
+
+      return _.map(getRoles(), function(r){
+        r.outcome = outcomes[r.key];
+        console.log('r.outcome =', r.outcome);
+        r.ownRole = r.key === game.role ? true : false;
+        return r;
+      });
+    }
+  });
+
+
   Template.genericGameLayout.events({
    'click button.nextStep.outsider-0': function(e){
       callMethodWithRadioValue('role', 'setOutsiderRole');
@@ -111,11 +173,6 @@ if (Meteor.isClient) {
           goToNextStep
         );
       };
-      console.log('hadNoncash =', hadNoncash);
-      console.log('noncashDescription =', noncashDescription);
-      console.log('freeAdsStill =', freeAdsStill);
-      console.log('numFreePages =', numFreePages);
-      console.log('freePagesCountedAgainst =', freePagesCountedAgainst);
     },
   });
 
