@@ -39,16 +39,23 @@
 
 <template name="yesNoFormGroup">
   <div class="form-group">
+    {{#if label}}
+      <div>
+        <label for="{{name}}" class="control-label">
+          {{label}}
+        </label>
+      </div>
+    {{/if}}
     <div>
       <label>
       <input type="radio" name="{{name}}" value="yes">
-       Yes
+       {{#if yesText}}{{{yesText}}}{{else}}Yes{{/if}}
       </label>
     </div>
     <div>
       <label>
       <input type="radio" name="{{name}}" value="no">
-       No
+        {{#if noText}}{{{noText}}}{{else}}No{{/if}}
       </label>
     </div>
   </div>

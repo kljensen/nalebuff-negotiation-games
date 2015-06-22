@@ -1,0 +1,58 @@
+<template name="outsider-0">
+  {{> caseRoles roles=roles}}
+</template>
+
+<template name="outsider-1">
+  <p>
+    Did you reach an agreement?
+  </p>
+
+  <form>
+    {{> yesNoFormGroup name="agreement" yesText="Yes &mdash; the magazine was sold to Iceberg Media" noText="No &mdash; the magazine was sold to Artagis"}}
+  </form>
+</template>
+
+<template name="outsider-2">
+  <form>
+    {{> numberFormGroup label="How much did Pat (Iceberg Media) pay to purchase the magazine and website?" help="(Please enter a number 0-1,000,000)" name="patPayment" min=0 max=1000000}}
+  </form>
+</template>
+
+<template name="outsider-3">
+  <p>
+    Did Helen agree to share with Cade the cost of taking less than $2/share? Another words, if the purchase price was $460, Cade and Helen would each take $1.60/share for a total of $80,000 each while the Artagis and the Friends/Angles were paid out at $2/share.
+  </p>
+  <form>
+    {{> yesNoFormGroup name="helenSharedLoss"}}
+  </form>
+</template>
+
+<template name="outsider-4">
+  <p>
+    Were there any non-cash benefits provided to either Cade or Helen?
+  </p>
+
+  <form>
+    {{> yesNoFormGroup name="hadNoncash"}}
+    {{#if hadNoncash}}
+      <label for="noncash" class="control-label">
+        Please describe those non-cash benefits.
+      </label>
+      <textarea id="noncashDescription" name="noncashDescription" class="form-control" rows="3"></textarea>
+      <div class="help-block">
+       (Please be brief.)
+      </div>
+
+      {{> yesNoFormGroup name="freeAdsStill" label="Did Pat continue to provide free ad pages to Helen?"}}
+      {{#if freeAdsStill}}
+        {{> numberFormGroup label="How many pages over the next three years?" help="(Please enter a number 1-36)" name="numFreePages" min=1 max=36}}
+        <p>
+         Did the value of these ad pages count against the money going to Helen?
+        </p>
+        {{> yesNoFormGroup name="freePagesCountedAgainst"}}
+      {{/if}}
+    {{/if}}
+  </form>
+</template>
+
+

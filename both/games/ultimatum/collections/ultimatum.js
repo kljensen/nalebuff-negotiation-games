@@ -19,7 +19,17 @@ Games = {
         hasan: 0.6,
         zincit: 0.1
       }
-    } 
+    },
+    outsider: {
+      steps: 7,
+      name: 'The Outsider case',
+      roles: {
+        cade: 'Cade Hauber',
+        helen: 'Helen Ganske',
+        pat: 'Pat Bennett'        
+      }
+    },
+
   }
 }
 
@@ -208,15 +218,21 @@ Meteor.methods({
       };      
     };
   },
-  incrementGameStep: function(gameKey){
+  incrementGameStep: function(gameKey, numSteps){
     check(gameKey, String);
+    if (typeof(numSteps) !== 'undefined') {
+      check(numSteps, Match.Integer);
+      numSteps = parseInt(numSteps);
+    }else{
+      numSteps = 1;
+    }
 
     if (!_.has(allowedGames, gameKey)) {
       throw new Meteor.Error(400, 'Bad request!');
     };
     var result = GameStatus.upsert(
       {key: gameKey, userId: Meteor.userId()},
-      {$inc: {step: 1}}
+      {$inc: {step: numSteps}}
     );
     console.log('Increment GameStatus step with result', result);
 

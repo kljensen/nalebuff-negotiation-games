@@ -51,3 +51,25 @@ updateGameStatus = function(gameKey, update){
   };
   return numAffected;
 };
+
+callMethodWithNumber = function(gameKey, selector, min, max, methodName){
+  var value = parseInt($(selector).val());
+  if (value >= min && value <= max && noErrorDiv()) {
+    Meteor.call(methodName, value, function(){
+      Meteor.call('incrementGameStep', gameKey);        
+    });
+  }else{
+    console.log('Bad number for "', selector, '": ', value);
+  }
+};
+
+callMethodWithString = function(gameKey, selector, minLength, maxLength, methodName){
+  var value = $(selector).val();
+  if (value.length >= minLength && value.length <= maxLength && noErrorDiv()) {
+    Meteor.call(methodName, value, function(){
+      Meteor.call('incrementGameStep', gameKey);        
+    });
+  }else{
+    console.log('Bad string for "', selector, '": ', value);
+  }
+};
