@@ -21,7 +21,7 @@ Games = {
       }
     },
     outpsider: {
-      steps: 7,
+      steps: 5,
       name: 'The Outpsider case',
       roles: {
         cade: 'Cade Hauber',
