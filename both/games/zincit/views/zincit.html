@@ -37,20 +37,8 @@
     </p>
 
     <form >
-      <div class="form-group">
-        <label id="upfront" for="upfront" class="control-label">What is your &ldquo;upfront&rdquo; payment?</label>
-        <input class="form-control validate-number" type="number" id="upfront" min="0" max="1000" required>
-        <div class="help-block">
-          (Enter a number in millions: 0-1000)
-        </div>
-      </div>
-      <div class="form-group">
-        <label id="bonus" for="bonus" class="control-label">What is your &ldquo;bonus&rdquo; payment for FDA approval?</label>
-        <input class="form-control validate-number" type="number" id="bonus" min="0" max="1000" required>
-        <div class="help-block">
-          (Enter a number in millions: 0-1000)
-        </div>
-      </div>
+      {{> numberFormGroup label='What is your "upfront" payment?' help="(Please enter a number 0-100)" name="upfront" min=0 max=100}}
+      {{> numberFormGroup label='What is your "bonus" payment?' help="(Please enter a number 0-100)" name="bonus" min=0 max=100}}
     </form>
   {{else}}
     <p>Because you did not reach an agreement, you can skip
@@ -109,21 +97,21 @@
   <dl class="dl-horizontal">
     <dt>Sam Massey:</dt>
     <dd>
-      {{>dollars amount=gameStatus.outcomes.sam units="M" format="0,0"}}
+      {{>dollars amount=gameStatus.outcomes.sam units="M" format="0,0.00"}}
       {{#if equals gameStatus.role "sam"}}
         (your role)
       {{/if}}
     </dd>
     <dt>Dr. Hasan:</dt>
     <dd>
-      {{>dollars amount=gameStatus.outcomes.hasan units="M" format="0,0"}}
+      {{>dollars amount=gameStatus.outcomes.hasan units="M" format="0,0.00"}}
       {{#if equals gameStatus.role "hasan"}}
         (your role)
       {{/if}}
     </dd>
     <dt>Zincit Rep.:</dt>
     <dd>
-      {{>dollars amount=gameStatus.outcomes.zincit units="M" format="0,0"}}
+      {{>dollars amount=gameStatus.outcomes.zincit units="M" format="0,0.00"}}
       {{#if equals gameStatus.role "zincit"}}
         (your role)
       {{/if}}
