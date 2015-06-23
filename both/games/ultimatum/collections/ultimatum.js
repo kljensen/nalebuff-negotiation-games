@@ -20,7 +20,7 @@ Games = {
         zincit: 0.1
       }
     },
-    outsider: {
+    outpsider: {
       steps: 7,
       name: 'The Outpsider case',
       roles: {
