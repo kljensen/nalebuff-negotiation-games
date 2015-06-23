@@ -109,21 +109,21 @@
   <dl class="dl-horizontal">
     <dt>Sam Massey:</dt>
     <dd>
-      {{>dollars amount=gameStatus.outcomes.sam units="mm"}}
+      {{>dollars amount=gameStatus.outcomes.sam units="M" format="0,0"}}
       {{#if equals gameStatus.role "sam"}}
         (your role)
       {{/if}}
     </dd>
     <dt>Dr. Hasan:</dt>
     <dd>
-      {{>dollars amount=gameStatus.outcomes.hasan units="mm"}}
+      {{>dollars amount=gameStatus.outcomes.hasan units="M" format="0,0"}}
       {{#if equals gameStatus.role "hasan"}}
         (your role)
       {{/if}}
     </dd>
     <dt>Zincit Rep.:</dt>
     <dd>
-      {{>dollars amount=gameStatus.outcomes.zincit units="mm"}}
+      {{>dollars amount=gameStatus.outcomes.zincit units="M" format="0,0"}}
       {{#if equals gameStatus.role "zincit"}}
         (your role)
       {{/if}}
@@ -154,13 +154,13 @@
   <dt>{{roleName}}:</dt>
   <dd>
     Mean
-    {{>dollars amount=mean units="mm"}};
-    Standard deviation: {{>dollars amount=deviation units="mm"}}.
+    {{>dollars amount=mean units="M"}};
+    Standard deviation: {{>dollars amount=deviation units="M" format="0.00"}}.
     <br>Your outcome:
     {{#if zscore.sameAsMean}}
       the exact same as the mean.
     {{else}}
-      {{zscore.value}} standard
+      {{formatNumerals zscore.value '0.00'}} standard
       deviations <em>{{zscore.direction}}</em> than the mean.
     {{/if}}
   </dd>
