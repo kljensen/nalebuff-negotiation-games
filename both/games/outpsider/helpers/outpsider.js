@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
 
-  var gameKey = 'outsider';
+  var gameKey = 'outpsider';
 
   var getSettings = function(){
     return Games.settings[gameKey];
@@ -24,7 +24,7 @@ if (Meteor.isClient) {
     });
   };
 
-  Template['outsider-0'].helpers({
+  Template['outpsider-0'].helpers({
     roles: getRoles
   });
 
@@ -37,10 +37,10 @@ if (Meteor.isClient) {
     }
   };
 
-  Template['outsider-2'].onCreated(advanceIfFalse('agreementStatus'));
-  Template['outsider-3'].onCreated(advanceIfFalse('agreementStatus'));
+  Template['outpsider-2'].onCreated(advanceIfFalse('agreementStatus'));
+  Template['outpsider-3'].onCreated(advanceIfFalse('agreementStatus'));
 
-  Template['outsider-4'].onCreated(function(){
+  Template['outpsider-4'].onCreated(function(){
     this.freeAdsStill = new ReactiveVar('no');
     this.hadNoncash = new ReactiveVar('no');
   });
@@ -51,7 +51,7 @@ if (Meteor.isClient) {
     }
   }
 
-  Template['outsider-4'].events({
+  Template['outpsider-4'].events({
     'change input[name="freeAdsStill"]': setReactiveVarFromRadio('freeAdsStill'),
     'change input[name="hadNoncash"]': setReactiveVarFromRadio('hadNoncash'),
   });
@@ -67,12 +67,12 @@ if (Meteor.isClient) {
       return false;
     }
   };
-  Template['outsider-4'].helpers({
+  Template['outpsider-4'].helpers({
     'freeAdsStill': trueForYes('freeAdsStill'),
     'hadNoncash': trueForYes('hadNoncash')
   });
 
-  Template['outsider-5'].onCreated(function(){
+  Template['outpsider-5'].onCreated(function(){
     this.outcomeStats = new ReactiveVar();
     this.outcomeStats.set({foo: 'bar'});
   });
@@ -109,7 +109,7 @@ if (Meteor.isClient) {
     return outcomes;
   };
 
-  Template['outsider-5'].helpers({
+  Template['outpsider-5'].helpers({
     outcomeStats: function(){
       if (_.has(Template.instance(), 'outcomeStats')) {
         var outcomeStats = Template.instance().outcomeStats.get();
@@ -133,26 +133,26 @@ if (Meteor.isClient) {
 
 
   Template.genericGameLayout.events({
-   'click button.nextStep.outsider-0': function(e){
-      callMethodWithRadioValue('role', 'setOutsiderRole');
+   'click button.nextStep.outpsider-0': function(e){
+      callMethodWithRadioValue('role', 'setOutpsiderRole');
     },
-   'click button.nextStep.outsider-1': function(e){
-      callMethodWithRadioValue('agreement', 'setOutsiderAgreementStatus');
+   'click button.nextStep.outpsider-1': function(e){
+      callMethodWithRadioValue('agreement', 'setOutpsiderAgreementStatus');
     },
-  'click button.nextStep.outsider-2': function(e){
-      callMethodWithNumber(gameKey, 'input#patPayment', 1, 1000000, 'setOutsiderPatPayment');
+  'click button.nextStep.outpsider-2': function(e){
+      callMethodWithNumber(gameKey, 'input#patPayment', 1, 1000000, 'setOutpsiderPatPayment');
     },
-   'click button.nextStep.outsider-3': function(e){
+   'click button.nextStep.outpsider-3': function(e){
       console.log('clicked!');
-      callMethodWithRadioValue('helenSharedLoss', 'setOutsiderHelenSharedLoss');
+      callMethodWithRadioValue('helenSharedLoss', 'setOutpsiderHelenSharedLoss');
     },
-   // 'click button.nextStep.outsider-4': function(e){
-   //    callMethodWithRadioValue('hadNoncash', 'setOutsiderHadNoncash');
+   // 'click button.nextStep.outpsider-4': function(e){
+   //    callMethodWithRadioValue('hadNoncash', 'setOutpsiderHadNoncash');
    //  },
-   // 'click button.nextStep.outsider-4': function(e){
-   //    callMethodWithString(gameKey, '#noncash', 0, 500, 'setOutsiderNoncashDescription');
+   // 'click button.nextStep.outpsider-4': function(e){
+   //    callMethodWithString(gameKey, '#noncash', 0, 500, 'setOutpsiderNoncashDescription');
    //  },
-   'click button.nextStep.outsider-4': function(e){
+   'click button.nextStep.outpsider-4': function(e){
       var hadNoncash, noncashDescription, freeAdsStill, freePagesCountedAgainst, numFreePages;
 
       var hadNoncash = $('input[name="hadNoncash"]:checked').val();
@@ -164,7 +164,7 @@ if (Meteor.isClient) {
       };
       if (noErrorDiv()) {
         Meteor.call(
-          'setOutsiderNoncash',
+          'setOutpsiderNoncash',
           hadNoncash,
           noncashDescription,
           freeAdsStill,

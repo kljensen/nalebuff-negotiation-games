@@ -1,6 +1,6 @@
-var gameKey = 'outsider';
+var gameKey = 'outpsider';
 
-var updateOutsiderGame = function(update){
+var updateOutpsiderGame = function(update){
   return updateGameStatus(gameKey, update);
 }
 var booleanStatuses = {no: false, yes: true};
@@ -12,18 +12,18 @@ var checkBoolean = function(value){
   return booleanStatuses[value];
 }
 
-var setOutsiderBoolean = function(attribute, value){
+var setOutpsiderBoolean = function(attribute, value){
   checkBoolean(value);
   var update = {};
   update[attribute] = booleanStatuses[value];
-  updateOutsiderGame(update);
+  updateOutpsiderGame(update);
 };
 
 var calculateOutcomes = function(){
   var outcomes = {
     sam: 0,
     hasan: 20,
-    outsider: 0
+    outpsider: 0
   };
   var game = getGameStatus(gameKey);
   var lawyerUpfrontAmount = 0;
@@ -40,45 +40,45 @@ var calculateOutcomes = function(){
     outcomes.sam = lawyerUpfrontAmount;
   };
   outcomes.hasan = game.amounts.upfront + settings.bonusBeliefs.hasan * game.amounts.bonus - outcomes.sam;
-  outcomes.outsider = 30 - (game.amounts.upfront + settings.bonusBeliefs.outsider * game.amounts.bonus);
+  outcomes.outpsider = 30 - (game.amounts.upfront + settings.bonusBeliefs.outpsider * game.amounts.bonus);
   return outcomes;
 };
 
 
 Meteor.methods({
-  'setOutsiderRole': function(role){
+  'setOutpsiderRole': function(role){
     check(role, String);
     if (!_.has(Games.settings[gameKey].roles, role)) {
       throw new Meteor.Error(400, 'Bad role!');     
     };
-    updateOutsiderGame({role: role});
+    updateOutpsiderGame({role: role});
   },
-  'setOutsiderAgreementStatus': function(agreementStatus){
-    setOutsiderBoolean('agreementStatus', agreementStatus);
+  'setOutpsiderAgreementStatus': function(agreementStatus){
+    setOutpsiderBoolean('agreementStatus', agreementStatus);
   },
-  'setOutsiderHelenSharedLoss': function(x){
-    setOutsiderBoolean('helenSharedLoss', x);
+  'setOutpsiderHelenSharedLoss': function(x){
+    setOutpsiderBoolean('helenSharedLoss', x);
   },
-  'setOutsiderCalculatedPie': function(calculatedPie){
-    setOutsiderBoolean('calculatedPie', calculatedPie);
+  'setOutpsiderCalculatedPie': function(calculatedPie){
+    setOutpsiderBoolean('calculatedPie', calculatedPie);
   },
-  'setOutsiderRenegotiatedLawyer': function(renegotiatedLawyer){
-    setOutsiderBoolean('renegotiatedLawyer', renegotiatedLawyer);
+  'setOutpsiderRenegotiatedLawyer': function(renegotiatedLawyer){
+    setOutpsiderBoolean('renegotiatedLawyer', renegotiatedLawyer);
   },
-  'setOutsiderAmounts': function(upfront, bonus){
-    updateOutsiderGame({
+  'setOutpsiderAmounts': function(upfront, bonus){
+    updateOutpsiderGame({
       amounts: {
         upfront: checkIntInRange(upfront, 0, 1000),
         bonus: checkIntInRange(bonus, 0, 1000)        
       }
     });
   },
-  'setOutsiderNoncashDescription': function(desc){
-    updateOutsiderGame({
+  'setOutpsiderNoncashDescription': function(desc){
+    updateOutpsiderGame({
       noncashDescription: desc
     });
   },
-  'setOutsiderNoncash': function(hadNoncash, noncashDescription, freeAdsStill, freePagesCountedAgainst, numFreePages){
+  'setOutpsiderNoncash': function(hadNoncash, noncashDescription, freeAdsStill, freePagesCountedAgainst, numFreePages){
     if (Meteor.isServer === false) {
       return;
     };
@@ -93,18 +93,18 @@ Meteor.methods({
         update.numFreePages = checkIntInRange(numFreePages, 1, 36)
       };
     };
-    updateOutsiderGame(update);
+    updateOutpsiderGame(update);
   },
 
-  'setOutsiderPatPayment': function(x){
-    updateOutsiderGame({
+  'setOutpsiderPatPayment': function(x){
+    updateOutpsiderGame({
       patPayment: checkIntInRange(x, 1, 1000000),
     });
   },
-  'calculateOutsiderOutcome': function(){
-    updateOutsiderGame({outcomes: calculateOutcomes()});
+  'calculateOutpsiderOutcome': function(){
+    updateOutpsiderGame({outcomes: calculateOutcomes()});
   },
-  'getOutsiderOutcomeDistribution': function(){
+  'getOutpsiderOutcomeDistribution': function(){
     if (Meteor.isServer) {
       var settings = Games.settings[gameKey];
       var games = GameStatus.find(
