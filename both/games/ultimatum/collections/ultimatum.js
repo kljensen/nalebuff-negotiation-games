@@ -22,7 +22,7 @@ Games = {
     },
     outsider: {
       steps: 7,
-      name: 'The Outsider case',
+      name: 'The Outpsider case',
       roles: {
         cade: 'Cade Hauber',
         helen: 'Helen Ganske',
