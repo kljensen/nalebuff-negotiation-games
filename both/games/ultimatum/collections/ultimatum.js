@@ -27,6 +27,11 @@ Games = {
         cade: 'Cade Hauber',
         helen: 'Helen Ganske',
         pat: 'Pat Bennett'        
+      },
+      numShares: {
+        cade: 50000,
+        helen: 50000,
+        total: 250000
       }
     },
 

@@ -6,8 +6,8 @@ var updateOutpsiderGame = function(update){
 var booleanStatuses = {no: false, yes: true};
 
 var checkBoolean = function(value){
-  if (!_.has(booleanStatuses, value)) {
-    throw new Meteor.Error(400, 'Bad boolean value!');
+  if (!_.has(booleanStatuses, value)){
+    throw new Meteor.Error(400, 'Bad boolean value!:', value);
   };
   return booleanStatuses[value];
 }
@@ -78,22 +78,21 @@ Meteor.methods({
       noncashDescription: desc
     });
   },
-  'setOutpsiderNoncash': function(hadNoncash, noncashDescription, freeAdsStill, freePagesCountedAgainst, numFreePages){
-    if (Meteor.isServer === false) {
-      return;
-    };
-    var update = {};
-    update.hadNoncash = checkBoolean(hadNoncash);
-    if (update.hadNoncash) {
-      check(noncashDescription, String);
-      update.noncashDescription = noncashDescription;
-      update.freeAdsStill = checkBoolean(freeAdsStill);
-      update.freePagesCountedAgainst = checkBoolean(freePagesCountedAgainst);
-      if (freeAdsStill) {
-        update.numFreePages = checkIntInRange(numFreePages, 1, 36)
+  'setOutpsiderNoncash': function(hadNoncash, noncashDescription, freeAdsStill, numFreePages){
+    if (Meteor.isServer) {
+      var update = {};
+      update.hadNoncash = checkBoolean(hadNoncash);
+      if (update.hadNoncash) {
+        check(noncashDescription, String);
+        update.noncashDescription = noncashDescription;
+        update.freeAdsStill = checkBoolean(freeAdsStill);
+        if (freeAdsStill) {
+          update.numFreePages = checkIntInRange(numFreePages, 1, 36)
+        };
       };
+      console.log('updating outpsider game with ', update);
+      updateOutpsiderGame(update);
     };
-    updateOutpsiderGame(update);
   },
 
   'setOutpsiderPatPayment': function(x){

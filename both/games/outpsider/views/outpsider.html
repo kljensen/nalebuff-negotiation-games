@@ -46,10 +46,6 @@
       {{> yesNoFormGroup name="freeAdsStill" label="Did Pat continue to provide free ad pages to Helen?"}}
       {{#if freeAdsStill}}
         {{> numberFormGroup label="How many pages over the next three years?" help="(Please enter a number 1-36)" name="numFreePages" min=1 max=36}}
-        <p>
-         Did the value of these ad pages count against the money going to Helen?
-        </p>
-        {{> yesNoFormGroup name="freePagesCountedAgainst"}}
       {{/if}}
     {{/if}}
   </form>
@@ -73,8 +69,11 @@
     {{/each}}
   </dl>
 
-  <p>
-    The payoff to Pat was based on a valuation of the business at 5 times the cost savings&nbsp;=&nbsp;5&nbsp;*&nbsp;$245,800&nbsp;=&nbsp;$1.229m. (This values the business absent any cost savings at zero.) We needed to put a value on the business to distinguish the payoff from a no deal ($0) and the payoff from hitting your limit $470,000, which still leads to a substantial positive payoff, in this case $1.229m&nbsp;-&nbsp;$470k&nbsp;=&nbsp;$759k.
-  </p>
+  {{#if gameStatus.agreementStatus}}
+    <p>
+      The payoff to Pat was based on a valuation of the business at 5 times the cost savings&nbsp;=&nbsp;5&nbsp;*&nbsp;$245,800&nbsp;=&nbsp;$1.229m. (This values the business absent any cost savings at zero.) We needed to put a value on the business to distinguish the payoff from a no deal ($0) and the payoff from hitting your limit $470,000, which still leads to a substantial positive payoff, in this case $1.229m&nbsp;-&nbsp;$470k&nbsp;=&nbsp;$759k. If Pat paid more
+      than $470, Pat's payoff was reduced to -$250k for violating Pat's authority.
+    </p>
+  {{/if}}
 
 </template>

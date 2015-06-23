@@ -9,6 +9,7 @@ if (Meteor.isClient) {
     if (!err) {
       Meteor.call('incrementGameStep', gameKey);
     }else{
+      console.log('error: ', err);
     };
   };
   var callMethodWithRadioValue = function(inputName, methodName){
@@ -89,16 +90,31 @@ if (Meteor.isClient) {
     if (game.agreementStatus === false) {
       return outcomes;
     }
-    patPayment = game.patPayment;
-    if (!game.helenSharedLoss && !game.hadNoncash) {
-      outcomes.cade = patPayment - 400000;
-      outcomes.helen = 100000;
-    }else if(game.helenSharedLoss && !game.hadNoncash){
-      outcomes.cade = (patPayment - 300000)/2;
+
+
+
+    // Main outcome calc
+    // 
+    var patPayment = game.patPayment;
+    var nonCashValue = game.hadNoncash ? game.numFreePages * 2500 : 0;
+    var totalValue = patPayment + nonCashValue;
+    if (totalValue > 500000) {
+      outcomes.cade = settings.numShares.cade * totalValue / settings.numShares.total;
       outcomes.helen = outcomes.cade;
-    }else if(game.helenSharedLoss && game.hadNoncash){
-      outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
+    }else{
+      if (!game.helenSharedLoss && !game.hadNoncash) {
+        outcomes.cade = patPayment - 400000;
+        outcomes.helen = 100000;
+      }else if(game.helenSharedLoss && !game.hadNoncash){
+        outcomes.cade = (patPayment - 300000)/2;
+        outcomes.helen = outcomes.cade;
+      }else if(game.helenSharedLoss && game.hadNoncash){
+        outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
+      };
+      
     };
+
+    // Penalizing Pat
     if (patPayment > 470000) {
       outcomes.pat = -250000;
       patViolatedConstraint = true;
@@ -159,19 +175,20 @@ if (Meteor.isClient) {
       if (hadNoncash === 'yes') {
         noncashDescription = $('textarea#noncashDescription').val();
         freeAdsStill = $('input[name="hadNoncash"]').val();
-        freePagesCountedAgainst = $('input[name="freePagesCountedAgainst"]:checked').val();
         numFreePages = parseInt($('input[name="numFreePages"]').val());
       };
       if (noErrorDiv()) {
+        console.log('noErrorDiv!');
         Meteor.call(
           'setOutpsiderNoncash',
           hadNoncash,
           noncashDescription,
           freeAdsStill,
-          freePagesCountedAgainst,
           numFreePages,
           goToNextStep
         );
+      }else{
+        console.log('error on page!!');
       };
     },
   });
