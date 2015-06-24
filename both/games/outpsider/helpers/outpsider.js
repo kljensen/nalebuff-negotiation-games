@@ -40,6 +40,7 @@ if (Meteor.isClient) {
 
   Template['outpsider-2'].onCreated(advanceIfFalse('agreementStatus'));
   Template['outpsider-3'].onCreated(advanceIfFalse('agreementStatus'));
+  Template['outpsider-4'].onCreated(advanceIfFalse('agreementStatus'));
 
   Template['outpsider-4'].onCreated(function(){
     this.freeAdsStill = new ReactiveVar('no');
