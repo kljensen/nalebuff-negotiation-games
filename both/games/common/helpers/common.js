@@ -88,6 +88,12 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.index.events({
+    'click button.logout': function(){
+      Meteor.logout();
+    }
+  })
+
   // Meteor.startup(function(){
 
   //   // Attach common helpers to all our game templates
