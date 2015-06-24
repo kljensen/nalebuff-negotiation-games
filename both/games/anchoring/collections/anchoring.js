@@ -1,6 +1,7 @@
 
 Meteor.methods({
   'setAnchoringRandomNumber': function(num){
+    verifyUserIsLoggedIn();
     check(num, Match.Integer);
     num = parseInt(num);
     var game = GameStatus.findOne({
@@ -15,6 +16,7 @@ Meteor.methods({
     console.log(game);
   },
   'setAnchoringDirection': function(direction){
+    verifyUserIsLoggedIn();
     check(direction, String);
     var validDirections = {'more': true, 'less': true, 'same': true};
     var game = GameStatus.findOne({
@@ -26,6 +28,7 @@ Meteor.methods({
     GameStatus.update({_id: game._id}, {$set: {direction: direction}});
   },
   'setAnchoringPrice': function(price){
+    verifyUserIsLoggedIn();
     check(price, Match.Integer);
     price = parseInt(price);
     var game = GameStatus.findOne({
@@ -44,6 +47,7 @@ Meteor.methods({
     GameStatus.update({_id: game._id}, {$set: {price: price}});
   },
   'getAnchorPriceDistribution': function(){
+    verifyUserIsLoggedIn();
     var games = GameStatus.find({key: 'anchoring'}).fetch();
     var ranges = [
       {min: 0, max: 250, prices: []},

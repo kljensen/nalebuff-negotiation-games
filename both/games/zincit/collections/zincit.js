@@ -42,6 +42,7 @@ var calculateOutcomes = function(){
 
 Meteor.methods({
   'setZincitRole': function(role){
+    verifyUserIsLoggedIn();
     check(role, String);
     if (!_.has(Games.settings[gameKey].roles, role)) {
       throw new Meteor.Error(400, 'Bad role!');     
@@ -49,15 +50,19 @@ Meteor.methods({
     updateZincitGame({role: role});
   },
   'setZincitAgreementStatus': function(agreementStatus){
+    verifyUserIsLoggedIn();
     setZinctItBoolean('agreementStatus', agreementStatus);
   },
   'setZincitCalculatedPie': function(calculatedPie){
+    verifyUserIsLoggedIn();
     setZinctItBoolean('calculatedPie', calculatedPie);
   },
   'setZincitRenegotiatedLawyer': function(renegotiatedLawyer){
+    verifyUserIsLoggedIn();
     setZinctItBoolean('renegotiatedLawyer', renegotiatedLawyer);
   },
   'setZincitAmounts': function(upfront, bonus){
+    verifyUserIsLoggedIn();
     updateZincitGame({
       amounts: {
         upfront: checkIntInRange(upfront, 0, 1000),
@@ -66,6 +71,7 @@ Meteor.methods({
     });
   },
   'setZincitLawyerPercents': function(lawyerUpfront, lawyerBonus){
+    verifyUserIsLoggedIn();
     updateZincitGame({
       lawyerAmounts: {
         upfront: checkIntInRange(lawyerUpfront, 0, 100),
@@ -74,14 +80,17 @@ Meteor.methods({
     });
   },
   'setZincitNegotiationTime': function(negotiationTime){
+    verifyUserIsLoggedIn();
     updateZincitGame({
       negotiationTime: checkIntInRange(negotiationTime, 1, 120),
     });
   },
   'calculateZincitOutcome': function(){
+    verifyUserIsLoggedIn();
     updateZincitGame({outcomes: calculateOutcomes()});
   },
   'getZincitOutcomeDistribution': function(){
+    verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       var settings = Games.settings[gameKey];
       var games = GameStatus.find(

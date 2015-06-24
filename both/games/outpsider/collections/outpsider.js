@@ -47,6 +47,7 @@ var calculateOutcomes = function(){
 
 Meteor.methods({
   'setOutpsiderRole': function(role){
+    verifyUserIsLoggedIn();
     check(role, String);
     if (!_.has(Games.settings[gameKey].roles, role)) {
       throw new Meteor.Error(400, 'Bad role!');     
@@ -54,18 +55,23 @@ Meteor.methods({
     updateOutpsiderGame({role: role});
   },
   'setOutpsiderAgreementStatus': function(agreementStatus){
+    verifyUserIsLoggedIn();
     setOutpsiderBoolean('agreementStatus', agreementStatus);
   },
   'setOutpsiderHelenSharedLoss': function(x){
+    verifyUserIsLoggedIn();
     setOutpsiderBoolean('helenSharedLoss', x);
   },
   'setOutpsiderCalculatedPie': function(calculatedPie){
+    verifyUserIsLoggedIn();
     setOutpsiderBoolean('calculatedPie', calculatedPie);
   },
   'setOutpsiderRenegotiatedLawyer': function(renegotiatedLawyer){
+    verifyUserIsLoggedIn();
     setOutpsiderBoolean('renegotiatedLawyer', renegotiatedLawyer);
   },
   'setOutpsiderAmounts': function(upfront, bonus){
+    verifyUserIsLoggedIn();
     updateOutpsiderGame({
       amounts: {
         upfront: checkIntInRange(upfront, 0, 1000),
@@ -74,11 +80,13 @@ Meteor.methods({
     });
   },
   'setOutpsiderNoncashDescription': function(desc){
+    verifyUserIsLoggedIn();
     updateOutpsiderGame({
       noncashDescription: desc
     });
   },
   'setOutpsiderNoncash': function(hadNoncash, noncashDescription, freeAdsStill, numFreePages){
+    verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       var update = {};
       update.hadNoncash = checkBoolean(hadNoncash);
@@ -96,14 +104,17 @@ Meteor.methods({
   },
 
   'setOutpsiderPatPayment': function(x){
+    verifyUserIsLoggedIn();
     updateOutpsiderGame({
       patPayment: checkIntInRange(x, 1, 1000000),
     });
   },
   'calculateOutpsiderOutcome': function(){
+    verifyUserIsLoggedIn();
     updateOutpsiderGame({outcomes: calculateOutcomes()});
   },
   'getOutpsiderOutcomeDistribution': function(){
+    verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       var settings = Games.settings[gameKey];
       var games = GameStatus.find(

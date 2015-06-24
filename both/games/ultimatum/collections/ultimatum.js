@@ -200,6 +200,7 @@ Meteor.methods({
   // Create a new game. There are only two games
   // right now.
   initiateNewGame: function (gameKey) {
+    verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       check(gameKey, String);
 
@@ -224,6 +225,7 @@ Meteor.methods({
     };
   },
   incrementGameStep: function(gameKey, numSteps){
+    verifyUserIsLoggedIn();
     check(gameKey, String);
     if (typeof(numSteps) !== 'undefined') {
       check(numSteps, Match.Integer);
@@ -243,6 +245,7 @@ Meteor.methods({
 
   },
   setUltimatumAmounts: function(a1, a2, round){
+    verifyUserIsLoggedIn();
     check(a1, Match.Integer);
     check(a2, Match.Integer);
     if (a1 < 0 || a1 > 100 || a2 < 0 || a2 > 100) {
@@ -255,6 +258,7 @@ Meteor.methods({
     });
   },
   setRoundDecision: function (decision, round) {
+    verifyUserIsLoggedIn();
     checkRound(round);
     check(decision, String);
     if (decision !== 'accept' && decision !== 'reject') {
@@ -265,6 +269,7 @@ Meteor.methods({
   // Retreive the number of game plays that are internally consistent
   // and inconsistent: that is, those that accept or reject their own offers.
   getNumAcceptingOwn: function(round){
+    verifyUserIsLoggedIn();
     checkRound(round);
     var qtrue = {},
         qfalse = {};
@@ -276,6 +281,7 @@ Meteor.methods({
     }
   },
   getPayoffCDF: function(round){
+    verifyUserIsLoggedIn();
     checkRound(round);
     var playedGames = GameStatus.find({
       key: 'ultimatum',

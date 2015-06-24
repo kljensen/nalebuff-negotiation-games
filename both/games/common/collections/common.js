@@ -1,4 +1,12 @@
 
+verifyUserIsLoggedIn = function(){
+  if (!Meteor.userId()) {
+    throw new Meteor.Error(403, "You must be logged in to do that");
+    return false;
+  }
+  return true;
+}
+
 var median = function(values) {
 
   values.sort( function(a,b) {return a - b;} );

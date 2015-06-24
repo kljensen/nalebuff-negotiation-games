@@ -10,6 +10,7 @@ Router.configure({
   }
 })
 
+
 Router.map(function() {
   var path = '';
   try{
@@ -57,6 +58,14 @@ Router.map(function() {
         settings: Games.settings[this.params.gameKey]
       }
     },
+    onBeforeAction: function() {
+      var user = Meteor.user();
+      if(!user) {
+        this.redirect('index');
+        this.stop();
+      }
+      this.next();
+    }
   });
 
   this.route(pathPrefix, {
@@ -69,7 +78,7 @@ Router.map(function() {
       ];
     },
     onBeforeAction: function() {
-      user = Meteor.user();
+      var user = Meteor.user();
       if(!Roles.userIsInRole(user, ['admin'])) {
         this.redirect('index');
         this.stop();
