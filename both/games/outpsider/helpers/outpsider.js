@@ -109,6 +109,9 @@ if (Meteor.isClient) {
       }else if(game.helenSharedLoss && !game.hadNoncash){
         outcomes.cade = (patPayment - 300000)/2;
         outcomes.helen = outcomes.cade;
+      }else if(!game.helenSharedLoss && game.hadNoncash){
+        outcomes.cade = patPayment + game.numFreePages * 2500 - 40000;
+        outcomes.helen = 1000000;
       }else if(game.helenSharedLoss && game.hadNoncash){
         outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
         outcomes.helen = outcomes.cade;
