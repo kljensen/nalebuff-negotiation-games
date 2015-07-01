@@ -88,7 +88,7 @@ Router.map(function() {
   });
 
   if (Meteor.isServer) {
-    Router.route('ecamm-call-recorder', function () {
+    Router.route('ecamm-call-recorder.zip', function () {
       var url = 'https://www.dropbox.com/s/q822tcjtdkkcrz2/CallRecorderDemo25Day.zip?dl=1';
       this.response.writeHead(302, {
         'Location': url
