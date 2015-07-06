@@ -61,7 +61,7 @@
     {{#each roleOutcomes}}
       <dt>{{name}}</dt>
       <dd>
-        {{>dollars amount=outcome format="0,0"}} {{outcome}}
+        {{>dollars amount=outcome format="0,0"}}
         {{#if ownRole}}
           (your role)
         {{/if}}
@@ -71,13 +71,58 @@
 
   {{#if gameStatus.agreementStatus}}
     <p>
-      The payoff to Pat was based on a valuation of the business at 5 times the cost savings&nbsp;=&nbsp;5&nbsp;*&nbsp;$245,800&nbsp;=&nbsp;$1.229m. (This values the business absent any cost savings at zero.) We needed to put a value on the business to distinguish the payoff from a no deal ($0) and the payoff from hitting your limit $470,000, which still leads to a substantial positive payoff, in this case $1.229m&nbsp;-&nbsp;$470k&nbsp;=&nbsp;$759k. If Pat paid more
-      than $470, Pat's payoff was reduced to -$250k for violating Pat's authority.
-    </p>
+        The payoff to Pat is based on a valuation of the business at
+        $750,000 post tax. Thus, Pat's
+        payoff from paying even his or her limit of $470,000 is
+        $750k&nbsp;–&nbsp;$470k&nbsp;=&nbsp;$280k, which is better
+        than his or her zero payoff from no deal and much, much better than
+        getting fired for paying
+        more than he or she was authorized to do (which we call a –$250k payoff).
+      </p>
+      <p>
+        Absent any cost savings or website, the current business has no
+        value (it has been breaking even). Given the risk involved, Pat
+        estimates the potential value of this deal is $150k from the website
+        plus $1m from the increased revenue and reduced costs or $1.150m
+        in total pretax, $750k post-tax, minus the purchase price.
+      </p>
+
   {{else}}
     <p>
-      While no deal resulted in a 0 payoff to Pat, this is still better than the large negative payment that would have resulted had Pat exceeded his or her authority. Similarly, the fallback deal with Artagis at $1.60/share often leads to a higher payoff to Cade and Helen than a deal with Iceberg.
+      While no deal resulted in a zero payoff to Pat, this is better than
+      the risk of being fired for
+      exceeding his or her authority. Indeed, we assigned a payoff to Pat
+      of –$250k for paying
+      anything more than the authorized amount of $470k.
+
+    </p>
+    <p>
+        Similarly, the fallback deal with Artagis at $1.60/share leads to
+        an $80,000 payoff to Cade and
+        Helen, which is better than the result from a bad deal with Iceberg.
     </p>
   {{/if}}
+
+      <p>
+        To give
+        you some insight into the outcome of your negotiation relative to
+        the rest of class, we compiled statistics for the various roles,
+        below.
+      </p> 
+
+        <dl class="dl-horizontal">
+          {{> zincit_rolestats roleName="Cade Hauber" thisRole="cade" userRole=role mean=outcomeStats.cade.mean deviation=outcomeStats.cade.deviation amount=gameStatus.outcomes.cade}}
+          {{> zincit_rolestats roleName="Helen Gansky" thisRole="helen" userRole=role mean=outcomeStats.helen.mean deviation=outcomeStats.helen.deviation amount=gameStatus.outcomes.helen}}
+          {{> zincit_rolestats roleName="Pat Bennett (Iceberg)" thisRole="pat" userRole=role mean=outcomeStats.pat.mean deviation=outcomeStats.pat.deviation amount=gameStatus.outcomes.pat}}
+        </dl>
+
+      <p>
+        <strong>Answer code</strong>: For students who
+        are taking this course for a certificate, we are using the code
+        below as a way of verifying that you completed this assignment. The
+        correct answer to the Outpsider quiz is “psi1587”. Note that you
+        should not include the quotation marks in your answer.
+      </p>
+
 
 </template>
