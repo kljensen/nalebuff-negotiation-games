@@ -124,7 +124,7 @@ if (Meteor.isClient) {
       outcomes.pat = -250000;
       patViolatedConstraint = true;
     }else{
-      outcomes.pat = 245800*5 - patPayment;
+      outcomes.pat = 750000 - patPayment;
       patViolatedConstraint = false;
     };
     return outcomes;
