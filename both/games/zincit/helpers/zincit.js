@@ -63,6 +63,10 @@ if (Meteor.isClient) {
         return outcomeStats;
       };
       return null;
+    },
+    roleOutcomes: function(){
+      var game = getGameStatus(gameKey);
+      return getRoleOutcomesForGame(game);
     }
   });
 

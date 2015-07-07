@@ -21,29 +21,54 @@ var setOutpsiderBoolean = function(attribute, value){
 
 var calculateOutcomes = function(){
   var outcomes = {
-    sam: 0,
-    hasan: 20,
-    outpsider: 0
+    cade: 80000,
+    helen: 80000,
+    pat: 0
   };
   var game = getGameStatus(gameKey);
-  var lawyerUpfrontAmount = 0;
   var settings = Games.settings[gameKey];
+  var patViolatedConstraint;
   if (game.agreementStatus === false) {
     return outcomes;
   }
 
-  if (game.renegotiatedLawyer) {
-    lawyerUpfrontAmount = game.lawyerAmounts.upfront * game.amounts.upfront / 100;
-    outcomes.sam = lawyerUpfrontAmount + settings.bonusBeliefs.hasan * game.lawyerAmounts.bonus * game.amounts.bonus / 100;
+
+
+  // Main outcome calc
+  // 
+  var patPayment = game.patPayment;
+  var nonCashValue = game.hadNoncash ? game.numFreePages * 2500 : 0;
+  var totalValue = patPayment + nonCashValue;
+  if (totalValue > 500000) {
+    outcomes.cade = settings.numShares.cade * totalValue / settings.numShares.total;
+    outcomes.helen = outcomes.cade;
   }else{
-    lawyerUpfrontAmount = 0.05 * game.amounts.upfront;
-    outcomes.sam = lawyerUpfrontAmount;
+    if (!game.helenSharedLoss && !game.hadNoncash) {
+      outcomes.cade = patPayment - 400000;
+      outcomes.helen = 100000;
+    }else if(game.helenSharedLoss && !game.hadNoncash){
+      outcomes.cade = (patPayment - 300000)/2;
+      outcomes.helen = outcomes.cade;
+    }else if(!game.helenSharedLoss && game.hadNoncash){
+      outcomes.cade = patPayment + game.numFreePages * 2500 - 40000;
+      outcomes.helen = 1000000;
+    }else if(game.helenSharedLoss && game.hadNoncash){
+      outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
+      outcomes.helen = outcomes.cade;
+    };
+    
   };
-  outcomes.hasan = game.amounts.upfront + settings.bonusBeliefs.hasan * game.amounts.bonus - outcomes.sam;
-  outcomes.outpsider = 30 - (game.amounts.upfront + settings.bonusBeliefs.outpsider * game.amounts.bonus);
+
+  // Penalizing Pat
+  if (patPayment > 470000) {
+    outcomes.pat = -250000;
+    patViolatedConstraint = true;
+  }else{
+    outcomes.pat = 750000 - patPayment;
+    patViolatedConstraint = false;
+  };
   return outcomes;
 };
-
 
 Meteor.methods({
   'setOutpsiderRole': function(role){
@@ -111,9 +136,11 @@ Meteor.methods({
   },
   'calculateOutpsiderOutcome': function(){
     verifyUserIsLoggedIn();
+    console.log('updating outcomes!');
     updateOutpsiderGame({outcomes: calculateOutcomes()});
   },
   'getOutpsiderOutcomeDistribution': function(){
+    console.log('in getOutpsiderOutcomeDistribution');
     verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       var settings = Games.settings[gameKey];
@@ -121,9 +148,11 @@ Meteor.methods({
         {key: gameKey, step: {$gte: settings.steps}},
         {fields: {outcomes: 1}}
       ).fetch();
+      console.log('games =', games);
       var distribution = {};
       _.each(_.keys(settings.roles), function(role){
         distribution[role] = getStatisticalMoments(_.map(games, function(g){
+          console.log('g.outcomes =', g.outcomes);
           return g.outcomes[role];
         }));
       });

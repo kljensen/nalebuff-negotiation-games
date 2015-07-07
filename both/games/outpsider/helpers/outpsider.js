@@ -20,9 +20,7 @@ if (Meteor.isClient) {
   };
 
   var getRoles = function(){
-    return _.map(Games.settings[gameKey].roles, function(v, k){
-      return {name: v, key: k}
-    });
+    return getRolesForGame(gameKey);
   };
 
   Template['outpsider-0'].helpers({
@@ -79,56 +77,7 @@ if (Meteor.isClient) {
     this.outcomeStats.set({foo: 'bar'});
   });
 
-  var calculateOutcomes = function(){
-    var outcomes = {
-      cade: 80000,
-      helen: 80000,
-      pat: 0
-    };
-    var game = getGameStatus(gameKey);
-    var settings = Games.settings[gameKey];
-    var patViolatedConstraint;
-    if (game.agreementStatus === false) {
-      return outcomes;
-    }
 
-
-
-    // Main outcome calc
-    // 
-    var patPayment = game.patPayment;
-    var nonCashValue = game.hadNoncash ? game.numFreePages * 2500 : 0;
-    var totalValue = patPayment + nonCashValue;
-    if (totalValue > 500000) {
-      outcomes.cade = settings.numShares.cade * totalValue / settings.numShares.total;
-      outcomes.helen = outcomes.cade;
-    }else{
-      if (!game.helenSharedLoss && !game.hadNoncash) {
-        outcomes.cade = patPayment - 400000;
-        outcomes.helen = 100000;
-      }else if(game.helenSharedLoss && !game.hadNoncash){
-        outcomes.cade = (patPayment - 300000)/2;
-        outcomes.helen = outcomes.cade;
-      }else if(!game.helenSharedLoss && game.hadNoncash){
-        outcomes.cade = patPayment + game.numFreePages * 2500 - 40000;
-        outcomes.helen = 1000000;
-      }else if(game.helenSharedLoss && game.hadNoncash){
-        outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
-        outcomes.helen = outcomes.cade;
-      };
-      
-    };
-
-    // Penalizing Pat
-    if (patPayment > 470000) {
-      outcomes.pat = -250000;
-      patViolatedConstraint = true;
-    }else{
-      outcomes.pat = 750000 - patPayment;
-      patViolatedConstraint = false;
-    };
-    return outcomes;
-  };
 
   Template['outpsider-5'].helpers({
     outcomeStats: function(){
@@ -136,20 +85,45 @@ if (Meteor.isClient) {
         var outcomeStats = Template.instance().outcomeStats.get();
         return outcomeStats;
       };
+      console.log('returning null in outcomeStats/!');
       return null;
     },
     roleOutcomes: function(){
-      var outcomes = calculateOutcomes();
-      console.log('outcomes =', outcomes);
       var game = getGameStatus(gameKey);
-
-      return _.map(getRoles(), function(r){
-        r.outcome = outcomes[r.key];
-        console.log('r.outcome =', r.outcome);
-        r.ownRole = r.key === game.role ? true : false;
-        return r;
-      });
+      return getRoleOutcomesForGame(game);
     }
+  });
+
+  Template['outpsider-5'].onCreated(function(){
+    console.log('woot 0');
+    var dis = this;
+    var game = getGame(gameKey);
+    var wrapper;
+    dis.outcomeStats = new ReactiveVar(null);
+
+
+    if(!_.has(game, 'outcomes')){
+      wrapper = function(cb){
+        return Meteor.call('calculateOutpsiderOutcome', cb);
+      }
+    }else{
+      wrapper = function(cb){
+        return cb();
+      }      
+    }
+    console.log('woot 1');
+    wrapper(function(){
+      console.log('woot 2');
+      Meteor.call('getOutpsiderOutcomeDistribution', function(err, result){
+        console.log('woot 3');
+        console.log('err = ', err);
+        if(typeof(err) === 'undefined'){
+          console.log('woot 4');
+          dis.outcomeStats.set(result);
+        }
+      });
+    });
+
   });
 
 

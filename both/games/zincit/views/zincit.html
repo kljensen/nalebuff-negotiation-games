@@ -95,27 +95,16 @@
   </p>
 
   <dl class="dl-horizontal">
-    <dt>Sam Massey:</dt>
-    <dd>
-      {{>dollars amount=gameStatus.outcomes.sam units="M" format="0,0.00"}}
-      {{#if equals gameStatus.role "sam"}}
-        (your role)
-      {{/if}}
-    </dd>
-    <dt>Dr. Hasan:</dt>
-    <dd>
-      {{>dollars amount=gameStatus.outcomes.hasan units="M" format="0,0.00"}}
-      {{#if equals gameStatus.role "hasan"}}
-        (your role)
-      {{/if}}
-    </dd>
-    <dt>Zincit Rep.:</dt>
-    <dd>
-      {{>dollars amount=gameStatus.outcomes.zincit units="M" format="0,0.00"}}
-      {{#if equals gameStatus.role "zincit"}}
-        (your role)
-      {{/if}}
-    </dd>
+
+    {{#each roleOutcomes}}
+      <dt>{{name}}</dt>
+      <dd>
+        <strong>{{formatNumerals outcome "$0,0.0" "M"}}</strong>
+        {{#if ownRole}}
+          (your role)
+        {{/if}}
+      </dd>
+    {{/each}}
   </dl>
 
   <p>
@@ -126,15 +115,26 @@
 
   {{#if outcomeStats}}
     <dl class="dl-horizontal">
-      {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam}}
-      {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan}}
-      {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit}}
+      {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam meanFormat="$0,0.0" units="M"}}
+      {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan meanFormat="$0,0.0" units="M"}}
+      {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit meanFormat="$0,0.0" units="M"}}
     </dl>
   {{else}}
     <p>
       Calculating stats...
     </p>
   {{/if}}
+
+  <p>
+    <strong>
+      Answer code:
+    </strong>
+    For students who are taking this course for a
+    certificate, we are using the code
+    below as a way of verifying that you completed this assignment. The
+    correct answer to the Zincit quiz is “Zums11235813”. Note that you
+    should not include the quotation marks in your answer.
+  </p>
 </template>
 
 
@@ -142,13 +142,13 @@
   <dt>{{roleName}}:</dt>
   <dd>
     Mean
-    {{>dollars amount=mean units="M"}};
-    Standard deviation: {{>dollars amount=deviation units="M" format="0.00"}}.
+    <strong>{{formatNumerals mean meanFormat units}}</strong>;
+    Standard deviation: <strong>{{formatNumerals deviation deviationFormat units}}</strong>.
     <br>Your outcome:
     {{#if zscore.sameAsMean}}
       the exact same as the mean.
     {{else}}
-      {{formatNumerals zscore.value '0.00'}} standard
+      {{formatNumerals zscore.value zscoreFormat}} standard
       deviations <em>{{zscore.direction}}</em> than the mean.
     {{/if}}
   </dd>

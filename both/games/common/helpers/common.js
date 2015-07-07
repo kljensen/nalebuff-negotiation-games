@@ -50,6 +50,20 @@ if (Meteor.isClient) {
     return gameStatus ? gameStatus.step: 0;
   }
 
+  getRolesForGame = function(gameKey){
+    return _.map(Games.settings[gameKey].roles, function(v, k){
+      return {name: v, key: k}
+    });
+  };
+
+  getRoleOutcomesForGame = function(game){
+    return _.map(getRolesForGame(game.key), function(r){
+      r.outcome = game.outcomes[r.key];
+      r.ownRole = r.key === game.role ? true : false;
+      return r;
+    });
+  }
+
   Template.genericGameLayout.helpers({
     gameName: function(){
       var gameKey = Template.instance().data.gameKey;

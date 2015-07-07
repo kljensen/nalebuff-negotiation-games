@@ -10,8 +10,12 @@ Template.registerHelper('toFixed', function (a, b) {
       return a.toFixed(b);
 });
 
-Template.registerHelper('formatNumerals', function (num, format) {
-  return numeral(num).format(format);
+Template.registerHelper('formatNumerals', function (num, format, units) {
+  var retval = numeral(num).format(format);
+  if (typeof(units) === 'string') {
+    retval += units;
+  };
+  return retval
 });
 
 
