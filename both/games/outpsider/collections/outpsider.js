@@ -50,14 +50,14 @@ var calculateOutcomes = function(){
       outcomes.cade = (patPayment - 300000)/2;
       outcomes.helen = outcomes.cade;
     }else if(!game.helenSharedLoss && game.hadNoncash){
-      outcomes.cade = patPayment + game.numFreePages * 2500 - 40000;
-      outcomes.helen = 1000000;
+      outcomes.cade = patPayment + nonCashValue  - 40000;
+      outcomes.helen = 100000;
     }else if(game.helenSharedLoss && game.hadNoncash){
-      outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
+      outcomes.cade = (patPayment + nonCashValue - 300000)/2;
       outcomes.helen = outcomes.cade;
     };
-
   };
+  console.log('outcomes =', outcomes);
 
   // Penalizing Pat
   if (patPayment > 470000) {
