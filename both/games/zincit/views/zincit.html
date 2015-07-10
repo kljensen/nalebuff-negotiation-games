@@ -99,7 +99,7 @@
     {{#each roleOutcomes}}
       <dt>{{name}}</dt>
       <dd>
-        <strong>{{formatNumerals outcome "$0,0.0" "M"}}</strong>
+        <strong>{{formatNumerals outcome "$0,0.00" "M"}}</strong>
         {{#if ownRole}}
           (your role)
         {{/if}}
@@ -109,7 +109,7 @@
 
   <p>
     In order to give you some insight into the outcome of
-    your negotiation relative to the rest of class, we 
+    your negotiation relative to the rest of class, we
     compiled statistics for the various roles, below.
   </p>
 
