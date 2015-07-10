@@ -44,13 +44,13 @@ var calculateOutcomes = function(){
     outcomes.helen = outcomes.cade;
   }else{
     if (!game.helenSharedLoss && !game.hadNoncash) {
-      outcomes.cade = patPayment - 40000;
+      outcomes.cade = patPayment - 400000;
       outcomes.helen = 100000;
     }else if(game.helenSharedLoss && !game.hadNoncash){
       outcomes.cade = (patPayment - 300000)/2;
       outcomes.helen = outcomes.cade;
     }else if(!game.helenSharedLoss && game.hadNoncash){
-      outcomes.cade = patPayment + nonCashValue  - 40000;
+      outcomes.cade = patPayment + nonCashValue  - 400000;
       outcomes.helen = 100000;
     }else if(game.helenSharedLoss && game.hadNoncash){
       outcomes.cade = (patPayment + nonCashValue - 300000)/2;
