@@ -35,7 +35,7 @@ var calculateOutcomes = function(){
 
 
   // Main outcome calc
-  // 
+  //
   var patPayment = game.patPayment;
   var nonCashValue = game.hadNoncash ? game.numFreePages * 2500 : 0;
   var totalValue = patPayment + nonCashValue;
@@ -44,7 +44,7 @@ var calculateOutcomes = function(){
     outcomes.helen = outcomes.cade;
   }else{
     if (!game.helenSharedLoss && !game.hadNoncash) {
-      outcomes.cade = patPayment - 400000;
+      outcomes.cade = patPayment - 40000;
       outcomes.helen = 100000;
     }else if(game.helenSharedLoss && !game.hadNoncash){
       outcomes.cade = (patPayment - 300000)/2;
@@ -56,7 +56,7 @@ var calculateOutcomes = function(){
       outcomes.cade = (patPayment + game.numFreePages * 2500 - 300000)/2;
       outcomes.helen = outcomes.cade;
     };
-    
+
   };
 
   // Penalizing Pat
@@ -75,7 +75,7 @@ Meteor.methods({
     verifyUserIsLoggedIn();
     check(role, String);
     if (!_.has(Games.settings[gameKey].roles, role)) {
-      throw new Meteor.Error(400, 'Bad role!');     
+      throw new Meteor.Error(400, 'Bad role!');
     };
     updateOutpsiderGame({role: role});
   },
@@ -100,7 +100,7 @@ Meteor.methods({
     updateOutpsiderGame({
       amounts: {
         upfront: checkIntInRange(upfront, 0, 1000),
-        bonus: checkIntInRange(bonus, 0, 1000)        
+        bonus: checkIntInRange(bonus, 0, 1000)
       }
     });
   },
@@ -157,7 +157,7 @@ Meteor.methods({
         }));
       });
       console.log('distribution =', distribution);
-      return distribution;      
+      return distribution;
     };
   }
 });
