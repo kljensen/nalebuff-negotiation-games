@@ -16,8 +16,8 @@ var setZinctItBoolean = function(attribute, value){
 
 var calculateOutcomes = function(){
   var outcomes = {
-    sam: 0.05 * 20,
-    hasan: 20,
+    sam: 1, // 0.5 * 20
+    hasan: 19, // 20 - (0.5 * 20)
     zincit: 0
   };
   var game = getGameStatus(gameKey);
