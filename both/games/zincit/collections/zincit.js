@@ -16,7 +16,7 @@ var setZinctItBoolean = function(attribute, value){
 
 var calculateOutcomes = function(){
   var outcomes = {
-    sam: 0,
+    sam: 0.05 * 20,
     hasan: 20,
     zincit: 0
   };
@@ -45,7 +45,7 @@ Meteor.methods({
     verifyUserIsLoggedIn();
     check(role, String);
     if (!_.has(Games.settings[gameKey].roles, role)) {
-      throw new Meteor.Error(400, 'Bad role!');     
+      throw new Meteor.Error(400, 'Bad role!');
     };
     updateZincitGame({role: role});
   },
@@ -66,7 +66,7 @@ Meteor.methods({
     updateZincitGame({
       amounts: {
         upfront: checkIntInRange(upfront, 0, 1000),
-        bonus: checkIntInRange(bonus, 0, 1000)        
+        bonus: checkIntInRange(bonus, 0, 1000)
       }
     });
   },
@@ -75,7 +75,7 @@ Meteor.methods({
     updateZincitGame({
       lawyerAmounts: {
         upfront: checkIntInRange(lawyerUpfront, 0, 100),
-        bonus: checkIntInRange(lawyerBonus, 0, 100)        
+        bonus: checkIntInRange(lawyerBonus, 0, 100)
       }
     });
   },
@@ -104,7 +104,7 @@ Meteor.methods({
         }));
       });
       console.log('distribution =', distribution);
-      return distribution;      
+      return distribution;
     };
   }
 });
