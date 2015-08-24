@@ -26,7 +26,7 @@ Games = {
       roles: {
         cade: 'Cade Hauber',
         helen: 'Helen Ganske',
-        pat: 'Pat Bennett'        
+        pat: 'Pat Bennett'
       },
       numShares: {
         cade: 50000,
@@ -60,7 +60,7 @@ var setRoundData = function (key, data) {
       {$set: set}
   );
   if (results !== 1) {
-    throw new Meteor.Error(400, 'Bad request!');      
+    throw new Meteor.Error(400, 'Bad request!');
   };
 }
 Games.allowedGames = allowedGames;
@@ -123,7 +123,7 @@ var payoffCDF = function(player1amounts, player2amounts){
   var player2CDF = newArray();
   populateCDF(player2amounts, player2CDF);
 
-  // The payoff for player2 at each i. Player2 is 
+  // The payoff for player2 at each i. Player2 is
   // paid if player1 would have offered more than
   // they demanded. They receive player1's offer
   // in the case that player1's offer is more than
@@ -141,7 +141,7 @@ var payoffCDF = function(player1amounts, player2amounts){
   // Keep a running sum so we can take an average
   var runningSum = 0;
 
-  // Working backwards from 100 and backwards from the 
+  // Working backwards from 100 and backwards from the
   // max player1 offer.
   for (var i = player2payoffs.length - 1; i >= 0; i--) {
 
@@ -221,7 +221,7 @@ Meteor.methods({
         console.log('Added GameStatus:', id);
       }else{
         console.log('Alreay have GameStatus');
-      };      
+      };
     };
   },
   incrementGameStep: function(gameKey, numSteps){
@@ -291,11 +291,17 @@ Meteor.methods({
     var player1amounts = [];
     var player2amounts = [];
     for (var i = playedGames.length - 1; i >= 0; i--) {
-      player1amounts.push(playedGames[i].rounds[round].amounts.player1);
-      player2amounts.push(playedGames[i].rounds[round].amounts.player2);
+      try {
+        player1amount = playedGames[i].rounds[round].amounts.player1;
+        player2amount = playedGames[i].rounds[round].amounts.player2;
+      } catch (e) {
+          continue;
+      }
+      player1amounts.push(player1amount);
+      player2amounts.push(player2amount);
     };
 
     return payoffCDF(player1amounts, player2amounts);
-  },  
+  },
 
 });
