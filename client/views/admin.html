@@ -37,13 +37,14 @@
         {{> _admin_game_table_row}}
       {{/each}}
     </tbody>
-  </table> 
+  </table>
 </template>
 
 <template name="_admin_game_table_row">
   <tr>
     <td  class="user-game-status">
       {{> _admin_game_table_user}}
+      {{> _admin_game_table_game_details_modal}}
     </td>
     <td  class="user-game-status">
       {{key}}
@@ -52,6 +53,10 @@
       {{step}}
     </td>
     <td  class="user-game-status">
+      <button class="btn btn-default" type="submit" data-toggle="modal" data-target="#game-{{_id}}-modal">
+        See details
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+      </button>
       <button class="btn btn-default reset-game" type="submit">
         Reset
         <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
@@ -63,6 +68,29 @@
 
     </td>
   </tr>
+</template>
+
+
+<template name="_admin_game_table_game_details_modal">
+  <div class="modal" id="game-{{_id}}-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:1500">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Game details</h4>
+      </div>
+      <div class="modal-body">
+<pre>
+<code>
+{{{gameData}}}
+</code>
+</pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <template name="_admin_game_table_user">

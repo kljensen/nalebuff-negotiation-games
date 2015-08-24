@@ -30,3 +30,8 @@ Template._admin_game_table_user.helpers({
   }
 });
 
+Template._admin_game_table_game_details_modal.helpers({
+  gameData: function(){
+    return JSON.stringify(this, ' ', 2);
+  }
+})

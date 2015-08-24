@@ -33,11 +33,11 @@
 
   "component-animations": false,
   "dropdowns":            false,
-  "modals":               false,
+  "modals":               true,
   "tooltip":              false,
-  "popovers":             false,
+  "popovers":             true,
   "carousel":             false,
-  
+
   "affix":                false,
   "alert":                false,
   "button":               false,
