@@ -115,9 +115,9 @@
 
   {{#if outcomeStats}}
     <dl class="dl-horizontal">
-      {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam meanFormat="$0,0.0" units="M"}}
-      {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan meanFormat="$0,0.0" units="M"}}
-      {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit meanFormat="$0,0.0" units="M"}}
+      {{> zincit_rolestats roleName="Sam Massey" thisRole="sam" userRole=role mean=outcomeStats.sam.mean deviation=outcomeStats.sam.deviation amount=gameStatus.outcomes.sam meanFormat="$0,0.0"  deviationFormat="$0,0.0" units="M"}}
+      {{> zincit_rolestats roleName="Dr. Hasan" thisRole="hasan" userRole=role mean=outcomeStats.hasan.mean deviation=outcomeStats.hasan.deviation amount=gameStatus.outcomes.hasan meanFormat="$0,0.0"  deviationFormat="$0,0.0" units="M"}}
+      {{> zincit_rolestats roleName="Zincit Rep." thisRole="zincit" userRole=role mean=outcomeStats.zincit.mean deviation=outcomeStats.zincit.deviation amount=gameStatus.outcomes.zincit meanFormat="$0,0.0"  deviationFormat="$0,0.0" units="M"}}
     </dl>
   {{else}}
     <p>
