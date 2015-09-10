@@ -45,7 +45,7 @@ if (Meteor.isClient) {
     }else{
       wrapper = function(cb){
         return cb();
-      }      
+      }
     }
     wrapper(function(){
       Meteor.call('getZincitOutcomeDistribution', function(err, result){
@@ -122,9 +122,9 @@ if (Meteor.isClient) {
     'click button.nextStep.zincit-2': function(e){
       var upfront = parseInt($('input#upfront').val());
       var bonus = parseInt($('input#bonus').val());
-      if (upfront > 0 && bonus > 0 && noErrorDiv()) {
+      if (upfront >= 0 && bonus >= 0 && noErrorDiv()) {
         Meteor.call('setZincitAmounts', upfront, bonus, function(){
-          Meteor.call('incrementGameStep', gameKey);        
+          Meteor.call('incrementGameStep', gameKey);
         });
       }else{
       }
@@ -133,7 +133,7 @@ if (Meteor.isClient) {
       var negotiationTime = parseInt($('input#negotiationTime').val());
       if (negotiationTime > 0 && negotiationTime <= 120 && noErrorDiv()) {
         Meteor.call('setZincitNegotiationTime', negotiationTime, function(){
-          Meteor.call('incrementGameStep', gameKey);        
+          Meteor.call('incrementGameStep', gameKey);
         });
       }else{
       }
@@ -149,7 +149,7 @@ if (Meteor.isClient) {
       var lawyerBonus = parseInt($('input#lawyerBonus').val());
       if (lawyerUpfront > 0 && lawyerBonus > 0 && noErrorDiv()) {
         Meteor.call('setZincitLawyerPercents', lawyerUpfront, lawyerBonus, function(){
-          Meteor.call('incrementGameStep', gameKey);        
+          Meteor.call('incrementGameStep', gameKey);
         });
       }else{
       }
