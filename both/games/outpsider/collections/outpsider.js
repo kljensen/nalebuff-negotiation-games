@@ -119,7 +119,7 @@ Meteor.methods({
         check(noncashDescription, String);
         update.noncashDescription = noncashDescription;
         update.freeAdsStill = checkBoolean(freeAdsStill);
-        if (freeAdsStill) {
+        if (freeAdsStill === true) {
           update.numFreePages = checkIntInRange(numFreePages, 1, 36)
         };
       };
