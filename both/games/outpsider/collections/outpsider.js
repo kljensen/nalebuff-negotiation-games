@@ -119,11 +119,12 @@ Meteor.methods({
         check(noncashDescription, String);
         update.noncashDescription = noncashDescription;
         update.freeAdsStill = checkBoolean(freeAdsStill);
-        if (freeAdsStill === true) {
+        if (update.freeAdsStill) {
           update.numFreePages = checkIntInRange(numFreePages, 1, 36)
+        }else{
+          update.numFreePages = 0;
         };
       };
-      console.log('updating outpsider game with ', update);
       updateOutpsiderGame(update);
     };
   },

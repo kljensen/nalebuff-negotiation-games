@@ -32,7 +32,7 @@ if (Meteor.isClient) {
       var game = getGame(gameKey);
       if (game[attribute] === false) {
         Meteor.call('incrementGameStep', gameKey);
-      };      
+      };
     }
   };
 
@@ -109,7 +109,7 @@ if (Meteor.isClient) {
     }else{
       wrapper = function(cb){
         return cb();
-      }      
+      }
     }
     console.log('woot 1');
     wrapper(function(){
@@ -153,9 +153,13 @@ if (Meteor.isClient) {
       var hadNoncash = $('input[name="hadNoncash"]:checked').val();
       if (hadNoncash === 'yes') {
         noncashDescription = $('textarea#noncashDescription').val();
-        freeAdsStill = $('input[name="hadNoncash"]').val();
+        freeAdsStill = $('input[name="freeAdsStill"]:checked').val();
         numFreePages = parseInt($('input[name="numFreePages"]').val());
+        if (_.isNaN(numFreePages)) {
+          numFreePages = 0;
+        }
       };
+      console.log('freeAdsStill =', freeAdsStill);
       if (noErrorDiv()) {
         console.log('noErrorDiv!');
         Meteor.call(
