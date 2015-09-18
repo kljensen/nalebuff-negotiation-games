@@ -6,6 +6,25 @@ Template.admin.helpers({
   }
 });
 
+function getHash(href) {
+  var parser = document.createElement('a');
+  parser.href = href;
+  return parser.hash;
+}
+
+Template.admin.events({
+  'click a.deeplink':function(e,tmpl) {
+      e.preventDefault();
+      var hash = getHash(e.target.href);
+      var el = $('a[name=' + hash.slice(1) +']');
+      if (el) {
+        $('html, body').animate({
+            scrollTop: el.offset().top
+        }, 600);
+      }
+   }
+});
+
 Template._admin_game_table.helpers({
   games: function(){
     var games = GameStatus.find({key: Template.instance().data.key});
