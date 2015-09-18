@@ -20,7 +20,8 @@ var median = function(values) {
   }
 };
 
-getStatisticalMoments = function(a) {
+getStatisticalMoments = function(b) {
+  var a = _.filter(b, function(v){return _.isNumber(v) && !_.isNaN(v)});
   var r = {mean: 0, variance: 0, deviation: 0}, t = a.length;
   r.median = median(a);
   if (a.length === 0) {
@@ -46,7 +47,7 @@ getGameStatus = function(gameKey){
 checkIntInRange = function(x, min, max){
   check(x, Match.Integer);
   if (!(x >= min && x <= max)) {
-    throw new Meteor.Error(400, 'Bad value: ' + x);      
+    throw new Meteor.Error(400, 'Bad value: ' + x);
   };
   return parseInt(x);
 }
@@ -64,7 +65,7 @@ callMethodWithNumber = function(gameKey, selector, min, max, methodName){
   var value = parseInt($(selector).val());
   if (value >= min && value <= max && noErrorDiv()) {
     Meteor.call(methodName, value, function(){
-      Meteor.call('incrementGameStep', gameKey);        
+      Meteor.call('incrementGameStep', gameKey);
     });
   }else{
     console.log('Bad number for "', selector, '": ', value);
@@ -75,7 +76,7 @@ callMethodWithString = function(gameKey, selector, minLength, maxLength, methodN
   var value = $(selector).val();
   if (value.length >= minLength && value.length <= maxLength && noErrorDiv()) {
     Meteor.call(methodName, value, function(){
-      Meteor.call('incrementGameStep', gameKey);        
+      Meteor.call('incrementGameStep', gameKey);
     });
   }else{
     console.log('Bad string for "', selector, '": ', value);
