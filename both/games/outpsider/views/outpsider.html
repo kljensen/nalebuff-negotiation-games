@@ -86,6 +86,11 @@
         plus $1m from the increased revenue and reduced costs or $1.150m
         in total pretax, $750k post-tax, minus the purchase price.
       </p>
+      {{#if gameStatus.hadNoncash}}
+        <p>Please note, we are not able to quantify non-cash
+          benefits other than free ad pages.
+        </p>
+      {{/if}}
 
   {{else}}
     <p>
@@ -108,7 +113,7 @@
       you some insight into the outcome of your negotiation relative to
       the rest of class, we compiled statistics for the various roles,
       below.
-    </p> 
+    </p>
 
     {{#if outcomeStats}}
       <dl class="dl-horizontal">
