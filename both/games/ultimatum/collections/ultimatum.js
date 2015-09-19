@@ -237,12 +237,20 @@ Meteor.methods({
     if (!_.has(allowedGames, gameKey)) {
       throw new Meteor.Error(400, 'Bad request!');
     };
-    var result = GameStatus.upsert(
-      {key: gameKey, userId: Meteor.userId()},
-      {$inc: {step: numSteps}}
-    );
-    console.log('Increment GameStatus step with result', result);
-
+    var settings = Games.settings[gameKey];
+    var gs = getGameStatus(gameKey);
+    if (!gs || !settings) {
+      throw new Meteor.Error(404, 'Not found');
+    }
+    var newStepNumber = Math.min(gs.step + numSteps, settings.steps);
+    if(newStepNumber === gs.step){
+      console.log('Already at this step')
+    }else{
+      GameStatus.update(
+        {_id: gs._id},
+        {$set: {step: newStepNumber}}
+      );
+    }
   },
   setUltimatumAmounts: function(a1, a2, round){
     verifyUserIsLoggedIn();
