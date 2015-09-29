@@ -39,10 +39,10 @@ Meteor.methods({
       throw new Meteor.Error(400, 'price is out of range');
     };
     if (game.direction === 'more' && price < game.randomNumber) {
-      throw new Meteor.Error(400, 'price lower than min');      
+      throw new Meteor.Error(400, 'price lower than min');
     };
     if (game.direction === 'less' && price > game.randomNumber) {
-      throw new Meteor.Error(400, 'price higher than max');      
+      throw new Meteor.Error(400, 'price higher than max');
     };
     GameStatus.update({_id: game._id}, {$set: {price: price}});
   },
@@ -56,13 +56,12 @@ Meteor.methods({
       {min: 750, max: 1000, prices: []}
     ];
     for (var i = games.length - 1; i >= 0; i--) {
-      if(!_.has(games[i], 'price')){
+      if(!_.has(games[i], 'price') || !_.has(games[i], 'randomNumber')){
         continue;
       }
-      var price = games[i].price;
       for (var j = ranges.length - 1; j >= 0; j--) {
-        if (price > ranges[j].min && price <= ranges[j].max) {
-          ranges[j].prices.push(price);
+        if (games[i].randomNumber > ranges[j].min && games[i].randomNumber <= ranges[j].max) {
+          ranges[j].prices.push(games[i].price);
           break;
         };
       };
