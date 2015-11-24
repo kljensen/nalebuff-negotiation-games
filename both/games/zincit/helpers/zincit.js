@@ -147,7 +147,7 @@ if (Meteor.isClient) {
    'click button.nextStep.zincit-6': function(e){
       var lawyerUpfront = parseInt($('input#lawyerUpfront').val());
       var lawyerBonus = parseInt($('input#lawyerBonus').val());
-      if (lawyerUpfront > 0 && lawyerBonus > 0 && noErrorDiv()) {
+      if (lawyerUpfront >= 0 && lawyerBonus >= 0 && noErrorDiv()) {
         Meteor.call('setZincitLawyerPercents', lawyerUpfront, lawyerBonus, function(){
           Meteor.call('incrementGameStep', gameKey);
         });
