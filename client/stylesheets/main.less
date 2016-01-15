@@ -11,24 +11,24 @@ body {
 
   /* Background image is centered vertically and horizontally at all times */
   background-position: center center;
-  
+
   /* Background image doesn't tile */
   background-repeat: no-repeat;
-  
-  /* Background image is fixed in the viewport so that it doesn't move when 
+
+  /* Background image is fixed in the viewport so that it doesn't move when
      the content's height is greater than the image's height */
   background-attachment: fixed;
-  
+
   /* This is what makes the background image rescale based
      on the container's size */
-  -webkit-background-size: 100%; 
-  -moz-background-size: 100%; 
-  -o-background-size: 100%; 
-  background-size: 100%; 
-  -webkit-background-size: cover; 
-  -moz-background-size: cover; 
-  -o-background-size: cover; 
-  background-size: cover;	
+  -webkit-background-size: 100%;
+  -moz-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   background-color: #282828;
 }
 
@@ -59,7 +59,7 @@ body.cover-bg{
 	  only screen and (-o-min-device-pixel-ratio: 2/1),
 	  only screen and (min-device-pixel-ratio: 2),
 	  only screen and (min-resolution: 192dpi),
-	  only screen and (min-resolution: 2dppx) { 
+	  only screen and (min-resolution: 2dppx) {
 	  /* styles for Retina-type displays */
 	body.cover-bg{
 	  .cover('splash-lg.jpg');
@@ -157,4 +157,14 @@ section.next{
 	padding:1em;
 	color:#eee;
 	margin-top:2em;
+}
+
+.cas-login{
+	margin-top: 1em;
+  background: #F5F091;
+  border: 1px solid #222;
+  color: #555;
+  font-size: 16px;
+  font-weight: normal;
+  padding: 4px 20px 4px 20px;
 }
