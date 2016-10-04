@@ -4,12 +4,12 @@ if (Meteor.isClient) {
 
   var getSettings = function(){
     return Games.settings[gameKey];
-  }
+  };
 
   Template['zincit-0'].helpers({
     roles: function(){
       return _.map(Games.settings[gameKey].roles, function(v, k){
-        return {name: v, key: k}
+        return {name: v, key: k};
       });
     }
   });
@@ -23,13 +23,13 @@ if (Meteor.isClient) {
     var game = getGame(gameKey);
     if (game.renegotiatedLawyer === false) {
       Meteor.call('incrementGameStep', gameKey);
-    };
+    }
   };
   Template['zincit-2'].created = function(){
     var game = getGame(gameKey);
     if (game.agreementStatus === false) {
       Meteor.call('incrementGameStep', gameKey);
-    };
+    }
   };
   Template['zincit-7'].onCreated(function(){
     var dis = this;
@@ -41,11 +41,11 @@ if (Meteor.isClient) {
     if(!_.has(game, 'outcomes')){
       wrapper = function(cb){
         return Meteor.call('calculateZincitOutcome', cb);
-      }
+      };
     }else{
       wrapper = function(cb){
         return cb();
-      }
+      };
     }
     wrapper(function(){
       Meteor.call('getZincitOutcomeDistribution', function(err, result){
@@ -61,7 +61,7 @@ if (Meteor.isClient) {
       if (_.has(Template.instance(), 'outcomeStats')) {
         var outcomeStats = Template.instance().outcomeStats.get();
         return outcomeStats;
-      };
+      }
       return null;
     },
     roleOutcomes: function(){
@@ -80,12 +80,12 @@ if (Meteor.isClient) {
       var direction;
       if (deviation !== 0) {
         zscore = (amount - mean) / deviation;
-      };
+      }
       if(zscore < 0){
         direction = 'less';
       }else{
         direction = 'more';
-      };
+      }
       if(deviation === 0 || zscore === 0){
         sameAsMean = true;
       }
@@ -101,7 +101,7 @@ if (Meteor.isClient) {
     if (!err) {
       Meteor.call('incrementGameStep', gameKey);
     }else{
-    };
+    }
   };
 
   var callMethodWithValue = function(inputName, methodName){
@@ -122,7 +122,7 @@ if (Meteor.isClient) {
     'click button.nextStep.zincit-2': function(e){
       var upfront = parseInt($('input#upfront').val());
       var bonus = parseInt($('input#bonus').val());
-      if (upfront >= 0 && bonus >= 0 && noErrorDiv()) {
+      if (upfront >= -100 && bonus >= 0 && noErrorDiv()) {
         Meteor.call('setZincitAmounts', upfront, bonus, function(){
           Meteor.call('incrementGameStep', gameKey);
         });
@@ -156,4 +156,4 @@ if (Meteor.isClient) {
     },
   });
 
-};
+}

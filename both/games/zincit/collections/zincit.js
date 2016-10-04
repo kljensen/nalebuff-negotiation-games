@@ -65,7 +65,7 @@ Meteor.methods({
     verifyUserIsLoggedIn();
     updateZincitGame({
       amounts: {
-        upfront: checkIntInRange(upfront, 0, 1000),
+        upfront: checkIntInRange(upfront, -100, 1000),
         bonus: checkIntInRange(bonus, 0, 1000)
       }
     });
@@ -105,6 +105,6 @@ Meteor.methods({
       });
       console.log('distribution =', distribution);
       return distribution;
-    };
+    }
   }
 });
