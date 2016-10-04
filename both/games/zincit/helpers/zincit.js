@@ -122,7 +122,7 @@ if (Meteor.isClient) {
     'click button.nextStep.zincit-2': function(e){
       var upfront = parseInt($('input#upfront').val());
       var bonus = parseInt($('input#bonus').val());
-      if (upfront >= -100 && bonus >= 0 && noErrorDiv()) {
+      if (upfront >= -50 && bonus >= 0 && noErrorDiv()) {
         Meteor.call('setZincitAmounts', upfront, bonus, function(){
           Meteor.call('incrementGameStep', gameKey);
         });

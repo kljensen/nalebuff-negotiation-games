@@ -37,7 +37,7 @@
     </p>
 
     <form >
-      {{> numberFormGroup label='What is your "upfront" payment?' help="(Please enter a number -100-100)" name="upfront" min=-100 max=100}}
+      {{> numberFormGroup label='What is your "upfront" payment?' help="(Please enter a number up to 100)" name="upfront" min=-50 max=100}}
       {{> numberFormGroup label='What is your "bonus" payment?' help="(Please enter a number 0-100)" name="bonus" min=0 max=100}}
     </form>
   {{else}}
