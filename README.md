@@ -10,7 +10,7 @@ Where settings.json has something like
 ```
 {
   "coursera": {
-    "clientID": "YmBCGtmEqIgSRn75bA",
+    "clientId": "YmBCGtmEqIgSRn75bA",
     "secret" : "bVK28sdfsdfsdfPmtlkjsdvnWVVaw"
   },
   "public": {
@@ -19,3 +19,5 @@ Where settings.json has something like
 }
 ```
 
+The coursera clientID is obtained from the
+[coursera console](https://accounts.coursera.org/console).
