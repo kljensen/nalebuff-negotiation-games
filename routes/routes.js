@@ -1,21 +1,19 @@
 Router.configure({
   layoutTemplate: 'layout',
-  waitOn: function(){
-      return [
-      ]
+  waitOn: function () {
+    return []
   },
-  data: function(){
-    return {
-    }
+  data: function () {
+    return {}
   }
 })
 
 
-Router.map(function() {
+Router.map(function () {
   var path = '';
-  try{
+  try {
     pathPrefix = Meteor.settings.public.pathPrefix;
-  }catch (e){
+  } catch (e) {
     pathPrefix = '';
   }
 
@@ -23,20 +21,19 @@ Router.map(function() {
     path: pathPrefix,
     template: 'index',
     name: 'index',
-    waitOn: function() {
-      return [
-      ];
+    waitOn: function () {
+      return [];
     },
-    data: function(){
+    data: function () {
       return {
-          splash: true
+        splash: true
       }
     },
-    onBeforeAction: function() {
+    onBeforeAction: function () {
       $('body').addClass('cover-bg');
       this.next();
     },
-    onStop: function() {
+    onStop: function () {
       $('body').removeClass('cover-bg');
     },
   });
@@ -46,21 +43,21 @@ Router.map(function() {
     path: pathPrefix + 'games/' + ':gameKey',
     template: 'genericGameLayout',
     name: 'game',
-    waitOn: function() {
+    waitOn: function () {
       return [
         Meteor.subscribe('game-status', this.params.gameKey)
       ];
     },
-    data: function(){
+    data: function () {
       return {
         gameKey: this.params.gameKey,
         gameStatus: GameStatus.findOne(),
         settings: Games.settings[this.params.gameKey]
       }
     },
-    onBeforeAction: function() {
+    onBeforeAction: function () {
       var user = Meteor.user();
-      if(!user) {
+      if (!user) {
         this.redirect('index');
         this.stop();
       }
@@ -72,14 +69,14 @@ Router.map(function() {
     path: pathPrefix + 'admin',
     template: 'admin',
     name: 'admin',
-    waitOn: function() {
+    waitOn: function () {
       return [
         Meteor.subscribe('admin-data')
       ];
     },
-    onBeforeAction: function() {
+    onBeforeAction: function () {
       var user = Meteor.user();
-      if(!Roles.userIsInRole(user, ['admin'])) {
+      if (!Roles.userIsInRole(user, ['admin'])) {
         this.redirect('index');
         this.stop();
       }
@@ -95,7 +92,9 @@ Router.map(function() {
       });
       this.response.end();
 
-    }, {where: 'server'});
+    }, {
+      where: 'server'
+    });
   };
 
 });
