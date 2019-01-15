@@ -39,26 +39,28 @@ Games = {
 }
 
 var allowedGames = {};
-_.each(_.keys(Games.settings), function(k){
+_.each(_.keys(Games.settings), function (k) {
   allowedGames[k] = true;
 });
 
 console.log(allowedGames);
 
 var checkRound = function (round) {
-    check(round, Match.Integer);
-    if (round < 0 || round > 1) {
-      throw new Meteor.Error(500, 'Bad data!');
-    };
+  check(round, Match.Integer);
+  if (round < 0 || round > 1) {
+    throw new Meteor.Error(500, 'Bad data!');
+  };
 }
 
 var setRoundData = function (key, data) {
   var set = {};
   set[key] = data;
-  var results = GameStatus.update(
-      {key: 'ultimatum', userId: Meteor.userId() },
-      {$set: set}
-  );
+  var results = GameStatus.update({
+    key: 'ultimatum',
+    userId: Meteor.userId()
+  }, {
+    $set: set
+  });
   if (results !== 1) {
     throw new Meteor.Error(400, 'Bad request!');
   };
@@ -67,7 +69,7 @@ Games.allowedGames = allowedGames;
 Games.checkRound = checkRound;
 Games.setRoundData = setRoundData;
 
-var populateCDF = function(x, y){
+var populateCDF = function (x, y) {
   // Overwrites the y array. Assumes the values of x are =
   // less than the length of y!
 
@@ -82,21 +84,21 @@ var populateCDF = function(x, y){
   for (var i = 0; i < y.length; i++) {
     y[i] /= x.length;
     if (i > 0) {
-      y[i] += y[i-1];
+      y[i] += y[i - 1];
     };
   };
 }
 
 
-var payoffCDF = function(player1amounts, player2amounts){
+var payoffCDF = function (player1amounts, player2amounts) {
 
   if (player1amounts.length !== player2amounts.length) {
     throw new Meteor.Error(400, 'bad array lengths!');
   };
   var numPlayers = player1amounts.length;
 
-  function newArray () {
-    return Array.apply(null, new Array(101)).map(Number.prototype.valueOf,0);
+  function newArray() {
+    return Array.apply(null, new Array(101)).map(Number.prototype.valueOf, 0);
   }
 
   // An array where player2CDF[i] is the cumulative probability
@@ -132,7 +134,7 @@ var payoffCDF = function(player1amounts, player2amounts){
   var player2payoffs = newArray();
 
   // Working from the largest player1 amounts to the smallest
-  var sortedPlayer1amounts = player1amounts.concat().sort(function(a,b){
+  var sortedPlayer1amounts = player1amounts.concat().sort(function (a, b) {
     return a - b;
   });
 
@@ -156,15 +158,15 @@ var payoffCDF = function(player1amounts, player2amounts){
         // Of course, there is no value to copy if
         // we're at 100.
         player2payoffs[i] = 0
-      }else{
-        player2payoffs[i] = player2payoffs[i+1];
+      } else {
+        player2payoffs[i] = player2payoffs[i + 1];
       };
 
-    }else if (j >= 0){
+    } else if (j >= 0) {
 
       // If the current amount is equal to the max
       // offer, add those to the running sum.
-      while(j >= 0 && i === sortedPlayer1amounts[j]){
+      while (j >= 0 && i === sortedPlayer1amounts[j]) {
         console.log('adding ', i, 'to running sum');
         runningSum += i;
         j--;
@@ -209,7 +211,8 @@ Meteor.methods({
       };
 
       var game = GameStatus.findOne({
-        key: gameKey, userId: Meteor.userId()
+        key: gameKey,
+        userId: Meteor.userId()
       });
       if (!game) {
         var id = GameStatus.insert({
@@ -219,18 +222,18 @@ Meteor.methods({
           rounds: []
         });
         console.log('Added GameStatus:', id);
-      }else{
+      } else {
         console.log('Alreay have GameStatus');
       };
     };
   },
-  incrementGameStep: function(gameKey, numSteps){
+  incrementGameStep: function (gameKey, numSteps) {
     verifyUserIsLoggedIn();
     check(gameKey, String);
-    if (typeof(numSteps) !== 'undefined') {
+    if (typeof (numSteps) !== 'undefined') {
       check(numSteps, Match.Integer);
       numSteps = parseInt(numSteps);
-    }else{
+    } else {
       numSteps = 1;
     }
 
@@ -243,16 +246,19 @@ Meteor.methods({
       throw new Meteor.Error(404, 'Not found');
     }
     var newStepNumber = Math.min(gs.step + numSteps, settings.steps);
-    if(newStepNumber === gs.step){
+    if (newStepNumber === gs.step) {
       console.log('Already at this step')
-    }else{
-      GameStatus.update(
-        {_id: gs._id},
-        {$set: {step: newStepNumber}}
-      );
+    } else {
+      GameStatus.update({
+        _id: gs._id
+      }, {
+        $set: {
+          step: newStepNumber
+        }
+      });
     }
   },
-  setUltimatumAmounts: function(a1, a2, round){
+  setUltimatumAmounts: function (a1, a2, round) {
     verifyUserIsLoggedIn();
     check(a1, Match.Integer);
     check(a2, Match.Integer);
@@ -261,7 +267,10 @@ Meteor.methods({
     };
     checkRound(round);
     setRoundData('rounds.' + round, {
-      amounts: {player1: a1, player2: a2},
+      amounts: {
+        player1: a1,
+        player2: a2
+      },
       acceptsOwn: a1 >= a2
     });
   },
@@ -276,24 +285,26 @@ Meteor.methods({
   },
   // Retreive the number of game plays that are internally consistent
   // and inconsistent: that is, those that accept or reject their own offers.
-  getNumAcceptingOwn: function(round){
+  getNumAcceptingOwn: function (round) {
     verifyUserIsLoggedIn();
     checkRound(round);
     var qtrue = {},
-        qfalse = {};
-    qtrue['rounds.' + round + '.acceptsOwn']= true;
-    qfalse['rounds.' + round + '.acceptsOwn']= false;
+      qfalse = {};
+    qtrue['rounds.' + round + '.acceptsOwn'] = true;
+    qfalse['rounds.' + round + '.acceptsOwn'] = false;
     return {
       acceptedOwn: GameStatus.find(qtrue).count(),
       rejectedOwn: GameStatus.find(qfalse).count()
     }
   },
-  getPayoffCDF: function(round){
+  getPayoffCDF: function (round) {
     verifyUserIsLoggedIn();
     checkRound(round);
     var playedGames = GameStatus.find({
       key: 'ultimatum',
-      step: {$gte: 7}
+      step: {
+        $gte: 7
+      }
     }).fetch();
 
     var player1amounts = [];
@@ -303,7 +314,7 @@ Meteor.methods({
         player1amount = playedGames[i].rounds[round].amounts.player1;
         player2amount = playedGames[i].rounds[round].amounts.player2;
       } catch (e) {
-          continue;
+        continue;
       }
       player1amounts.push(player1amount);
       player2amounts.push(player2amount);
