@@ -181,21 +181,24 @@ var payoffCDF = function (player1amounts, player2amounts) {
     };
   };
 
-  return {
+  var retval = {
     player1CDF: player1CDF,
     player1payoffs: player1payoffs,
     player1amounts: player1amounts,
     player2CDF: player2CDF,
     player2payoffs: player2payoffs,
     player2amounts: player2amounts
-  }
+  };
+  console.log(retval);
+  return retval;
 };
 
-var results = payoffCDF([5, 30, 50], [51, 20, 30]);
-if (results.player2payoffs[0] !== (85/3)) {
+var results = payoffCDF([5, 30, 50, 30], [51, 20, 30, 30]);
+if (results.player2payoffs[0] !== (115 / 4)) {
   console.log(results.player2amounts);
   throw "Bad results from payoffCDF!!!";
 };
+console.log(results.player2payoffs);
 
 
 Meteor.methods({
