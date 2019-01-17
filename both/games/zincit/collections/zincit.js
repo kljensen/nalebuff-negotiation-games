@@ -1,11 +1,11 @@
 var gameKey = 'zincit';
 
-var updateZincitGame = function(update){
+var updateZincitGame = function (update) {
   return updateGameStatus(gameKey, update);
 }
-var booleanStatuses = {no: false, yes: true};
+var booleanStatuses = { no: false, yes: true };
 
-var setZinctItBoolean = function(attribute, value){
+var setZinctItBoolean = function (attribute, value) {
   if (!_.has(booleanStatuses, value)) {
     throw new Meteor.Error(400, 'Bad boolean value!');
   };
@@ -14,7 +14,7 @@ var setZinctItBoolean = function(attribute, value){
   updateZincitGame(update);
 };
 
-var calculateOutcomes = function(){
+var calculateOutcomes = function () {
   var outcomes = {
     sam: 1, // 0.5 * 20
     hasan: 19, // 20 - (0.5 * 20)
@@ -30,7 +30,7 @@ var calculateOutcomes = function(){
   if (game.renegotiatedLawyer) {
     lawyerUpfrontAmount = game.lawyerAmounts.upfront * game.amounts.upfront / 100;
     outcomes.sam = lawyerUpfrontAmount + settings.bonusBeliefs.hasan * game.lawyerAmounts.bonus * game.amounts.bonus / 100;
-  }else{
+  } else {
     lawyerUpfrontAmount = 0.05 * game.amounts.upfront;
     outcomes.sam = lawyerUpfrontAmount;
   };
@@ -41,27 +41,27 @@ var calculateOutcomes = function(){
 
 
 Meteor.methods({
-  'setZincitRole': function(role){
+  'setZincitRole': function (role) {
     verifyUserIsLoggedIn();
     check(role, String);
     if (!_.has(Games.settings[gameKey].roles, role)) {
       throw new Meteor.Error(400, 'Bad role!');
     };
-    updateZincitGame({role: role});
+    updateZincitGame({ role: role });
   },
-  'setZincitAgreementStatus': function(agreementStatus){
+  'setZincitAgreementStatus': function (agreementStatus) {
     verifyUserIsLoggedIn();
     setZinctItBoolean('agreementStatus', agreementStatus);
   },
-  'setZincitCalculatedPie': function(calculatedPie){
+  'setZincitCalculatedPie': function (calculatedPie) {
     verifyUserIsLoggedIn();
     setZinctItBoolean('calculatedPie', calculatedPie);
   },
-  'setZincitRenegotiatedLawyer': function(renegotiatedLawyer){
+  'setZincitRenegotiatedLawyer': function (renegotiatedLawyer) {
     verifyUserIsLoggedIn();
     setZinctItBoolean('renegotiatedLawyer', renegotiatedLawyer);
   },
-  'setZincitAmounts': function(upfront, bonus){
+  'setZincitAmounts': function (upfront, bonus) {
     verifyUserIsLoggedIn();
     updateZincitGame({
       amounts: {
@@ -70,7 +70,7 @@ Meteor.methods({
       }
     });
   },
-  'setZincitLawyerPercents': function(lawyerUpfront, lawyerBonus){
+  'setZincitLawyerPercents': function (lawyerUpfront, lawyerBonus) {
     verifyUserIsLoggedIn();
     updateZincitGame({
       lawyerAmounts: {
@@ -79,31 +79,35 @@ Meteor.methods({
       }
     });
   },
-  'setZincitNegotiationTime': function(negotiationTime){
+  'setZincitNegotiationTime': function (negotiationTime) {
     verifyUserIsLoggedIn();
     updateZincitGame({
       negotiationTime: checkIntInRange(negotiationTime, 1, 120),
     });
   },
-  'calculateZincitOutcome': function(){
+  'calculateZincitOutcome': function () {
     verifyUserIsLoggedIn();
-    updateZincitGame({outcomes: calculateOutcomes()});
+    updateZincitGame({ outcomes: calculateOutcomes() });
   },
-  'getZincitOutcomeDistribution': function(){
+  'getZincitOutcomeDistribution': function () {
     verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       var settings = Games.settings[gameKey];
       var games = GameStatus.find(
-        {key: gameKey, step: {$gte: settings.steps}},
-        {fields: {outcomes: 1}}
+        {
+          key: gameKey,
+          step: { $gte: settings.steps },
+          outcomes: { $exists: true }
+        },
+        { fields: { outcomes: 1 } }
       ).fetch();
       var distribution = {};
-      _.each(_.keys(settings.roles), function(role){
-        distribution[role] = getStatisticalMoments(_.map(games, function(g){
+      _.each(_.keys(settings.roles), function (role) {
+        distribution[role] = getStatisticalMoments(_.map(games, function (g) {
           return g.outcomes[role];
         }));
       });
-      console.log('distribution =', distribution);
+      // console.log('distribution =', distribution);
       return distribution;
     }
   }
