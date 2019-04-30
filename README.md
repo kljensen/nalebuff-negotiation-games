@@ -19,5 +19,7 @@ Where settings.json has something like
 }
 ```
 
+Note that these settings are fake.
+
 The coursera clientID is obtained from the
 [coursera console](https://accounts.coursera.org/console).
