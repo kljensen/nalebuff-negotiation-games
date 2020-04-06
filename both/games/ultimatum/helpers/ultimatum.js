@@ -197,7 +197,7 @@ if (Meteor.isClient) {
       return getDemand(1);
     },
     player1amounts: function () {
-      console.log(Template.instance().data);
+      // console.log(Template.instance().data);
       return Template.instance().data.player1amounts.get();
     },
     player2amounts: function () {

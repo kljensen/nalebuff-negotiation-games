@@ -24,7 +24,7 @@ Template.registerHelper('sessionVariableEquals', function (key, value) {
 });
 
 Template.registerHelper('log', function(){
-    console.log(this);
+    // console.log(this);
 });
 
 Template.registerHelper('getSessionVariable', function(x){

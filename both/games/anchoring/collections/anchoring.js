@@ -13,7 +13,7 @@ Meteor.methods({
     };
     GameStatus.update({_id: game._id}, {$set: {randomNumber: num}});
 
-    console.log(game);
+    // console.log(game);
   },
   'setAnchoringDirection': function(direction){
     verifyUserIsLoggedIn();
@@ -69,7 +69,7 @@ Meteor.methods({
     for (var j = ranges.length - 1; j >= 0; j--) {
       ranges[j].stats = getStatisticalMoments(ranges[j].prices);
     };
-    console.log('Done with ranges =', ranges);
+    // console.log('Done with ranges =', ranges);
     return ranges;
   }
 });

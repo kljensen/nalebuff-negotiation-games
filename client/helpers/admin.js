@@ -28,7 +28,7 @@ Template.admin.events({
 Template._admin_game_table.helpers({
   games: function(){
     var games = GameStatus.find({key: Template.instance().data.key});
-    console.log(games);
+    // console.log(games);
     return games;
   }
 });

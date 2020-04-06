@@ -15,7 +15,7 @@ Template.casLoginButton.events({
     event.preventDefault();
 
     Meteor.loginWithCas(function(){
-      console.log('Woot Meteor.user()=', Meteor.user());
+      // console.log('Woot Meteor.user()=', Meteor.user());
     });
     return false;
   }

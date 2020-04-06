@@ -9,7 +9,7 @@ if (Meteor.isClient) {
     if (!err) {
       Meteor.call('incrementGameStep', gameKey);
     }else{
-      console.log('error: ', err);
+      // console.log('error: ', err);
     };
   };
   var callMethodWithRadioValue = function(inputName, methodName){
@@ -85,7 +85,7 @@ if (Meteor.isClient) {
         var outcomeStats = Template.instance().outcomeStats.get();
         return outcomeStats;
       };
-      console.log('returning null in outcomeStats/!');
+      // console.log('returning null in outcomeStats/!');
       return null;
     },
     roleOutcomes: function(){
@@ -95,7 +95,7 @@ if (Meteor.isClient) {
   });
 
   Template['outpsider-5'].onCreated(function(){
-    console.log('woot 0');
+    // console.log('woot 0');
     var dis = this;
     var game = getGame(gameKey);
     var wrapper;
@@ -111,14 +111,14 @@ if (Meteor.isClient) {
         return cb();
       }
     }
-    console.log('woot 1');
+    // console.log('woot 1');
     wrapper(function(){
-      console.log('woot 2');
+      // console.log('woot 2');
       Meteor.call('getOutpsiderOutcomeDistribution', function(err, result){
-        console.log('woot 3');
-        console.log('err = ', err);
+        // console.log('woot 3');
+        // console.log('err = ', err);
         if(typeof(err) === 'undefined'){
-          console.log('woot 4');
+          // console.log('woot 4');
           dis.outcomeStats.set(result);
         }
       });
@@ -138,7 +138,7 @@ if (Meteor.isClient) {
       callMethodWithNumber(gameKey, 'input#patPayment', 1, 1000000, 'setOutpsiderPatPayment');
     },
    'click button.nextStep.outpsider-3': function(e){
-      console.log('clicked!');
+      // console.log('clicked!');
       callMethodWithRadioValue('helenSharedLoss', 'setOutpsiderHelenSharedLoss');
     },
    // 'click button.nextStep.outpsider-4': function(e){
@@ -159,9 +159,9 @@ if (Meteor.isClient) {
           numFreePages = 0;
         }
       };
-      console.log('freeAdsStill =', freeAdsStill);
+      // console.log('freeAdsStill =', freeAdsStill);
       if (noErrorDiv()) {
-        console.log('noErrorDiv!');
+        // console.log('noErrorDiv!');
         Meteor.call(
           'setOutpsiderNoncash',
           hadNoncash,
@@ -171,7 +171,7 @@ if (Meteor.isClient) {
           goToNextStep
         );
       }else{
-        console.log('error on page!!');
+        // console.log('error on page!!');
       };
     },
   });

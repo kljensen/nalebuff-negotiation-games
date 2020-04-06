@@ -43,7 +43,7 @@ _.each(_.keys(Games.settings), function (k) {
   allowedGames[k] = true;
 });
 
-console.log(allowedGames);
+// console.log(allowedGames);
 
 var checkRound = function (round) {
   check(round, Match.Integer);
@@ -167,7 +167,7 @@ var payoffCDF = function (player1amounts, player2amounts) {
       // If the current amount is equal to the max
       // offer, add those to the running sum.
       while (j >= 0 && i === sortedPlayer1amounts[j]) {
-        // console.log('adding ', i, 'to running sum');
+        // // console.log('adding ', i, 'to running sum');
         runningSum += i;
         j--;
       }
@@ -189,16 +189,16 @@ var payoffCDF = function (player1amounts, player2amounts) {
     player2payoffs: player2payoffs,
     player2amounts: player2amounts
   };
-  console.log(retval);
+  // console.log(retval);
   return retval;
 };
 
 var results = payoffCDF([5, 30, 50, 30], [51, 20, 30, 30]);
 if (results.player2payoffs[0] !== (115 / 4)) {
-  console.log(results.player2amounts);
+  // console.log(results.player2amounts);
   throw "Bad results from payoffCDF!!!";
 };
-console.log(results.player2payoffs);
+// console.log(results.player2payoffs);
 
 
 Meteor.methods({
@@ -224,9 +224,9 @@ Meteor.methods({
           step: 0,
           rounds: []
         });
-        console.log('Added GameStatus:', id);
+        // console.log('Added GameStatus:', id);
       } else {
-        console.log('Alreay have GameStatus');
+        // console.log('Alreay have GameStatus');
       };
     };
   },
@@ -250,7 +250,7 @@ Meteor.methods({
     }
     var newStepNumber = Math.min(gs.step + numSteps, settings.steps);
     if (newStepNumber === gs.step) {
-      console.log('Already at this step')
+      // console.log('Already at this step')
     } else {
       GameStatus.update({
         _id: gs._id

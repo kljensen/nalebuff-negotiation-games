@@ -57,7 +57,7 @@ var calculateOutcomes = function(){
       outcomes.helen = outcomes.cade;
     };
   };
-  console.log('outcomes =', outcomes);
+  // console.log('outcomes =', outcomes);
 
   // Penalizing Pat
   if (patPayment > 470000) {
@@ -137,11 +137,11 @@ Meteor.methods({
   },
   'calculateOutpsiderOutcome': function(){
     verifyUserIsLoggedIn();
-    console.log('updating outcomes!');
+    // console.log('updating outcomes!');
     updateOutpsiderGame({outcomes: calculateOutcomes()});
   },
   'getOutpsiderOutcomeDistribution': function(){
-    console.log('in getOutpsiderOutcomeDistribution');
+    // console.log('in getOutpsiderOutcomeDistribution');
     verifyUserIsLoggedIn();
     if (Meteor.isServer) {
       var settings = Games.settings[gameKey];
@@ -149,15 +149,15 @@ Meteor.methods({
         {key: gameKey, step: {$gte: settings.steps}},
         {fields: {outcomes: 1}}
       ).fetch();
-      console.log('games =', games);
+      // console.log('games =', games);
       var distribution = {};
       _.each(_.keys(settings.roles), function(role){
         distribution[role] = getStatisticalMoments(_.map(games, function(g){
-          console.log('g.outcomes =', g.outcomes);
+          // console.log('g.outcomes =', g.outcomes);
           return g.outcomes[role];
         }));
       });
-      console.log('distribution =', distribution);
+      // console.log('distribution =', distribution);
       return distribution;
     };
   }
