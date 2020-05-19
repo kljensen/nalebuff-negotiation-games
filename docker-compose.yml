@@ -1,0 +1,19 @@
+version: '3'
+
+volumes:
+  meteor_local:
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      ROOT_URL: "http://localhost:3000"
+      PORT: 3000
+    volumes:
+      - ./app:/opt/app
+      - ./settings/dev/settings.json:/opt/app/settings.json
+      - meteor_local:/opt/app/.meteor/local

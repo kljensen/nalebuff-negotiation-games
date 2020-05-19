@@ -16,6 +16,9 @@ Router.map(function () {
   } catch (e) {
     pathPrefix = '';
   }
+  if ('undefined' === typeof pathPrefix){
+      pathPrefix = '';
+  }
 
   this.route(pathPrefix, {
     path: pathPrefix,
