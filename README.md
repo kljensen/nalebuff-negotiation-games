@@ -18,7 +18,8 @@ cat >settings/dev/settings.json
   "public": {
     "auth": "coursera"
   }
-}```
+}
+```
 
 Note that these settings are *fake*.
 
